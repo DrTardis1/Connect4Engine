@@ -1,6 +1,6 @@
 public class MartiniEngine {
 
-    private String name = "Martini-c3260061";
+    private String name = "Martini - C3260061";
     private int[] currentBoard = new int[42];
 
     public String getName(){return name;}
@@ -19,8 +19,37 @@ public class MartiniEngine {
         return bestMove.toString();
     }
 
-    public void updateBoard(String inputString){
+    public void addMove(String input) {
+        //Converts last character of game log to integer value representing column number
+        char c = input.charAt(input.length() - 1);
+        int col = 7-Character.getNumericValue(c);
 
+        int currentSpace = col, nextSpace = currentSpace + 7;
+
+        while(true){
+
+            if(currentBoard[currentSpace] == 0) {
+                currentBoard[currentSpace] = 2;
+                break;
+            }
+
+            else if(currentBoard[currentSpace] != 0){
+                if(nextSpace <= 41){
+                    currentSpace = nextSpace;
+                    nextSpace = nextSpace + 7;
+                }
+            }
+        }
+    }
+
+    public void printBoard(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 41; i >= 0; i--){
+            sb.append(currentBoard[i]);
+            if(i % 7 == 0 && i != 0)
+                sb.append("\n");
+        }
+        System.out.println(sb.toString());
     }
 
     //Fancy logo
@@ -61,5 +90,4 @@ public class MartiniEngine {
         }
 
     }
-
 }

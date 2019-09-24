@@ -31,6 +31,11 @@ public class Interface {
 
                 case "position":
 
+                    //Martini is first to move
+                    if(input.length == 2)
+                        martini.addMove(input[2]);
+                    else
+                        martini.addMove(Integer.toString(4));
                     break;
 
 
@@ -47,6 +52,9 @@ public class Interface {
                     martini.getIntro();
                     break;
 
+                case "print":
+                    martini.printBoard();
+                    break;
 
                 case "quit":
                     System.out.println(martini.quit());
