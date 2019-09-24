@@ -13,8 +13,8 @@ public class Interface {
 
         boolean matchInProgress = true;
         Scanner coordinator = new Scanner(System.in);
-        String[] input = coordinator.nextLine().split(" ");
-
+        String[] input = new String[1];
+        input[0] = "d";
         while(!input[0].equals("done")){
             input = coordinator.nextLine().split(" ");
             switch(input[0].toLowerCase()){
@@ -41,6 +41,10 @@ public class Interface {
 
                 case "perft":
 
+                    break;
+
+                case "intro":
+                    martini.getIntro();
                     break;
 
 

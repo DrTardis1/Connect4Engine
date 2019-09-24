@@ -1,5 +1,7 @@
 public class MartiniEngine {
+
     private String name = "Martini-c3260061";
+    private int[] currentBoard = new int[42];
 
     public String getName(){return name;}
 
@@ -17,10 +19,14 @@ public class MartiniEngine {
         return bestMove.toString();
     }
 
+    public void updateBoard(String inputString){
+
+    }
+
     //Fancy logo
     //ASCII art sourced from https://www.asciiart.eu/food-and-drinks/drinks
-    public String getIntro(){
-        return "()   ()      ()    /\n" +
+    public void getIntro(){
+        String martini = "()   ()      ()    /\n" +
                 "  ()      ()  ()  /\n" +
                 "   ______________/___\n" +
                 "   \\            /   /\n" +
@@ -40,7 +46,20 @@ public class MartiniEngine {
                 "           ||\n" +
                 "           /\\\n" +
                 "          /;;\\\n" +
-                "     --------------";
+                "     --------------\n";
+
+        char[] chars = martini.toCharArray();
+        long t = 30;
+        try {
+            for(int i = 0; i < chars.length; i++){
+                System.out.print(chars[i]);
+                Thread.sleep(t);
+            }
+
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
     }
 
 }
