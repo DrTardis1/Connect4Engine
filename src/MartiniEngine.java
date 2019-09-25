@@ -3,6 +3,10 @@ public class MartiniEngine {
     private String name = "Martini - C3260061";
     private int[] currentBoard = new int[42];
 
+    private static int EMPTY = 0;
+    private static int OPPONENT = 2;
+    private static int MINE = 1;
+
     public String getName(){return name;}
 
     public String ready(){return "readyok";}
@@ -20,20 +24,21 @@ public class MartiniEngine {
     }
 
     public void addMove(String input) {
+
         //Converts last character of game log to integer value representing column number
         char c = input.charAt(input.length() - 1);
-        int col = 7-Character.getNumericValue(c);
+        int col = 7 - Character.getNumericValue(c);
 
         int currentSpace = col, nextSpace = currentSpace + 7;
 
         while(true){
 
-            if(currentBoard[currentSpace] == 0) {
+            if(currentBoard[currentSpace] == EMPTY) {
                 currentBoard[currentSpace] = 2;
                 break;
             }
 
-            else if(currentBoard[currentSpace] != 0){
+            else if(currentBoard[currentSpace] != EMPTY){
                 if(nextSpace <= 41){
                     currentSpace = nextSpace;
                     nextSpace = nextSpace + 7;
