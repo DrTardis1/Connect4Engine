@@ -12,6 +12,7 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
 
         boolean matchInProgress = true;
+        System.out.println(martini.getTreeDepth());
         Scanner coordinator = new Scanner(System.in);
         String[] input = new String[1];
         input[0] = "d";

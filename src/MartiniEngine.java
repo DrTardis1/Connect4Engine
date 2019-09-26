@@ -1,6 +1,7 @@
 public class MartiniEngine {
 
     private String name = "Martini - C3260061";
+    private Tree tree = new Tree();
     private int[] currentBoard = new int[42];
 
     private static int EMPTY = 0;
@@ -12,6 +13,8 @@ public class MartiniEngine {
     public String ready(){return "readyok";}
 
     public String quit(){return "quitting";}
+
+    public int getTreeDepth(){return tree.getDepth(tree.getRoot());}
 
     public String bestMove(String[] moveLog){
         StringBuilder bestMove = new StringBuilder();
