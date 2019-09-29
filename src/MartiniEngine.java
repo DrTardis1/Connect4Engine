@@ -30,9 +30,13 @@ public class MartiniEngine {
 
         //Converts last character of game log to integer value representing column number
         char c = input.charAt(input.length() - 1);
-        int col = 7 - Character.getNumericValue(c);
 
-        int currentSpace = col, nextSpace = currentSpace + 7;
+        int col = Character.getNumericValue(c);
+
+        //This value is the element number of the lowest space in the given row
+        int bottomRow = col + 35;
+
+        int currentSpace = bottomRow, nextSpace = currentSpace - 7;
 
         while(true){
 
@@ -42,21 +46,49 @@ public class MartiniEngine {
             }
 
             else if(currentBoard[currentSpace] != EMPTY){
-                if(nextSpace <= 41){
+                if(nextSpace >= 0){
                     currentSpace = nextSpace;
-                    nextSpace = nextSpace + 7;
+                    nextSpace = nextSpace - 7;
                 }
             }
         }
     }
 
+    public boolean checkWin(){
+        int upRight = 8;
+        int downLeft = -8;
+        int upLeft = 6;
+        int downRight = -6;
+
+        return true;
+    }
+
+    public void debug(){
+
+        for(int i = 0; i < currentBoard.length; i ++)
+            currentBoard[i] = i;
+
+        /*
+        for(int i = 0; i < 41; i = i+8)
+            currentBoard[i] = 2;*/
+    }
+
     public void printBoard(){
         StringBuilder sb = new StringBuilder();
-        for(int i = 41; i >= 0; i--){
+
+        int counter = 0;
+        for(int i = 0; i < currentBoard.length; i++) {
+
             sb.append(currentBoard[i]);
-            if(i % 7 == 0 && i != 0)
+            sb.append("\t");
+            counter++;
+            if(counter == 7) {
                 sb.append("\n");
+                counter = 0;
+            }
         }
+
+
         System.out.println(sb.toString());
     }
 

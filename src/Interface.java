@@ -16,6 +16,7 @@ public class Interface {
         Scanner coordinator = new Scanner(System.in);
         String[] input = new String[1];
         input[0] = "d";
+
         while(!input[0].equals("done")){
             input = coordinator.nextLine().split(" ");
             switch(input[0].toLowerCase()){
