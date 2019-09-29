@@ -36,12 +36,16 @@ public class MartiniEngine {
         //This value is the element number of the lowest space in the given row
         int bottomRow = col + 35;
 
-        int currentSpace = bottomRow, nextSpace = currentSpace - 7;
+        //Sets currentSpace to the largest value of the current column
+        int currentSpace = bottomRow;
+
+        //Sets nextSpace to be the element directly above the lowest space of the column
+        int nextSpace = currentSpace - 7;
 
         while(true){
 
             if(currentBoard[currentSpace] == EMPTY) {
-                currentBoard[currentSpace] = 2;
+                currentBoard[currentSpace] = MINE;
                 break;
             }
 
@@ -65,12 +69,13 @@ public class MartiniEngine {
 
     public void debug(){
 
-        for(int i = 0; i < currentBoard.length; i ++)
-            currentBoard[i] = i;
-
+        currentBoard[40] = MINE;
+        currentBoard[33] = MINE;
+        currentBoard[26] = MINE;
+        currentBoard[19] = MINE;
         /*
-        for(int i = 0; i < 41; i = i+8)
-            currentBoard[i] = 2;*/
+        for(int i = 0; i < currentBoard.length; i ++)
+            currentBoard[i] = i;*/
     }
 
     public void printBoard(){
@@ -78,7 +83,6 @@ public class MartiniEngine {
 
         int counter = 0;
         for(int i = 0; i < currentBoard.length; i++) {
-
             sb.append(currentBoard[i]);
             sb.append("\t");
             counter++;
@@ -90,6 +94,44 @@ public class MartiniEngine {
 
 
         System.out.println(sb.toString());
+    }
+
+    public boolean checkVertical(int currentElement) {
+        int currentValue = currentBoard[currentElement];
+        int spaceAbove = currentElement;
+        int spacesToCheck = 3;
+
+        //Finds the space above currentElement that is still the same token as currentElement
+        while (spaceAbove - 7 >= 0 && currentBoard[spaceAbove - 7] == currentValue) {
+            spaceAbove = spaceAbove - 7;
+            spacesToCheck--;
+        }
+
+        //If there are no more spaces to check (i.e. currentElement was the bottom of a connect 4 vertical line)
+        if (spacesToCheck == 0) {
+            return true;
+        }
+        else{
+            int spaceBelow = currentElement;
+            for (int i = 0; i < spacesToCheck; i++) {
+
+                if(spaceBelow + 7 <= currentBoard.length)
+                    spaceBelow = spaceBelow + 7;
+
+                else if(spaceBelow + 7 > 41) {
+                    return false;
+                }
+
+                if (currentBoard[spaceBelow] != currentValue) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean checkHorizontal(int currentElement){
+
     }
 
     //Fancy logo

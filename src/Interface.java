@@ -11,11 +11,11 @@ public class Interface {
 
         MartiniEngine martini = new MartiniEngine();
 
-        boolean matchInProgress = true;
         System.out.println(martini.getTreeDepth());
         Scanner coordinator = new Scanner(System.in);
         String[] input = new String[1];
         input[0] = "d";
+
 
         while(!input[0].equals("done")){
             input = coordinator.nextLine().split(" ");
@@ -25,26 +25,23 @@ public class Interface {
                     System.out.println(martini.getName());
                     break;
 
-
                 case "isready":
                     System.out.println(martini.ready());
                     break;
-
 
                 case "position":
 
                     //Martini is first to move
                     if(input.length == 2)
-                        martini.addMove(input[2]);
-                    else
                         martini.addMove(Integer.toString(4));
-                    break;
+                    else
+                        martini.addMove(input[2]);
 
+                    break;
 
                 case "go":
 
                     break;
-
 
                 case "perft":
 
@@ -58,15 +55,15 @@ public class Interface {
                     martini.printBoard();
                     break;
 
+                case "vert":
+                    martini.checkVertical(Integer.parseInt(input[1]));
+                    break;
+
                 case "quit":
                     System.out.println(martini.quit());
                     break;
 
             }
-
-            matchInProgress = false;
         }
-
     }
-
 }
