@@ -69,10 +69,15 @@ public class MartiniEngine {
 
     public void debug(){
 
+        currentBoard[0]= MINE;
+        currentBoard[1]= MINE;
+        currentBoard[2]= MINE;
+        currentBoard[3]= MINE;
+        /*
         currentBoard[40] = MINE;
         currentBoard[33] = MINE;
         currentBoard[26] = MINE;
-        currentBoard[19] = MINE;
+        currentBoard[19] = MINE;*/
         /*
         for(int i = 0; i < currentBoard.length; i ++)
             currentBoard[i] = i;*/
@@ -96,9 +101,9 @@ public class MartiniEngine {
         System.out.println(sb.toString());
     }
 
-    public boolean checkVertical(int currentElement) {
-        int currentValue = currentBoard[currentElement];
-        int spaceAbove = currentElement;
+    public boolean checkVertical(int inputElement) {
+        int currentValue = currentBoard[inputElement];
+        int spaceAbove = inputElement;
         int spacesToCheck = 3;
 
         //Finds the space above currentElement that is still the same token as currentElement
@@ -111,17 +116,22 @@ public class MartiniEngine {
         if (spacesToCheck == 0) {
             return true;
         }
+
         else{
-            int spaceBelow = currentElement;
+            int spaceBelow = inputElement;
             for (int i = 0; i < spacesToCheck; i++) {
 
+                //If there is a valid space below the current element
                 if(spaceBelow + 7 <= currentBoard.length)
                     spaceBelow = spaceBelow + 7;
 
+                //If there is no valid space below the current element
                 else if(spaceBelow + 7 > 41) {
                     return false;
                 }
 
+                //If there is a valid space below the current element, but it does not
+                //contain the same value as the current element
                 if (currentBoard[spaceBelow] != currentValue) {
                     return false;
                 }
@@ -130,8 +140,39 @@ public class MartiniEngine {
         return true;
     }
 
-    public boolean checkHorizontal(int currentElement){
+    public boolean checkHorizontal(int inputElement){
 
+        int currentValue = currentBoard[inputElement];
+
+        //Checks to see if the currentElement is closer to the left or right
+        int closestEdge = (inputElement % 7 <= 3) ? 0 : 6;
+        int boundaryElement = inputElement;
+
+        if(closestEdge == 0){
+            while(boundaryElement % 7 != closestEdge){
+                boundaryElement--;
+            }
+
+            for(int i = boundaryElement; i < boundaryElement + 4; i++){
+                if(currentBoard[i] != currentValue){
+                    return false;
+                }
+
+            }
+        }
+        else{
+            while(boundaryElement % 7 != closestEdge){
+                boundaryElement++;
+            }
+
+            for(int i = boundaryElement; i > boundaryElement - 4; i--){
+                if(currentBoard[i] != currentValue){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     //Fancy logo

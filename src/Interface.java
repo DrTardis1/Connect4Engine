@@ -11,14 +11,18 @@ public class Interface {
 
         MartiniEngine martini = new MartiniEngine();
 
-        System.out.println(martini.getTreeDepth());
         Scanner coordinator = new Scanner(System.in);
+
         String[] input = new String[1];
+
         input[0] = "d";
 
+        martini.debug();
 
         while(!input[0].equals("done")){
+
             input = coordinator.nextLine().split(" ");
+
             switch(input[0].toLowerCase()){
 
                 case "name":
@@ -57,6 +61,10 @@ public class Interface {
 
                 case "vert":
                     martini.checkVertical(Integer.parseInt(input[1]));
+                    break;
+
+                case "hor":
+                    martini.checkHorizontal(Integer.parseInt(input[1]));
                     break;
 
                 case "quit":
