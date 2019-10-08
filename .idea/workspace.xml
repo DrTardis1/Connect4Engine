@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/DEBUG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/DEBUG.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Tree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MartiniEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="7" column="36" lean-forward="true" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+            <state relative-caret-position="438">
+              <caret line="178" column="8" selection-start-line="178" selection-start-column="8" selection-end-line="178" selection-end-column="8" />
               <folding>
                 <element signature="method#bestMove#0;class#MartiniEngine#0" />
                 <element signature="method#addMove#0;class#MartiniEngine#0" />
@@ -37,8 +29,6 @@
                 <element signature="method#printBoard#0;class#MartiniEngine#0" />
                 <element signature="method#checkVertical#0;class#MartiniEngine#0" />
                 <element signature="method#checkHorizontal#0;class#MartiniEngine#0" />
-                <element signature="e#4705#5045#1" />
-                <element signature="e#4824#4921#1" />
                 <element signature="method#getIntro#0;class#MartiniEngine#0" />
               </folding>
             </state>
@@ -48,7 +38,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Interface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
+            <state relative-caret-position="300">
               <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
@@ -90,7 +80,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -107,6 +96,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -194,24 +184,25 @@
       <workItem from="1569763601476" duration="63000" />
       <workItem from="1569763669245" duration="1105000" />
       <workItem from="1569809677143" duration="4386000" />
+      <workItem from="1570363607973" duration="48000" />
+      <workItem from="1570363871811" duration="458000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5554000" />
+    <option name="totallyTimeSpent" value="6060000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1366" height="677" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15373352" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1522694" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32933104" />
@@ -224,6 +215,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -276,7 +268,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>193</line>
+          <line>197</line>
           <properties />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
@@ -293,17 +285,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Interface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MartiniEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="36" lean-forward="true" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
+        <state relative-caret-position="438">
+          <caret line="178" column="8" selection-start-line="178" selection-start-column="8" selection-end-line="178" selection-end-column="8" />
           <folding>
             <element signature="method#bestMove#0;class#MartiniEngine#0" />
             <element signature="method#addMove#0;class#MartiniEngine#0" />
@@ -312,10 +297,15 @@
             <element signature="method#printBoard#0;class#MartiniEngine#0" />
             <element signature="method#checkVertical#0;class#MartiniEngine#0" />
             <element signature="method#checkHorizontal#0;class#MartiniEngine#0" />
-            <element signature="e#4705#5045#1" />
-            <element signature="e#4824#4921#1" />
             <element signature="method#getIntro#0;class#MartiniEngine#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Interface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>

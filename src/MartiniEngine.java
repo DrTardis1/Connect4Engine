@@ -175,6 +175,10 @@ public class MartiniEngine {
         return true;
     }
 
+    public boolean checkDiagonals(int inputElement){
+
+    }
+
     //Fancy logo
     //ASCII art sourced from https://www.asciiart.eu/food-and-drinks/drinks
     public void getIntro(){
