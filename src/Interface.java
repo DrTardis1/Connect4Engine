@@ -10,16 +10,11 @@ public class Interface {
     public static void main(String args[]) {
 
         MartiniEngine martini = new MartiniEngine();
-
         Scanner coordinator = new Scanner(System.in);
+        String[] input;
+        boolean finished = false;
 
-        String[] input = new String[1];
-
-        input[0] = "d";
-
-        martini.debug();
-
-        while(!input[0].equals("done")){
+        while(!finished){
 
             input = coordinator.nextLine().split(" ");
 
@@ -34,17 +29,21 @@ public class Interface {
                     break;
 
                 case "position":
-
                     //Martini is first to move
-                    if(input.length == 2)
-                        martini.addMove(Integer.toString(4));
-                    else
-                        martini.addMove(input[2]);
+                    if(input.length == 2) {
+                        martini.isFirst(true);
+                        martini.setCurrentPlayer(1);
+                    }
+                    else {
 
+                        martini.addMove(input[2]);
+                    }
                     break;
 
                 case "go":
-
+                    martini.getInfo();
+                    martini.bestMove();
+                    MartiniEngine.toggleCurrentPlayer();
                     break;
 
                 case "perft":
@@ -59,16 +58,9 @@ public class Interface {
                     martini.printBoard();
                     break;
 
-                case "vert":
-                    martini.checkVertical(Integer.parseInt(input[1]));
-                    break;
-
-                case "hor":
-                    martini.checkHorizontal(Integer.parseInt(input[1]));
-                    break;
-
                 case "quit":
                     System.out.println(martini.quit());
+                    finished = true;
                     break;
 
             }

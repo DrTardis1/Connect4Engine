@@ -23,7 +23,7 @@ public class Tree {
         if(root.getChildren().size() == 0)
             return 1;
 
-        for(Node child: root.getChildren())
+        for(Node child : root.getChildren())
             depth = Math.max(depth, getDepth(child));
 
         return depth +1;

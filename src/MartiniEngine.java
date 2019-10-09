@@ -1,9 +1,14 @@
+import java.util.Random;
+
 public class MartiniEngine {
 
-    private String name = "Martini - C3260061";
+    private String name = "Martini-C3260061";
     private Tree tree = new Tree();
+    private boolean isFirst = false;
     private int[] currentBoard = new int[42];
+    private int[] columnWeights = {0, 2, 5, 10, 5, 2, 0};
 
+    private static int currentPlayer = 0;
     private static int EMPTY = 0;
     private static int OPPONENT = 2;
     private static int MINE = 1;
@@ -14,73 +19,105 @@ public class MartiniEngine {
 
     public String quit(){return "quitting";}
 
-    public int getTreeDepth(){return tree.getDepth(tree.getRoot());}
-
-    public String bestMove(String[] moveLog){
-        StringBuilder bestMove = new StringBuilder();
-        bestMove.append("bestmove ");
-
-        if(moveLog.length == 2)
-            bestMove.append("3 100");
-
-        return bestMove.toString();
+    public void setCurrentPlayer(int currentPlayer){
+        MartiniEngine.currentPlayer = currentPlayer;
     }
 
-    public void addMove(String input) {
+    public int getCurrentPlayer(){return currentPlayer;}
 
-        //Converts last character of game log to integer value representing column number
-        char c = input.charAt(input.length() - 1);
+    public static void toggleCurrentPlayer(){
+        currentPlayer = (currentPlayer == OPPONENT) ? MINE : OPPONENT;
+    }
 
-        int col = Character.getNumericValue(c);
+    public void isFirst(boolean isFirst){this.isFirst = isFirst;}
 
-        //This value is the element number of the lowest space in the given row
-        int bottomRow = col + 35;
+    public int getTreeDepth(){return tree.getDepth(tree.getRoot());}
 
-        //Sets currentSpace to the largest value of the current column
-        int currentSpace = bottomRow;
+    public void updateBoard(String input){}
 
-        //Sets nextSpace to be the element directly above the lowest space of the column
-        int nextSpace = currentSpace - 7;
+    public void bestMove(){
+        if(isFirst){
+            isFirst = false;
+            int bestCol = 0;
+            for(int i = 0; i < columnWeights.length; i++){
+                if(columnWeights[i] > columnWeights[bestCol]){
+                    bestCol = i;
+                }
+            }
+            System.out.println("bestmove "  + bestCol + " " + columnWeights[bestCol]);
+        }
 
-        while(true){
-
-            if(currentBoard[currentSpace] == EMPTY) {
-                currentBoard[currentSpace] = MINE;
-                break;
+        else{
+            if(tree.getRoot() == null){
+                tree.setRoot(new Node(currentBoard));
             }
 
-            else if(currentBoard[currentSpace] != EMPTY){
-                if(nextSpace >= 0){
-                    currentSpace = nextSpace;
-                    nextSpace = nextSpace - 7;
-                }
+            else{
+
             }
         }
     }
 
-    public boolean checkWin(){
-        int upRight = 8;
-        int downLeft = -8;
-        int upLeft = 6;
-        int downRight = -6;
+    public int evaluationFunction(Node root){
+        return 7;
+    }
 
-        return true;
+    public int addMove(String input) {
+
+        //Converts last character of game log to integer value representing column number
+        char c = input.charAt(input.length() - 1);
+        int col = Character.getNumericValue(c);
+        int finalAddress = findLowestSpace(col, currentBoard);
+
+        /*if(finalAddress > 41) {
+            System.out.println("ERROR HAS OCCURED. SHUTTING DOWN");
+            System.exit(0);
+        }*/
+
+        currentBoard[finalAddress] = currentPlayer;
+
+        tree.getRoot().setState(currentBoard);
+        tree.getRoot().deleteChildren();
+        generateChildren(tree.getRoot());
+
+        return finalAddress;
+    }
+
+    public int findLowestSpace(int colNum, int[] board){
+        boolean found = false;
+
+        //Finds the address of the lowest point of the given column
+        int currentSpace = colNum + 35;
+
+        int nextSpace = currentSpace - 7;
+
+        while(!found){
+            if(board[currentSpace] == EMPTY) {
+                found = true;
+            }
+            else if(nextSpace >= 0){
+                currentSpace = nextSpace;
+                nextSpace = nextSpace - 7;
+            }
+            else
+                currentSpace = Integer.MAX_VALUE;
+        }
+
+
+        return currentSpace;
     }
 
     public void debug(){
+        Random r = new Random();
+        int[] numSpaces = new int[7];
+        int colNum = r.nextInt(7);
+        while(numSpaces[colNum] >=7)
+            colNum = r.nextInt(7);
 
-        currentBoard[0]= MINE;
-        currentBoard[1]= MINE;
-        currentBoard[2]= MINE;
-        currentBoard[3]= MINE;
-        /*
-        currentBoard[40] = MINE;
-        currentBoard[33] = MINE;
-        currentBoard[26] = MINE;
-        currentBoard[19] = MINE;*/
-        /*
-        for(int i = 0; i < currentBoard.length; i ++)
-            currentBoard[i] = i;*/
+        checkWin(addMove(String.valueOf(colNum)));
+        numSpaces[colNum]++;
+
+        System.out.println("bestmove " + colNum + " 100");
     }
 
     public void printBoard(){
@@ -96,9 +133,30 @@ public class MartiniEngine {
                 counter = 0;
             }
         }
+        sb.append("------------------------------------------------------------------------");
+        sb.append("\n");
+        for(int i = 0; i < 7; i++) {
+            sb.append(i);
+            sb.append("\t");
+        }
 
 
         System.out.println(sb.toString());
+    }
+
+    public void clearBoard(){
+        currentBoard = new int[42];
+    }
+
+    public boolean checkWin(int inputElement){
+        if(checkVertical(inputElement))
+            return true;
+        else if (checkHorizontal(inputElement))
+            return true;
+        else if(checkDiagonals(inputElement))
+            return true;
+        else
+            return false;
     }
 
     public boolean checkVertical(int inputElement) {
@@ -122,7 +180,7 @@ public class MartiniEngine {
             for (int i = 0; i < spacesToCheck; i++) {
 
                 //If there is a valid space below the current element
-                if(spaceBelow + 7 <= currentBoard.length)
+                if(spaceBelow + 7 <= 41)
                     spaceBelow = spaceBelow + 7;
 
                 //If there is no valid space below the current element
@@ -171,14 +229,129 @@ public class MartiniEngine {
                 }
             }
         }
-
         return true;
     }
 
     public boolean checkDiagonals(int inputElement){
 
+        //Determines which column the inputElement is in
+        int initialModClass = inputElement % 7;
+        int currentValue = currentBoard[inputElement];
+
+        int leftMostDiag = inputElement;
+        int currentDiagModClass = leftMostDiag % 7;
+        int spacesLeft = 3;
+
+        //Checks diagonally up right
+        while(spacesLeft > 0){
+
+            //Ensures the element diagonally up and left of the inputElement is still a valid element on the board
+            //Ensures the mod class of that element is only 1 less than the currentModClass
+            if(leftMostDiag - 8 >= 0 && (leftMostDiag - 8) % 7 == currentDiagModClass-1 && currentBoard[leftMostDiag-8] == currentValue) {
+                leftMostDiag = leftMostDiag - 8;
+                currentDiagModClass = leftMostDiag % 7;
+                spacesLeft--;
+            }
+            else{
+                break;
+            }
+        }
+
+        if(spacesLeft == 0){
+            return true;
+        }
+
+        //Checks diagonally up left
+        else{
+            int rightMostDiag = inputElement;
+            currentDiagModClass = rightMostDiag % 7;
+            spacesLeft = 3;
+            while(spacesLeft > 0){
+
+                if(rightMostDiag - 6 >= 0 && (rightMostDiag - 6) % 7 == currentDiagModClass-1 && currentBoard[rightMostDiag-6] == currentValue){
+                    rightMostDiag = rightMostDiag - 6;
+                    currentDiagModClass = rightMostDiag % 7;
+                    spacesLeft--;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+
+        if(spacesLeft == 0){
+            return true;
+        }
+
+        //Checks Diagonally down right
+        else{
+            int rightMostDiag = inputElement;
+            currentDiagModClass = rightMostDiag % 7;
+            spacesLeft = 3;
+            while(spacesLeft > 0){
+
+                if(rightMostDiag + 8 <= 41 && (rightMostDiag + 8) % 7 == currentDiagModClass+1 && currentBoard[rightMostDiag+8] == currentValue){
+                    rightMostDiag = rightMostDiag + 8;
+                    currentDiagModClass = rightMostDiag % 7;
+                    spacesLeft--;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+
+        if(spacesLeft == 0){
+            return true;
+        }
+
+        //Checks diagonally down left
+        else{
+            leftMostDiag = inputElement;
+            currentDiagModClass = leftMostDiag % 7;
+            spacesLeft = 3;
+            while(spacesLeft > 0){
+
+                if(leftMostDiag + 6 <= 41 && (leftMostDiag + 6) % 7 == currentDiagModClass-1 && currentBoard[leftMostDiag+6] == currentValue){
+                    leftMostDiag = leftMostDiag + 6;
+                    currentDiagModClass = leftMostDiag % 7;
+                    spacesLeft--;
+                }
+                else{
+                    break;
+                }
+            }
+
+            if(spacesLeft == 0){
+                return true;
+            }
+            return false;
+        }
     }
 
+    public void generateChildren(Node root){
+        for(int i = 6; i > 0; i --){
+            Node temp = new Node(root);
+            int lowestAddress = findLowestSpace(i, temp.getState());
+
+            if(lowestAddress > 41)
+                continue;
+
+            temp.getState()[lowestAddress] = currentPlayer;
+            root.addChild(temp);
+        }
+    }
+
+    public void generateMoves(Node root){
+        int[] board = root.getState();
+        for(int i = 0; i < 7; i++){
+
+        }
+    }
+
+    public void getInfo(){
+        System.out.println("info depth " + tree.getDepth(tree.getRoot()));
+    }
     //Fancy logo
     //ASCII art sourced from https://www.asciiart.eu/food-and-drinks/drinks
     public void getIntro(){

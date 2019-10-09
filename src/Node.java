@@ -4,7 +4,7 @@ public class Node {
 
     private Node parent;
     private LinkedList<Node> children;
-    private int[][] state;
+    private int[] state;
 
     //Used to store evaluation function's rating of this game state
     private int value;
@@ -12,14 +12,21 @@ public class Node {
     public Node(){
         parent = null;
         children = new LinkedList<>();
-        state = new int[6][7];
+        state = new int[42];
         value = 0;
     }
 
     public Node(Node parent){
         this.parent = parent;
         children = new LinkedList<>();
-        state = new int[6][7];
+        state = parent.getState();
+        value = 0;
+    }
+
+    public Node(int[] state){
+        parent = null;
+        children = new LinkedList<>();
+        this.state = state;
         value = 0;
     }
 
@@ -43,4 +50,10 @@ public class Node {
 
         return temp;
     }
+
+    public int[] getState(){return state;}
+
+    public void setState(int[] state){this.state = state;}
+
+    public void deleteChildren(){children = new LinkedList<>();}
 }
