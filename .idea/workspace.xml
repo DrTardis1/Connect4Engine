@@ -2,22 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/connect_4_coordinator.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/DEBUG.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/connect_4_coordinator.jar" beforeDir="false" afterPath="$PROJECT_DIR$/connect_4_coordinator.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Tree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/connect_4_coordinator.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DEBUG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DEBUG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connect_4_coordinator.jar" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +40,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/connect_4_coordinator.jar" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -62,7 +54,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Font" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -81,8 +73,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Interface">
-    <configuration name="Interface" type="Application" factoryName="Application">
+  <component name="RunManager" selected="Application.Coordinator">
+    <configuration name="Coordinator" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Interface" />
@@ -92,18 +84,23 @@
         <option name="RunConfigurationTask" enabled="true" run_configuration_name="Coordinator" run_configuration_type="JarApplication" />
       </method>
     </configuration>
-    <configuration name="Coordinator" type="JarApplication">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/connect_4_coordinator.jar" />
-      <option name="PROGRAM_PARAMETERS" value="e0 D:\Documents\GitHub\Connect4Engine\out\production\Connect4Engine" />
-      <option name="WORKING_DIRECTORY" value="D:\Documents\GitHub\Connect4Engine" />
-      <option name="ALTERNATIVE_JRE_PATH" />
+    <configuration name="Debug" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Interface" />
       <module name="Connect4Engine" />
       <method v="2">
-        <option name="TypeScript.Before.Run" enabled="true" FAIL_ON_ERROR="true" />
+        <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Coordinator" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/connect_4_coordinator.jar" />
+      <option name="PROGRAM_PARAMETERS" value="e0 D:\Documents\GitHub\Connect4Engine\out\production\Connect4Engine\" />
+      <option name="WORKING_DIRECTORY" value="D:\Documents\GitHub\Connect4Engine" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Application.Interface" />
+      <item itemvalue="Application.Debug" />
+      <item itemvalue="Application.Coordinator" />
       <item itemvalue="JAR Application.Coordinator" />
     </list>
   </component>
@@ -144,6 +141,9 @@
       <workItem from="1570576967182" duration="16734000" />
       <workItem from="1570595782695" duration="97000" />
       <workItem from="1570599020327" duration="12237000" />
+      <workItem from="1570674953751" duration="1027000" />
+      <workItem from="1570678117807" duration="3079000" />
+      <workItem from="1570681603599" duration="24008000" />
     </task>
     <servers />
   </component>
@@ -185,24 +185,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="21" />
+          <line>364</line>
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>86</line>
-          <option name="timeStamp" value="23" />
+          <line>66</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="breakpointCondition">
-      <expression>
-        <expression-string>t.equals(&quot;8&quot;)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
 </project>

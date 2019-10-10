@@ -12,6 +12,7 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         Scanner coordinator = new Scanner(System.in);
         String[] input;
+
         boolean finished = false;
 
         while(!finished){
@@ -19,6 +20,11 @@ public class Interface {
             input = coordinator.nextLine().split(" ");
 
             switch(input[0].toLowerCase()){
+
+                case "d":
+                    martini.debug();
+                    martini.printBoard();
+                    break;
 
                 case "name":
                     System.out.println(martini.getName());
@@ -32,26 +38,22 @@ public class Interface {
                     //Martini is first to move
                     if(input.length == 2) {
                         martini.isFirst(true);
-                        martini.setCurrentPlayer(1);
                     }
                     else {
-
                         martini.addMove(input[2]);
                     }
+
                     break;
 
                 case "go":
-                    martini.getInfo();
-                    martini.bestMove();
-                    MartiniEngine.toggleCurrentPlayer();
+                    martini.findBestMove();
+                    martini.toggleCurrentPlayer();
                     break;
 
                 case "perft":
-
-                    break;
-
-                case "intro":
-                    martini.getIntro();
+                    Node temp = new Node();
+                    temp.setState(martini.getCurrentBoard());
+                    System.out.println("perft " + input[1] + " " + martini.perft(Integer.parseInt(input[1]), temp));
                     break;
 
                 case "print":
@@ -62,7 +64,6 @@ public class Interface {
                     System.out.println(martini.quit());
                     finished = true;
                     break;
-
             }
         }
     }

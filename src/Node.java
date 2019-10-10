@@ -5,8 +5,6 @@ public class Node {
     private Node parent;
     private LinkedList<Node> children;
     private int[] state;
-
-    //Used to store evaluation function's rating of this game state
     private int value;
 
     public Node(){
@@ -19,7 +17,7 @@ public class Node {
     public Node(Node parent){
         this.parent = parent;
         children = new LinkedList<>();
-        state = parent.getState();
+        state = parent.getState().clone();
         value = 0;
     }
 
@@ -34,7 +32,20 @@ public class Node {
 
     public Node getParent(){return parent;}
 
-    public void addChild(Node child){this.children.add(child);}
+    public void addChild(Node child){
+        children.add(child);
+        /*
+        if(children.size() == 0)
+            this.children.add(child);
+
+        else{
+            for(int i = 0; i < children.size(); i++){
+                if(children.get(i).getValue() < child.getValue())
+                    children.add(child);
+            }
+        }*/
+
+    }
 
     public LinkedList<Node> getChildren(){return children;}
 
@@ -42,13 +53,8 @@ public class Node {
 
     public int getValue(){return value;}
 
-    public Node getBestValue(){
-        Node temp = children.getFirst();
-        for(Node current : children)
-            if(current.getValue() > temp.getValue())
-                temp = current;
-
-        return temp;
+    public Node getFirstChild(){
+        return children.getFirst();
     }
 
     public int[] getState(){return state;}
