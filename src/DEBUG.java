@@ -115,5 +115,189 @@ public void bestMove(){
         return 10;
     }
 
+    public boolean checkHorizontal(int inputElement){
+
+        int currentValue = currentBoard[inputElement];
+
+        //Checks to see if the currentElement is closer to the left or right
+        int closestEdge = (inputElement % 7 <= 3) ? 0 : 6;
+        int boundaryElement = inputElement;
+
+        if(closestEdge == 0){
+            while(boundaryElement % 7 != closestEdge){
+                boundaryElement--;
+            }
+
+            for(int i = boundaryElement; i < boundaryElement + 4; i++){
+                if(currentBoard[i] != currentValue){
+                    return false;
+                }
+
+            }
+        }
+        else{
+            while(boundaryElement % 7 != closestEdge){
+                boundaryElement++;
+            }
+
+            for(int i = boundaryElement; i > boundaryElement - 4; i--){
+                if(currentBoard[i] != currentValue){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean checkWin(int inputElement){
+
+        if(currentBoardNode.getState()[inputElement] == 0) return false;
+
+        else if(checkVertical(inputElement))
+            return true;
+        else if (checkHorizontal(inputElement))
+            return true;
+        else if(checkDiagonals(inputElement))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean checkVertical(int inputElement) {
+        int currentValue = currentBoard[inputElement];
+        int spaceAbove = inputElement;
+        int spacesToCheck = 3;
+
+        //Finds the space above currentElement that is still the same token as currentElement
+        while (spaceAbove - 7 >= 0 && currentBoard[spaceAbove - 7] == currentValue) {
+            spaceAbove = spaceAbove - 7;
+            spacesToCheck--;
+        }
+
+        //If there are no more spaces to check (i.e. currentElement was the bottom of a connect 4 vertical line)
+        if (spacesToCheck == 0) {
+            return true;
+        }
+
+        else{
+            int spaceBelow = inputElement;
+            for (int i = 0; i < spacesToCheck; i++) {
+
+                //If there is a valid space below the current element
+                if(spaceBelow + 7 <= 41)
+                    spaceBelow = spaceBelow + 7;
+
+                    //If there is no valid space below the current element
+                else if(spaceBelow + 7 > 41) {
+                    return false;
+                }
+
+                //If there is a valid space below the current element, but it does not
+                //contain the same value as the current element
+                if (currentBoard[spaceBelow] != currentValue) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean checkDiagonals(int inputElement){
+
+        //Determines which column the inputElement is in
+        int initialModClass = inputElement % 7;
+        int currentValue = currentBoard[inputElement];
+
+        int leftMostDiag = inputElement;
+        int currentDiagModClass = leftMostDiag % 7;
+        int spacesLeft = 3;
+
+        //Checks diagonally up right
+        while(spacesLeft > 0){
+
+            //Ensures the element diagonally up and left of the inputElement is still a valid element on the board
+            //Ensures the mod class of that element is only 1 less than the currentModClass
+            if(leftMostDiag - 8 >= 0 && (leftMostDiag - 8) % 7 == currentDiagModClass-1 && currentBoard[leftMostDiag-8] == currentValue) {
+                leftMostDiag = leftMostDiag - 8;
+                currentDiagModClass = leftMostDiag % 7;
+                spacesLeft--;
+            }
+            else{
+                break;
+            }
+        }
+
+        if(spacesLeft == 0){
+            return true;
+        }
+
+        //Checks diagonally up left
+        else{
+            int rightMostDiag = inputElement;
+            currentDiagModClass = rightMostDiag % 7;
+            spacesLeft = 3;
+            while(spacesLeft > 0){
+
+                if(rightMostDiag - 6 >= 0 && (rightMostDiag - 6) % 7 == currentDiagModClass-1 && currentBoard[rightMostDiag-6] == currentValue){
+                    rightMostDiag = rightMostDiag - 6;
+                    currentDiagModClass = rightMostDiag % 7;
+                    spacesLeft--;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+
+        if(spacesLeft == 0){
+            return true;
+        }
+
+        //Checks Diagonally down right
+        else{
+            int rightMostDiag = inputElement;
+            currentDiagModClass = rightMostDiag % 7;
+            spacesLeft = 3;
+            while(spacesLeft > 0){
+
+                if(rightMostDiag + 8 <= 41 && (rightMostDiag + 8) % 7 == currentDiagModClass+1 && currentBoard[rightMostDiag+8] == currentValue){
+                    rightMostDiag = rightMostDiag + 8;
+                    currentDiagModClass = rightMostDiag % 7;
+                    spacesLeft--;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+
+        if(spacesLeft == 0){
+            return true;
+        }
+
+        //Checks diagonally down left
+        else{
+            leftMostDiag = inputElement;
+            currentDiagModClass = leftMostDiag % 7;
+            spacesLeft = 3;
+            while(spacesLeft > 0){
+
+                if(leftMostDiag + 6 <= 41 && (leftMostDiag + 6) % 7 == currentDiagModClass-1 && currentBoard[leftMostDiag+6] == currentValue){
+                    leftMostDiag = leftMostDiag + 6;
+                    currentDiagModClass = leftMostDiag % 7;
+                    spacesLeft--;
+                }
+                else{
+                    break;
+                }
+            }
+
+            if(spacesLeft == 0){
+                return true;
+            }
+            return false;
+        }
+    }
+
 
 */
