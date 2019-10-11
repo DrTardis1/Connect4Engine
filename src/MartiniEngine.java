@@ -1,10 +1,10 @@
-import java.util.Random;
-
 public class MartiniEngine {
 
     private String name = "Martini-C3260061";
     private Node currentBoardNode = new Node();
     private boolean isFirst = false;
+
+    private int[] directions = {-7, 7, -1, 1, -6, 8, 6, -8};
     private int[] currentBoard = new int[42];
     private int[] boardValues = {1,  20, 50, 70,  50, 20, 1,
                                  20, 30, 60, 80,  60, 30, 20,
@@ -12,8 +12,7 @@ public class MartiniEngine {
                                  40, 50, 80, 100, 80, 50, 40,
                                  20, 30, 60, 80,  60, 30, 20,
                                  1,  20, 50, 70,  50, 20, 1};
-
-
+    //Player information
     private int EMPTY = 0;
     private int OPPONENT = 2;
     private int MINE = 1;
@@ -25,12 +24,6 @@ public class MartiniEngine {
 
     public String quit(){return "quitting";}
 
-    public void setCurrentPlayer(int currentPlayer){
-        this.currentPlayer = currentPlayer;
-    }
-
-    public int getCurrentPlayer(){return currentPlayer;}
-
     public void toggleCurrentPlayer(){
         this.currentPlayer = (this.currentPlayer == OPPONENT) ? MINE : OPPONENT;
     }
@@ -40,21 +33,21 @@ public class MartiniEngine {
         currentPlayer = this.isFirst ? MINE : OPPONENT;
     }
 
-    public Node getRoot(){return currentBoardNode;}
+    public boolean isFull(int colNum){
+        return currentBoard[colNum] != EMPTY;
+    }
 
     public int[] getCurrentBoard(){return currentBoard;}
 
-    public void updateBoard(String input){
+    public Node getGameTree(){return currentBoardNode;}
 
-    }
+    public int getTreeDepth(){return currentBoardNode.getDepth(currentBoardNode);}
 
     public int perft(int depth, Node root){
         int nodes = 1;
-
         if(depth == 0) return 1;
 
-        generateChildren(root);
-
+        initChildren(root);
         for(int i = 0; i < root.getChildren().size(); i++){
             nodes += perft(depth - 1, root.getChildren().get(i));
         }
@@ -63,52 +56,51 @@ public class MartiniEngine {
     }
 
     public void findBestMove(){
-        int bestCol = 0;
-        if(isFirst){
-            isFirst = false;
-            for(int i = 0; i < 7; i++){
-                if(boardValues[i] > boardValues[bestCol]){
-                    bestCol = i;
-                }
+
+        initGameTree(currentBoardNode, 1);
+        int bestVal = Integer.MIN_VALUE;
+        int index = 0;
+
+        for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
+            int childValue = maxi(currentBoardNode.getChildren().get(i), 0);
+            if(childValue > bestVal) {
+                bestVal = childValue;
+                index = i;
             }
         }
-        else{
-            for(int i = 0; i < 7; i++){
-                if(!colIsFull(i)){
-                    if(boardValues[i] > boardValues[bestCol])
-                        bestCol = i;
-                }
-            }
-        }
-        addMove(Integer.toString(bestCol));
+
+        Node bestChild = currentBoardNode.getChildren().get(index);
+        bestChild.setParent(null);
+        currentBoardNode = bestChild;
+        currentBoard = currentBoardNode.getState();
+
+        System.out.println("bestmove " + currentBoardNode.getColNum() + " " + bestVal);
+        /*
+        updateBoard(Integer.toString(bestCol));
         System.out.println("bestmove "  + bestCol + " " + boardValues[bestCol]);
+
+         */
     }
 
-    public boolean colIsFull(int colNum){
-        return currentBoard[colNum] != EMPTY;
-    }
-    public int evaluationFunction(int[] board){
-        int sum = 0;
-        for(int i = 0; i < board.length; i++){
-            if(board[i] == MINE)
-                sum += boardValues[i];
-            else
-                sum -= boardValues[i];
-        }
-        return sum;
-    }
-
-    public int addMove(String input) {
+    //Given an input string, this function will take the last character from it (which will be a column number)
+    //This function will then add a piece to the corresponding column if possible.
+    public int updateBoard(String input) {
 
         //Converts last character of game log to integer value representing column number
-        char c = input.charAt(input.length() - 1);
-        int col = Character.getNumericValue(c);
-        int finalAddress = findLowestSpace(col, currentBoard);
-        currentBoard[finalAddress] = currentPlayer;
+        int col = Character.getNumericValue(input.charAt(input.length() - 1));
+        int finalAddress = findAvailableSpace(col, currentBoard);
+
+        if(finalAddress >= 0) {
+            currentBoard[finalAddress] = currentPlayer;
+            toggleCurrentPlayer();
+        }
+
         return finalAddress;
     }
 
-    public int findLowestSpace(int colNum, int[] board){
+    //Given a column number and a board state, this function returns the lowest free space of that column. If the
+    //column is full, it returns -1
+    public int findAvailableSpace(int colNum, int[] board){
         boolean found = false;
 
         //Finds the address of the lowest point of the given column
@@ -130,12 +122,80 @@ public class MartiniEngine {
             }
         }
 
-
         return currentSpace;
     }
 
+    public int maxi(Node root, int depth){
+        if(depth == 0) return eval(root);
+        int max = Integer.MIN_VALUE;
+        int score = 0;
+        for(int i = 0; i < root.getChildren().size(); i++){
+            score = mini(root.getChildren().get(i),depth-1);
+            if(score > max) max = score;
+        }
+        return max;
+    }
+    public int mini(Node root, int depth){
+        if(depth == 0) return eval(root);
+        int min = Integer.MAX_VALUE;
+        int score = 0;
+        for(int i = 0; i < root.getChildren().size(); i++){
+            score = maxi(root.getChildren().get(i), depth-1);
+            if(score < min) min = score;
+        }
+        return min;
+    }
+
+    //Generates children of a given node. These children contain valid game states.
+    public void initChildren(Node root){
+        for(int i = 0; i < 7; i ++){
+            int lowestAddress = findAvailableSpace(i, root.getState());
+
+            if(lowestAddress < 0) continue;
+
+            Node temp = new Node(root);
+            temp.getState()[lowestAddress] = MINE;
+            temp.setColNum(lowestAddress % 7);
+            root.addChild(temp);
+        }
+    }
+
+    public int genGameTree(Node root, int depth){
+        if(depth == 0){
+            eval(root);
+            return 1;
+        }
+
+        initChildren(root);
+        for(int i = 0; i < root.getChildren().size(); i++){
+            genGameTree(root.getChildren().get(i), depth - 1);
+        }
+        return depth;
+    }
+
+    public void initGameTree(Node root, int depth){
+        root.deleteChildren();
+        genGameTree(root, depth);
+    }
+
+    public int eval(Node root){
+        int sum = 0;
+        for(int i = 0; i < root.getState().length; i++){
+            if(checkWin(root.getState()[i])){
+                sum = 100;
+                break;
+            }
+        }
+
+        root.setValue(sum);
+        return sum;
+    }
+
     public boolean checkWin(int inputElement){
-        if(checkVertical(inputElement))
+
+        if(currentBoardNode.getState()[inputElement] == 0) return false;
+
+        else if(checkVertical(inputElement))
             return true;
         else if (checkHorizontal(inputElement))
             return true;
@@ -169,7 +229,7 @@ public class MartiniEngine {
                 if(spaceBelow + 7 <= 41)
                     spaceBelow = spaceBelow + 7;
 
-                //If there is no valid space below the current element
+                    //If there is no valid space below the current element
                 else if(spaceBelow + 7 > 41) {
                     return false;
                 }
@@ -315,90 +375,6 @@ public class MartiniEngine {
         }
     }
 
-    public void generateChildren(Node root){
-        for(int i = 0; i < 7; i ++){
-            int lowestAddress = findLowestSpace(i, root.getState());
-
-            if(lowestAddress < 0)
-                continue;
-
-            Node temp = new Node(root);
-            temp.getState()[lowestAddress] = MINE;
-            //temp.setValue(evaluationFunction(temp.getState()));
-            root.addChild(temp);
-        }
-    }
-
-    public void generateMoves(Node root){
-        int[] board = root.getState();
-        for(int i = 0; i < 7; i++){
-
-        }
-    }
-
-    public int numAdjacent(int currentElement, int direction){
-
-        //Checks to see if the next space in either direction is within the limits of the board
-        boolean dValid1 = currentElement + direction >= 0 && currentElement + direction <= 41;
-        boolean dValid2 = currentElement + direction*-1 >= 0 && currentElement + direction*-1 <= 41;
-
-        int currentValue = currentBoard[currentElement];
-
-        int currentCol = currentElement % 7;
-
-        //Checking vertically
-        if(direction == 7 || direction == -7) {
-
-            //Cannot check above
-            if ((currentElement - direction) < 0) {
-                System.out.println("WOULD BE GOING OUT OF BOUNDS! NOT CHECKING ABOVE!");
-                if(currentBoard[currentElement + (direction*-1)] == currentValue){
-                    currentBoard[currentElement + direction*-1] = MINE;
-                    return 1 + numAdjacent(currentElement-direction*-1, direction);
-                }
-            }
-
-            //Cannot check below
-            else if((currentElement + direction) > 41){
-                System.out.println("WOULD BE GOING OUT OF BOUNDS! NOT CHECKING ABOVE!");
-                if(currentBoard[currentElement + (direction*-1)] == currentValue){
-                    currentBoard[currentElement + direction*-1] = MINE;
-                    return 1 + numAdjacent(currentElement + direction*-1, direction);
-                }
-            }
-
-            else{
-                if(currentBoard[currentElement + (direction)] == currentValue) {
-                    currentBoard[currentElement + direction] = MINE;
-                    return 1 + numAdjacent(currentElement + direction, direction);
-                }
-                if(currentBoard[currentElement + (direction*-1)] == currentValue) {
-                    currentBoard[currentElement + direction*-1] = MINE;
-                    return 1 + numAdjacent(currentElement + direction * -1, direction);
-                }
-
-            }
-        }
-
-        //If checking any other direction
-        else{
-
-        }
-
-        return 10;
-    }
-
-    public void beginTraversal(int currentElement, int direction){
-        int initialCol = currentElement % 7;
-        int sum = 0;
-
-        if(currentElement + direction >= 0 && currentElement + direction <= 41){
-            sum = recursTraverse(currentElement, currentBoard[currentElement], initialCol, initialCol >= (currentElement + direction) % 7, direction);
-        }
-
-        System.out.println("There are " + sum + " " + currentBoard[currentElement] + "'s in a row");
-    }
-
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
         int currentCol = (currentElement + direction) % 7;
         if(initialCol >= currentCol && toggle) {
@@ -410,7 +386,6 @@ public class MartiniEngine {
         else
             return 0;
     }
-
     public void printBoard(){
         StringBuilder sb = new StringBuilder();
 
@@ -456,9 +431,9 @@ public class MartiniEngine {
     public void clearBoard(){
         currentBoard = new int[42];
     }
-    //Fancy logo
-    //ASCII art sourced from https://www.asciiart.eu/food-and-drinks/drinks
     public void getIntro(){
+        //Fancy logo
+        //ASCII art sourced from https://www.asciiart.eu/food-and-drinks/drinks
         String martini = "()   ()      ()    /\n" +
                 "  ()      ()  ()  /\n" +
                 "   ______________/___\n" +

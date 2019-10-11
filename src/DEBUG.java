@@ -62,4 +62,58 @@ public void bestMove(){
             System.out.println("bestmove " + r.nextInt(7) + " 100");
         }
     }
+
+    public int numAdjacent(int currentElement, int direction){
+
+        //Checks to see if the next space in either direction is within the limits of the board
+        boolean dValid1 = currentElement + direction >= 0 && currentElement + direction <= 41;
+        boolean dValid2 = currentElement + direction*-1 >= 0 && currentElement + direction*-1 <= 41;
+
+        int currentValue = currentBoard[currentElement];
+
+        int currentCol = currentElement % 7;
+
+        //Checking vertically
+        if(direction == 7 || direction == -7) {
+
+            //Cannot check above
+            if ((currentElement - direction) < 0) {
+                System.out.println("WOULD BE GOING OUT OF BOUNDS! NOT CHECKING ABOVE!");
+                if(currentBoard[currentElement + (direction*-1)] == currentValue){
+                    currentBoard[currentElement + direction*-1] = MINE;
+                    return 1 + numAdjacent(currentElement-direction*-1, direction);
+                }
+            }
+
+            //Cannot check below
+            else if((currentElement + direction) > 41){
+                System.out.println("WOULD BE GOING OUT OF BOUNDS! NOT CHECKING ABOVE!");
+                if(currentBoard[currentElement + (direction*-1)] == currentValue){
+                    currentBoard[currentElement + direction*-1] = MINE;
+                    return 1 + numAdjacent(currentElement + direction*-1, direction);
+                }
+            }
+
+            else{
+                if(currentBoard[currentElement + (direction)] == currentValue) {
+                    currentBoard[currentElement + direction] = MINE;
+                    return 1 + numAdjacent(currentElement + direction, direction);
+                }
+                if(currentBoard[currentElement + (direction*-1)] == currentValue) {
+                    currentBoard[currentElement + direction*-1] = MINE;
+                    return 1 + numAdjacent(currentElement + direction * -1, direction);
+                }
+
+            }
+        }
+
+        //If checking any other direction
+        else{
+
+        }
+
+        return 10;
+    }
+
+
 */

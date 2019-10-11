@@ -6,6 +6,7 @@ public class Node {
     private LinkedList<Node> children;
     private int[] state;
     private int value;
+    private int colNum;
 
     public Node(){
         parent = null;
@@ -32,19 +33,21 @@ public class Node {
 
     public Node getParent(){return parent;}
 
+    public void setColNum(int colNum){this.colNum = colNum;}
+
+    public int getColNum(){return colNum;}
+
     public void addChild(Node child){
-        children.add(child);
-        /*
-        if(children.size() == 0)
-            this.children.add(child);
-
+        if(child.getValue() == 0)
+            children.add(child);
         else{
-            for(int i = 0; i < children.size(); i++){
-                if(children.get(i).getValue() < child.getValue())
-                    children.add(child);
+            for(int i = 0; i < children.size(); i ++){
+                if(children.get(i).getValue() > child.getValue())
+                    continue;
+                else
+                    children.add(i-1, child);
             }
-        }*/
-
+        }
     }
 
     public LinkedList<Node> getChildren(){return children;}
@@ -62,4 +65,20 @@ public class Node {
     public void setState(int[] state){this.state = state;}
 
     public void deleteChildren(){children = new LinkedList<>();}
+
+    public int getDepth(Node root){
+        int depth = 0;
+
+        if(root == null)
+            return 0;
+
+        if(root.getChildren().size() == 0)
+            return 1;
+
+        for(Node child : root.getChildren())
+            depth = Math.max(depth, getDepth(child));
+
+        return depth +1;
+
+    }
 }
