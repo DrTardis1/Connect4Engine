@@ -204,16 +204,24 @@ public class MartiniEngine {
     public boolean checkWin(){
         if(checkHorizontal()){
             System.out.println("WINNER FOUND");
+            return true;
         }
-        return checkHorizontal();
+
+        else if(checkVertical()){
+            System.out.println("VERT WIN FOUND");
+            return true;
+        }
+
+        return false;
     }
     public boolean checkHorizontal(){
         boolean winFound = false;
         outerloop:
         for(int i = 0; i < 36; i = i + 7){
-            for(int j = 0; j < i + 4; j++){
+            for(int j = 0; j < 4; j++){
                 int currentValue = currentBoard[i+j];
                 if(currentValue == EMPTY) continue;
+
                 if(currentBoard[i+j+1] == currentValue && currentBoard[i+j+2] == currentValue && currentBoard[i+j+3] == currentValue){
                     winFound = true;
                     break outerloop;
@@ -222,6 +230,26 @@ public class MartiniEngine {
         }
         return winFound;
     }
+
+    public boolean checkVertical(){
+        boolean winFound = false;
+
+        outerloop:
+        for(int i = 0; i < 7; i++){
+            for(int j = 0; j < 28; j = j + 7){
+                int currentValue = currentBoard[i+j];
+                if(currentValue == EMPTY) continue;
+
+                if(currentBoard[i + j + 7] == currentValue && currentBoard[i + j + 14] == currentValue && currentBoard[i + j + 21] == currentValue){
+                    winFound = true;
+                    break outerloop;
+                }
+            }
+        }
+        return winFound;
+    }
+
+
 
 
 
@@ -262,10 +290,10 @@ public class MartiniEngine {
     public void debug(){
 
         //currentBoard[1] = MINE;
-        currentBoard[31] = MINE;
-        currentBoard[32] = MINE;
-        currentBoard[33] = OPPONENT;
+        currentBoard[20] = MINE;
+        currentBoard[27] = MINE;
         currentBoard[34] = MINE;
+        currentBoard[41] = MINE;
         /*
         Random r = new Random();
         int[] numSpaces = new int[7];

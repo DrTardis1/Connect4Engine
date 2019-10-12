@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -145,6 +143,7 @@
       <workItem from="1570748224941" duration="21413000" />
       <workItem from="1570793761651" duration="3001000" />
       <workItem from="1570867869414" duration="3413000" />
+      <workItem from="1570875340157" duration="1711000" />
     </task>
     <servers />
   </component>
@@ -185,8 +184,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+          <condition expression="i+j == 41" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>214</line>
+          <line>221</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
