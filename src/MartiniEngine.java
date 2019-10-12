@@ -1,3 +1,5 @@
+import javax.crypto.spec.OAEPParameterSpec;
+
 public class MartiniEngine {
 
     private String name = "Martini-C3260061";
@@ -132,7 +134,7 @@ public class MartiniEngine {
     }
 
     public int maxi(Node root, int depth){
-        if(depth == 0) return eval(root);
+        //if(depth == 0) return eval(root);
         int max = Integer.MIN_VALUE;
         int score = 0;
         for(int i = 0; i < root.getChildren().size(); i++){
@@ -142,7 +144,7 @@ public class MartiniEngine {
         return max;
     }
     public int mini(Node root, int depth){
-        if(depth == 0) return eval(root);
+        //if(depth == 0) return eval(root);
         int min = Integer.MAX_VALUE;
         int score = 0;
         for(int i = 0; i < root.getChildren().size(); i++){
@@ -168,7 +170,7 @@ public class MartiniEngine {
 
     public int genGameTree(Node root, int depth){
         if(depth == 0){
-            eval(root);
+            //eval(root);
             return 1;
         }
 
@@ -184,6 +186,7 @@ public class MartiniEngine {
         genGameTree(root, depth);
     }
 
+    /*
     public int eval(Node root){
         int sum = 0;
         for(int i = 0; i < root.getState().length; i++){
@@ -196,17 +199,28 @@ public class MartiniEngine {
         root.setValue(sum);
         return sum;
     }
+    */
 
-
-    public boolean checkHorizontal(){
-        int mineWin = 0, opponentWin = 0;
-        for(int i = 0; i < 36; i = i + 7){
-            for(int j = 0; j < 8; j++){
-                if(currentBoard[i+j] == MINE) mineWin++;
-                else if(currentBoard[i+j] == OPPONENT) opponentWin++;
-            }
-            if()
+    public boolean checkWin(){
+        if(checkHorizontal()){
+            System.out.println("WINNER FOUND");
         }
+        return checkHorizontal();
+    }
+    public boolean checkHorizontal(){
+        boolean winFound = false;
+        outerloop:
+        for(int i = 0; i < 36; i = i + 7){
+            for(int j = 0; j < i + 4; j++){
+                int currentValue = currentBoard[i+j];
+                if(currentValue == EMPTY) continue;
+                if(currentBoard[i+j+1] == currentValue && currentBoard[i+j+2] == currentValue && currentBoard[i+j+3] == currentValue){
+                    winFound = true;
+                    break outerloop;
+                }
+            }
+        }
+        return winFound;
     }
 
 
@@ -248,9 +262,10 @@ public class MartiniEngine {
     public void debug(){
 
         //currentBoard[1] = MINE;
-        for(int i = 8; i < 42; i++) {
-            currentBoard[i] = MINE;
-        }
+        currentBoard[31] = MINE;
+        currentBoard[32] = MINE;
+        currentBoard[33] = OPPONENT;
+        currentBoard[34] = MINE;
         /*
         Random r = new Random();
         int[] numSpaces = new int[7];

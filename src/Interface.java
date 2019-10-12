@@ -22,9 +22,8 @@ public class Interface {
             switch(input[0].toLowerCase()){
 
                 case "d":
-                    //martini.debug();
-                    martini.initGameTree(martini.getGameTree(), Integer.parseInt(input[1]));
-                    System.out.println("DEPTH IS CURRENTLY " + martini.getTreeDepth());
+                    martini.debug();
+                    martini.checkWin();
                     martini.printBoard();
                     break;
 
