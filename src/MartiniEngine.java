@@ -1,4 +1,5 @@
 import javax.crypto.spec.OAEPParameterSpec;
+import java.util.Random;
 
 public class MartiniEngine {
 
@@ -202,17 +203,7 @@ public class MartiniEngine {
     */
 
     public boolean checkWin(){
-        if(checkHorizontal()){
-            System.out.println("WINNER FOUND");
-            return true;
-        }
-
-        else if(checkVertical()){
-            System.out.println("VERT WIN FOUND");
-            return true;
-        }
-
-        return false;
+        return checkHorizontal() || checkVertical() || checkDiagOne() || checkDiagTwo();
     }
     public boolean checkHorizontal(){
         boolean winFound = false;
@@ -230,7 +221,6 @@ public class MartiniEngine {
         }
         return winFound;
     }
-
     public boolean checkVertical(){
         boolean winFound = false;
 
@@ -248,23 +238,46 @@ public class MartiniEngine {
         }
         return winFound;
     }
-
     public boolean checkDiagOne(){
         boolean winFound = false;
         int[] startingElements = {0,1,2,7,14};
 
+        outerloop:
         for(int i = 0; i < startingElements.length; i++){
-            for(int j = 0; j < 41; j = j + 8){
-                System.out.println(startingElements[i] + j);
+            for(int j = 0; j < 27; j = j + 8){
+                int startVal = startingElements[i];
+                int currentValue = currentBoard[startVal+j];
+                if(currentValue == EMPTY) continue;
+
+                if(currentBoard[startVal + j + 8] == currentValue && currentBoard[startVal + j + 16] == currentValue && currentBoard[startVal + j + 24] == currentValue) {
+                    winFound = true;
+                    break outerloop;
+                }
             }
         }
-        return true;
+        return winFound;
+    }
+    public boolean checkDiagTwo(){
+        boolean winFound = false;
+        int[] startingElements = {3,4,5,6,13,20};
+
+        outerloop:
+        for(int i = 0; i < startingElements.length; i++){
+            for(int j = 0; j < 27; j = j + 6){
+                int startVal = startingElements[i];
+                int currentValue = currentBoard[startVal+j];
+                if(currentValue == EMPTY) continue;
+
+                if(currentBoard[startVal + j + 6] == currentValue && currentBoard[startVal + j + 12] == currentValue && currentBoard[startVal + j + 18] == currentValue) {
+                    winFound = true;
+                    break outerloop;
+                }
+            }
+        }
+        return winFound;
     }
 
-
-
-
-
+    //---------------------------------------------------------
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
         int currentCol = (currentElement + direction) % 7;
         if(initialCol >= currentCol && toggle) {
@@ -300,24 +313,9 @@ public class MartiniEngine {
         System.out.println(sb.toString());
     }
     public void debug(){
+        for(int i = 0; i < currentBoard.length; i ++)
+            currentBoard[i] = (Math.random() <= 0.5) ? 1 : 2;
 
-        //currentBoard[1] = MINE;
-        currentBoard[20] = MINE;
-        currentBoard[27] = MINE;
-        currentBoard[34] = MINE;
-        currentBoard[41] = MINE;
-        /*
-        Random r = new Random();
-        int[] numSpaces = new int[7];
-        int colNum = r.nextInt(7);
-        while(numSpaces[colNum] >=7)
-            colNum = r.nextInt(7);
-
-        checkWin(addMove(String.valueOf(colNum)));
-        numSpaces[colNum]++;
-
-        System.out.println("bestmove " + colNum + " 100");
-        */
     }
     public void clearBoard(){
         currentBoard = new int[42];
