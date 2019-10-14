@@ -24,6 +24,7 @@ public class Interface {
                 case "d":
                     martini.debug();
                     martini.checkWin();
+                    martini.checkDiagOne();
                     martini.printBoard();
                     break;
 

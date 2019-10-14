@@ -249,6 +249,18 @@ public class MartiniEngine {
         return winFound;
     }
 
+    public boolean checkDiagOne(){
+        boolean winFound = false;
+        int[] startingElements = {0,1,2,7,14};
+
+        for(int i = 0; i < startingElements.length; i++){
+            for(int j = 0; j < 41; j = j + 8){
+                System.out.println(startingElements[i] + j);
+            }
+        }
+        return true;
+    }
+
 
 
 
