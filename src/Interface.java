@@ -23,13 +23,10 @@ public class Interface {
 
                 case "d":
                     martini.debug();
-                    martini.checkWin();
-                    martini.checkDiagOne();
-                    martini.printBoard();
-                    break;
-
-                case "u":
-                    martini.updateBoard(input[1]);
+                    if(martini.checkWin(martini.getGameTree().getState()))
+                        System.out.println("Win found");
+                    else
+                        System.out.println("NO WIN FOUND");
                     martini.printBoard();
                     break;
 

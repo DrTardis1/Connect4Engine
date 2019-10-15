@@ -69,11 +69,9 @@ public class MartiniEngine {
         initGameTree(currentBoardNode, 1);
         int bestVal = Integer.MIN_VALUE;
         int index = 0;
-
         for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
-            int childValue = maxi(currentBoardNode.getChildren().get(i), 0);
-            if(childValue > bestVal) {
-                bestVal = childValue;
+            if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
+                bestVal = currentBoardNode.getChildren().get(i).getValue();
                 index = i;
             }
         }
@@ -165,6 +163,7 @@ public class MartiniEngine {
             Node temp = new Node(root);
             temp.getState()[lowestAddress] = MINE;
             temp.setColNum(lowestAddress % 7);
+            evalulation(temp);
             root.addChild(temp);
         }
     }
@@ -187,95 +186,163 @@ public class MartiniEngine {
         genGameTree(root, depth);
     }
 
-    /*
-    public int eval(Node root){
-        int sum = 0;
-        for(int i = 0; i < root.getState().length; i++){
-            if(checkWin(root.getState()[i])){
-                sum = 100;
-                break;
-            }
+    public void evalulation(Node root){
+        if(checkWin(root.getState())){
+            root.setValue(100);
         }
-
-        root.setValue(sum);
-        return sum;
     }
-    */
 
-    public boolean checkWin(){
-        return checkHorizontal() || checkVertical() || checkDiagOne() || checkDiagTwo();
+    public boolean checkWin(int[] boardState){
+        if(checkHorizontal(boardState)) System.out.println("HOR WIN FOUND");
+        if(checkVertical(boardState)) System.out.println("VERT WIN FOUND");
+        if(checkDiagOne(boardState)) System.out.println("DIAG1 WIN FOUND");
+        if(checkDiagTwo(boardState)) System.out.println("DIAG2 WIN FOUND");
+        return checkHorizontal(boardState) || checkVertical(boardState) || checkDiagOne(boardState) || checkDiagTwo(boardState);
     }
-    public boolean checkHorizontal(){
+    public boolean checkHorizontal(int[] boardState){
         boolean winFound = false;
         outerloop:
         for(int i = 0; i < 36; i = i + 7){
             for(int j = 0; j < 4; j++){
-                int currentValue = currentBoard[i+j];
+                int currentValue = boardState[i+j];
                 if(currentValue == EMPTY) continue;
 
-                if(currentBoard[i+j+1] == currentValue && currentBoard[i+j+2] == currentValue && currentBoard[i+j+3] == currentValue){
-                    winFound = true;
-                    break outerloop;
-                }
+                int second, third, fourth;
+                second = boardState[i+j+1];
+                third = boardState[i+j+2];
+                fourth = boardState[i+j+3];
+                if((i+j) % 7 != ((i+j+1) % 7) - 1 || currentValue != second) continue;
+                if((i+j) % 7 != ((i+j+2) % 7) - 2 || currentValue != third) continue;
+                if((i+j) % 7 != ((i+j+3) % 7) - 3 || currentValue != fourth) continue;
+
+                winFound = true;
+                break outerloop;
             }
         }
         return winFound;
     }
-    public boolean checkVertical(){
+    public boolean checkVertical(int[] boardState){
         boolean winFound = false;
 
         outerloop:
         for(int i = 0; i < 7; i++){
-            for(int j = 0; j < 28; j = j + 7){
-                int currentValue = currentBoard[i+j];
+            for(int j = 0; j < 21; j = j + 7){
+                int currentValue = boardState[i+j];
                 if(currentValue == EMPTY) continue;
+                int second, third, fourth;
+                second = boardState[i+j+7];
+                third = boardState[i+j+14];
+                fourth = boardState[i+j+21];
+                if((i+j) % 7 != ((i+j+7) % 7)  || currentValue != second) continue;
+                if((i+j) % 7 != ((i+j+14) % 7) || currentValue != third) continue;
+                if((i+j) % 7 != ((i+j+21) % 7) || currentValue != fourth) continue;
 
-                if(currentBoard[i + j + 7] == currentValue && currentBoard[i + j + 14] == currentValue && currentBoard[i + j + 21] == currentValue){
-                    winFound = true;
-                    break outerloop;
-                }
+                winFound = true;
+                break outerloop;
             }
         }
         return winFound;
     }
-    public boolean checkDiagOne(){
+    public boolean checkDiagOne(int[] boardState){
         boolean winFound = false;
-        int[] startingElements = {0,1,2,7,14};
+        int[] startingElements = {0,1,2,3,7,14};
 
-        outerloop:
-        for(int i = 0; i < startingElements.length; i++){
-            for(int j = 0; j < 27; j = j + 8){
-                int startVal = startingElements[i];
-                int currentValue = currentBoard[startVal+j];
-                if(currentValue == EMPTY) continue;
+        for(int i = 3; i < 15; i += 11){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
 
-                if(currentBoard[startVal + j + 8] == currentValue && currentBoard[startVal + j + 16] == currentValue && currentBoard[startVal + j + 24] == currentValue) {
-                    winFound = true;
-                    break outerloop;
-                }
-            }
+            winFound = true;
+            return winFound;
+        }
+
+        for(int i = 2; i < 8; i += 5){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            winFound = true;
+            return winFound;
+        }
+
+        for(int i = 0; i < 2; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            winFound = true;
+            return winFound;
         }
         return winFound;
     }
-    public boolean checkDiagTwo(){
+    public boolean checkDiagTwo(int[] boardState){
         boolean winFound = false;
-        int[] startingElements = {3,4,5,6,13,20};
 
-        outerloop:
-        for(int i = 0; i < startingElements.length; i++){
-            for(int j = 0; j < 27; j = j + 6){
-                int startVal = startingElements[i];
-                int currentValue = currentBoard[startVal+j];
-                if(currentValue == EMPTY) continue;
+        for(int i = 3; i < 21; i += 17){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
 
-                if(currentBoard[startVal + j + 6] == currentValue && currentBoard[startVal + j + 12] == currentValue && currentBoard[startVal + j + 18] == currentValue) {
-                    winFound = true;
-                    break outerloop;
-                }
-            }
+            winFound = true;
+            return winFound;
+        }
+
+        for(int i = 4; i < 14; i += 10){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) - 3 || currentVal != fourth) continue;
+
+            winFound = true;
+            return winFound;
+        }
+
+        for(int i = 5; i < 7; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
+
+            winFound = true;
+            return winFound;
         }
         return winFound;
     }
+
 
     //---------------------------------------------------------
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
@@ -293,8 +360,8 @@ public class MartiniEngine {
         StringBuilder sb = new StringBuilder();
 
         int counter = 0;
-        for(int i = 0; i < currentBoard.length; i++) {
-            sb.append(currentBoard[i]);
+        for(int i = 0; i < currentBoardNode.getState().length; i++) {
+            sb.append(currentBoardNode.getState()[i]);
             sb.append("\t");
             counter++;
             if(counter == 7) {
@@ -313,9 +380,8 @@ public class MartiniEngine {
         System.out.println(sb.toString());
     }
     public void debug(){
-        for(int i = 0; i < currentBoard.length; i ++)
-            currentBoard[i] = (Math.random() <= 0.5) ? 1 : 2;
-
+        for(int i = 0; i < currentBoardNode.getState().length; i++)
+            currentBoardNode.getState()[i] = (Math.random() <= 0.5) ? 1 : 2;
     }
     public void clearBoard(){
         currentBoard = new int[42];
