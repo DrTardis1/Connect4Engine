@@ -75,18 +75,6 @@ public class MartiniEngine {
                 index = i;
             }
         }
-
-        Node bestChild = currentBoardNode.getChildren().get(index);
-        bestChild.setParent(null);
-        currentBoardNode = bestChild;
-        currentBoard = currentBoardNode.getState();
-
-        System.out.println("bestmove " + currentBoardNode.getColNum() + " " + bestVal);
-        /*
-        updateBoard(Integer.toString(bestCol));
-        System.out.println("bestmove "  + bestCol + " " + boardValues[bestCol]);
-
-         */
     }
 
     //Given an input string, this function will take the last character from it (which will be a column number)
@@ -95,10 +83,10 @@ public class MartiniEngine {
 
         //Converts last character of game log to integer value representing column number
         int col = Character.getNumericValue(input.charAt(input.length() - 1));
-        int finalAddress = findAvailableSpace(col, currentBoard);
+        int finalAddress = findAvailableSpace(col, currentBoardNode.getState());
 
         if(finalAddress >= 0) {
-            currentBoard[finalAddress] = currentPlayer;
+            currentBoardNode.getState()[finalAddress] = currentPlayer;
             toggleCurrentPlayer();
         }
 
@@ -163,7 +151,7 @@ public class MartiniEngine {
             Node temp = new Node(root);
             temp.getState()[lowestAddress] = MINE;
             temp.setColNum(lowestAddress % 7);
-            evalulation(temp);
+            evaluation(temp);
             root.addChild(temp);
         }
     }
@@ -186,9 +174,12 @@ public class MartiniEngine {
         genGameTree(root, depth);
     }
 
-    public void evalulation(Node root){
+    public void evaluation(Node root){
         if(checkWin(root.getState())){
-            root.setValue(100);
+            root.setValue(Integer.MAX_VALUE);
+        }
+        else{
+
         }
     }
 
@@ -343,12 +334,27 @@ public class MartiniEngine {
         return winFound;
     }
 
+    public int findTwoInARow(int[] boardState){
+        int quantity = 0;
+
+        outerloop:
+        for(int i = 0; i < 36; i = i + 7){
+            for(int j  = 0; j < 6; i ++){
+                int currentValue = boardState[i+j];
+                if(currentValue == EMPTY) continue;
+
+                int nextValue = boardState[i+j+1];
+            }
+        }
+    }
+
+
 
     //---------------------------------------------------------
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
         int currentCol = (currentElement + direction) % 7;
         if(initialCol >= currentCol && toggle) {
-            if (currentElement + direction >= 0 && currentElement + direction <= 41 && currentBoard[currentElement] == currentValue)
+            if (currentElement + direction >= 0 && currentElement + direction <= 41 && currentBoardNode.getState()[currentElement] == currentValue)
                 return 1 + recursTraverse(currentElement + direction, currentValue, initialCol, toggle, direction);
             else
                 return 0;
@@ -384,7 +390,7 @@ public class MartiniEngine {
             currentBoardNode.getState()[i] = (Math.random() <= 0.5) ? 1 : 2;
     }
     public void clearBoard(){
-        currentBoard = new int[42];
+        currentBoardNode.setState(new int[42]);
     }
     public void getIntro(){
         //Fancy logo
