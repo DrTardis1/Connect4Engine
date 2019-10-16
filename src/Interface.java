@@ -41,7 +41,7 @@ public class Interface {
                 case "position":
                     //Martini is first to move
                     if(input.length == 2) {
-                        martini.isFirst(true);
+
                     }
                     else {
                         martini.updateBoard(input[2], 2);
@@ -64,17 +64,22 @@ public class Interface {
                     martini.printBoard();
                     break;
 
+
                 case "quit":
                     System.out.println(martini.quit());
                     finished = true;
                     break;
 
                 case "bestmove":
-                    martini.updateBoard(input[1]);
+                    martini.updateBoard(input[1], 1);
                     martini.printBoard();
                     if(martini.checkWin(martini.getCurrentBoard()).hasWin())
                         System.out.println(martini.checkWin(martini.getCurrentBoard()).getWinner() + " WON THE GAME");
-                    martini.toggleCurrentPlayer();
+                    //martini.toggleCurrentPlayer();
+                    break;
+
+                case "pkid":
+                    martini.printChildren();
                     break;
             }
         }

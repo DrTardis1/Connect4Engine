@@ -46,18 +46,25 @@ public class MartiniEngine {
     //Response to go ftime x stime y
     public void findBestMove(){
 
-        initGameTree(currentBoardNode, 1);
+        initGameTree(currentBoardNode, 2);
+        printChildren();
         int bestVal = Integer.MIN_VALUE;
         int index = 0;
         for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
-            if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
+            if(currentBoardNode.getChildren().get(i).getValue() == Integer.MIN_VALUE) {
+                index = i;
+                bestVal = Integer.MIN_VALUE;
+                break;
+            }
+            else if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
                 bestVal = currentBoardNode.getChildren().get(i).getValue();
                 index = i;
             }
+
         }
         System.out.println("bestmove " + currentBoardNode.getChildren().get(index).getColNum() +  " " + currentBoardNode.getChildren().get(index).getValue());
         updateBoard(Integer.toString(currentBoardNode.getChildren().get(index).getColNum()), 1);
-        toggleCurrentPlayer();
+        //toggleCurrentPlayer();
     }
 
     //Response to perft x
@@ -79,14 +86,16 @@ public class MartiniEngine {
 
     //Getters & Setters
     //---------------------------------------------------------
-    public void toggleCurrentPlayer(){
+    /*public void toggleCurrentPlayer(){
         this.currentPlayer = (this.currentPlayer == OPPONENT) ? MINE : OPPONENT;
-    }
+    }*/
 
-    public void isFirst(boolean isFirst){
+    /*public void isFirst(boolean isFirst){
         this.isFirst = isFirst;
         currentPlayer = this.isFirst ? MINE : OPPONENT;
     }
+
+     */
 
     public boolean isFull(int colNum){
         return currentBoardNode.getState()[colNum] != EMPTY;
@@ -349,14 +358,22 @@ public class MartiniEngine {
     public void evaluation(Node root){
         WinPair result = checkWin(root.getState());
 
-        if(result.hasWin() && result.getWinner() == currentPlayer){
+        //Makes this node extremely desirable
+        if(result.hasWin() && result.getWinner() == MINE){
             root.setValue(Integer.MAX_VALUE);
         }
+
+        //Makes this node extremely undesirable
+        else if(result.hasWin() && result.getWinner() == OPPONENT){
+            root.setValue(Integer.MIN_VALUE);
+        }
+
         else{
             int sum = 0;
             for(int i = 0; i < root.getState().length; i++){
 
-                if(root.getState()[i] == currentPlayer) sum += boardValues[i];
+                if(root.getState()[i] == MINE) sum += boardValues[i];
+                else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
             }
             root.setValue(sum);
         }
@@ -457,6 +474,19 @@ public class MartiniEngine {
             e.printStackTrace();
         }
 
+    }
+    public void printChildren(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < currentBoardNode.getChildren().size(); i++){
+            sb.append("Name: ");
+            sb.append(i);
+            sb.append("\tValue: ");
+            sb.append(currentBoardNode.getChildren().get(i).getValue());
+            sb.append("\tColNum: ");
+            sb.append(currentBoardNode.getChildren().get(i).getColNum());
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
     }
 
     public class WinPair{
