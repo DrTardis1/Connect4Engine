@@ -8,7 +8,7 @@ public class MartiniEngine {
     private boolean isFirst = false;
 
     private int[] directions = {-7, 7, -1, 1, -6, 8, 6, -8};
-    private int[] currentBoard = new int[42];
+    //private int[] currentBoard = new int[42];
     private int[] boardValues = {1,  20, 50, 70,  50, 20, 1,
                                  20, 30, 60, 80,  60, 30, 20,
                                  40, 50, 80, 100, 80, 50, 40,
@@ -54,10 +54,10 @@ public class MartiniEngine {
     }
 
     public boolean isFull(int colNum){
-        return currentBoard[colNum] != EMPTY;
+        return currentBoardNode.getState()[colNum] != EMPTY;
     }
 
-    public int[] getCurrentBoard(){return currentBoard;}
+    public int[] getCurrentBoard(){return currentBoardNode.getState();}
 
     public Node getGameTree(){return currentBoardNode;}
 
@@ -75,6 +75,8 @@ public class MartiniEngine {
                 index = i;
             }
         }
+        System.out.println("bestmove " + currentBoardNode.getChildren().get(index).getColNum() +  " " + currentBoardNode.getChildren().get(index).getValue());
+        updateBoard(Integer.toString(currentBoardNode.getChildren().get(index).getColNum()));
     }
 
     //Given an input string, this function will take the last character from it (which will be a column number)
@@ -179,7 +181,12 @@ public class MartiniEngine {
             root.setValue(Integer.MAX_VALUE);
         }
         else{
-
+            int sum = 0;
+            for(int i = 0; i < root.getState().length; i++){
+                if(root.getState()[i] == currentPlayer) sum += boardValues[i];
+                else if(root.getState()[i] != EMPTY && root.getState()[i] != currentPlayer) sum -= boardValues[i];
+            }
+            root.setValue(sum);
         }
     }
 
@@ -334,22 +341,6 @@ public class MartiniEngine {
         return winFound;
     }
 
-    public int findTwoInARow(int[] boardState){
-        int quantity = 0;
-
-        outerloop:
-        for(int i = 0; i < 36; i = i + 7){
-            for(int j  = 0; j < 6; i ++){
-                int currentValue = boardState[i+j];
-                if(currentValue == EMPTY) continue;
-
-                int nextValue = boardState[i+j+1];
-            }
-        }
-    }
-
-
-
     //---------------------------------------------------------
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
         int currentCol = (currentElement + direction) % 7;
@@ -386,11 +377,25 @@ public class MartiniEngine {
         System.out.println(sb.toString());
     }
     public void debug(){
+
+        currentBoardNode.getState()[35] = MINE;
+        currentBoardNode.getState()[36] = MINE;
+        currentBoardNode.getState()[37] = MINE;
+        //currentBoardNode.getState()[35] = MINE;
+        /*
         for(int i = 0; i < currentBoardNode.getState().length; i++)
             currentBoardNode.getState()[i] = (Math.random() <= 0.5) ? 1 : 2;
+
+         */
     }
     public void clearBoard(){
         currentBoardNode.setState(new int[42]);
+    }
+    public boolean boardIsEmpty(){
+        for(int i = 0; i < currentBoardNode.getState().length; i++)
+            if(currentBoardNode.getState()[i] != EMPTY) return false;
+
+        return true;
     }
     public void getIntro(){
         //Fancy logo

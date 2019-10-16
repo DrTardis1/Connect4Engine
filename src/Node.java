@@ -38,16 +38,7 @@ public class Node {
     public int getColNum(){return colNum;}
 
     public void addChild(Node child){
-        if(child.getValue() == 0)
-            children.add(child);
-        else{
-            for(int i = 0; i < children.size(); i ++){
-                if(children.get(i).getValue() > child.getValue())
-                    continue;
-                else
-                    children.add(i-1, child);
-            }
-        }
+        children.add(child);
     }
 
     public LinkedList<Node> getChildren(){return children;}
