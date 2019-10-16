@@ -19,16 +19,48 @@ public class MartiniEngine {
     private int EMPTY = 0;
     private int OPPONENT = 2;
     private int MINE = 1;
-    private int currentPlayer = OPPONENT;
+    //private int currentPlayer = OPPONENT;
 
     //Essential Functions
     //---------------------------------------------------------
+    //Response to name
     public String getName(){return name;}
 
+    //Response to isready
     public String ready(){return "readyok";}
 
-    public String quit(){return "quitting";}
+    //Response to position startpos <moves>
+    public int updateBoard(String input, int player) {
 
+        //Converts last character of game log to integer value representing column number
+        int col = Character.getNumericValue(input.charAt(input.length() - 1));
+        int finalAddress = findAvailableSpace(col, currentBoardNode.getState());
+
+        if(finalAddress >= 0) {
+            currentBoardNode.getState()[finalAddress] = player;
+        }
+
+        return finalAddress;
+    }
+
+    //Response to go ftime x stime y
+    public void findBestMove(){
+
+        initGameTree(currentBoardNode, 1);
+        int bestVal = Integer.MIN_VALUE;
+        int index = 0;
+        for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
+            if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
+                bestVal = currentBoardNode.getChildren().get(i).getValue();
+                index = i;
+            }
+        }
+        System.out.println("bestmove " + currentBoardNode.getChildren().get(index).getColNum() +  " " + currentBoardNode.getChildren().get(index).getValue());
+        updateBoard(Integer.toString(currentBoardNode.getChildren().get(index).getColNum()), 1);
+        toggleCurrentPlayer();
+    }
+
+    //Response to perft x
     public int perft(int depth, Node root){
         int nodes = 1;
         if(depth == 0) return 1;
@@ -40,6 +72,9 @@ public class MartiniEngine {
         root.deleteChildren();
         return nodes;
     }
+
+    //Response to quit
+    public String quit(){return "quitting";}
     //---------------------------------------------------------
 
     //Getters & Setters
@@ -64,36 +99,171 @@ public class MartiniEngine {
     public int getTreeDepth(){return currentBoardNode.getDepth(currentBoardNode);}
     //---------------------------------------------------------
 
-    public void findBestMove(){
+    //Win Checking Functions
+    //---------------------------------------------------------
+    public WinPair checkWin(int[] boardState){
+        /*
+        if(checkHorizontal(boardState).hasWin()) System.out.println("HOR WIN FOUND");
+        if(checkVertical(boardState).hasWin()) System.out.println("VERT WIN FOUND");
+        if(checkDiagOne(boardState).hasWin()) System.out.println("DIAG1 WIN FOUND");
+        if(checkDiagTwo(boardState).hasWin()) System.out.println("DIAG2 WIN FOUND");
 
-        initGameTree(currentBoardNode, 1);
-        int bestVal = Integer.MIN_VALUE;
-        int index = 0;
-        for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
-            if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
-                bestVal = currentBoardNode.getChildren().get(i).getValue();
-                index = i;
+         */
+        WinPair vertWP = checkVertical(boardState);
+        WinPair horWP = checkHorizontal(boardState);
+        WinPair d1WP = checkDiagOne(boardState);
+        WinPair d2WP = checkDiagTwo(boardState);
+
+        if(vertWP.hasWin()) return vertWP;
+        else if(horWP.hasWin()) return horWP;
+        else if(d1WP.hasWin()) return d1WP;
+        else if(d2WP.hasWin()) return d2WP;
+        else return new WinPair();
+    }
+    public WinPair checkHorizontal(int[] boardState){
+        WinPair result = new WinPair();
+        outerloop:
+        for(int i = 0; i < 36; i = i + 7){
+            for(int j = 0; j < 4; j++){
+                int currentValue = boardState[i+j];
+                if(currentValue == EMPTY) continue;
+
+                int second, third, fourth;
+                second = boardState[i+j+1];
+                third = boardState[i+j+2];
+                fourth = boardState[i+j+3];
+                if((i+j) % 7 != ((i+j+1) % 7) - 1 || currentValue != second) continue;
+                if((i+j) % 7 != ((i+j+2) % 7) - 2 || currentValue != third) continue;
+                if((i+j) % 7 != ((i+j+3) % 7) - 3 || currentValue != fourth) continue;
+
+                result.setHasWin(true);
+                result.setWinnerNumber(currentValue);
+                break outerloop;
             }
         }
-        System.out.println("bestmove " + currentBoardNode.getChildren().get(index).getColNum() +  " " + currentBoardNode.getChildren().get(index).getValue());
-        updateBoard(Integer.toString(currentBoardNode.getChildren().get(index).getColNum()));
+        return result;
     }
+    public WinPair checkVertical(int[] boardState){
+        WinPair result = new WinPair();
 
-    //Given an input string, this function will take the last character from it (which will be a column number)
-    //This function will then add a piece to the corresponding column if possible.
-    public int updateBoard(String input) {
+        outerloop:
+        for(int i = 0; i < 7; i++){
+            for(int j = 0; j < 21; j = j + 7){
+                int currentValue = boardState[i+j];
+                if(currentValue == EMPTY) continue;
+                int second, third, fourth;
+                second = boardState[i+j+7];
+                third = boardState[i+j+14];
+                fourth = boardState[i+j+21];
+                if((i+j) % 7 != ((i+j+7) % 7)  || currentValue != second) continue;
+                if((i+j) % 7 != ((i+j+14) % 7) || currentValue != third) continue;
+                if((i+j) % 7 != ((i+j+21) % 7) || currentValue != fourth) continue;
 
-        //Converts last character of game log to integer value representing column number
-        int col = Character.getNumericValue(input.charAt(input.length() - 1));
-        int finalAddress = findAvailableSpace(col, currentBoardNode.getState());
+                result.setHasWin(true);
+                result.setWinnerNumber(currentValue);
+            }
+        }
+        return result;
+    }
+    public WinPair checkDiagOne(int[] boardState){
+        WinPair result = new WinPair();
 
-        if(finalAddress >= 0) {
-            currentBoardNode.getState()[finalAddress] = currentPlayer;
-            toggleCurrentPlayer();
+        for(int i = 3; i < 15; i += 11){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
         }
 
-        return finalAddress;
+        for(int i = 2; i < 8; i += 5){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 0; i < 2; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+        return result;
     }
+    public WinPair checkDiagTwo(int[] boardState){
+        WinPair result = new WinPair();
+
+        for(int i = 3; i < 21; i += 17){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 4; i < 14; i += 10){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 5; i < 7; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+        return result;
+    }
+    //---------------------------------------------------------
 
     //Given a column number and a board state, this function returns the lowest free space of that column. If the
     //column is full, it returns -1
@@ -177,170 +347,23 @@ public class MartiniEngine {
     }
 
     public void evaluation(Node root){
-        if(checkWin(root.getState())){
+        WinPair result = checkWin(root.getState());
+
+        if(result.hasWin() && result.getWinner() == currentPlayer){
             root.setValue(Integer.MAX_VALUE);
         }
         else{
             int sum = 0;
             for(int i = 0; i < root.getState().length; i++){
+
                 if(root.getState()[i] == currentPlayer) sum += boardValues[i];
-                else if(root.getState()[i] != EMPTY && root.getState()[i] != currentPlayer) sum -= boardValues[i];
             }
             root.setValue(sum);
         }
     }
 
-    public boolean checkWin(int[] boardState){
-        if(checkHorizontal(boardState)) System.out.println("HOR WIN FOUND");
-        if(checkVertical(boardState)) System.out.println("VERT WIN FOUND");
-        if(checkDiagOne(boardState)) System.out.println("DIAG1 WIN FOUND");
-        if(checkDiagTwo(boardState)) System.out.println("DIAG2 WIN FOUND");
-        return checkHorizontal(boardState) || checkVertical(boardState) || checkDiagOne(boardState) || checkDiagTwo(boardState);
-    }
-    public boolean checkHorizontal(int[] boardState){
-        boolean winFound = false;
-        outerloop:
-        for(int i = 0; i < 36; i = i + 7){
-            for(int j = 0; j < 4; j++){
-                int currentValue = boardState[i+j];
-                if(currentValue == EMPTY) continue;
 
-                int second, third, fourth;
-                second = boardState[i+j+1];
-                third = boardState[i+j+2];
-                fourth = boardState[i+j+3];
-                if((i+j) % 7 != ((i+j+1) % 7) - 1 || currentValue != second) continue;
-                if((i+j) % 7 != ((i+j+2) % 7) - 2 || currentValue != third) continue;
-                if((i+j) % 7 != ((i+j+3) % 7) - 3 || currentValue != fourth) continue;
-
-                winFound = true;
-                break outerloop;
-            }
-        }
-        return winFound;
-    }
-    public boolean checkVertical(int[] boardState){
-        boolean winFound = false;
-
-        outerloop:
-        for(int i = 0; i < 7; i++){
-            for(int j = 0; j < 21; j = j + 7){
-                int currentValue = boardState[i+j];
-                if(currentValue == EMPTY) continue;
-                int second, third, fourth;
-                second = boardState[i+j+7];
-                third = boardState[i+j+14];
-                fourth = boardState[i+j+21];
-                if((i+j) % 7 != ((i+j+7) % 7)  || currentValue != second) continue;
-                if((i+j) % 7 != ((i+j+14) % 7) || currentValue != third) continue;
-                if((i+j) % 7 != ((i+j+21) % 7) || currentValue != fourth) continue;
-
-                winFound = true;
-                break outerloop;
-            }
-        }
-        return winFound;
-    }
-    public boolean checkDiagOne(int[] boardState){
-        boolean winFound = false;
-        int[] startingElements = {0,1,2,3,7,14};
-
-        for(int i = 3; i < 15; i += 11){
-            int currentVal = boardState[i];
-            if(currentVal == EMPTY) continue;
-            int second, third, fourth;
-            second = boardState[i+8];
-            third = boardState[i+16];
-            fourth = boardState[i+24];
-            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
-            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
-            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
-
-            winFound = true;
-            return winFound;
-        }
-
-        for(int i = 2; i < 8; i += 5){
-            int currentVal = boardState[i];
-            if(currentVal == EMPTY) continue;
-            int second, third, fourth;
-            second = boardState[i+8];
-            third = boardState[i+16];
-            fourth = boardState[i+24];
-            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
-            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
-            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
-
-            winFound = true;
-            return winFound;
-        }
-
-        for(int i = 0; i < 2; i++){
-            int currentVal = boardState[i];
-            if(currentVal == EMPTY) continue;
-            int second, third, fourth;
-            second = boardState[i+8];
-            third = boardState[i+16];
-            fourth = boardState[i+24];
-            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
-            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
-            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
-
-            winFound = true;
-            return winFound;
-        }
-        return winFound;
-    }
-    public boolean checkDiagTwo(int[] boardState){
-        boolean winFound = false;
-
-        for(int i = 3; i < 21; i += 17){
-            int currentVal = boardState[i];
-            if(currentVal == EMPTY) continue;
-            int second, third, fourth;
-            second = boardState[i+6];
-            third = boardState[i+12];
-            fourth = boardState[i+18];
-            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
-            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
-            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
-
-            winFound = true;
-            return winFound;
-        }
-
-        for(int i = 4; i < 14; i += 10){
-            int currentVal = boardState[i];
-            if(currentVal == EMPTY) continue;
-            int second, third, fourth;
-            second = boardState[i+6];
-            third = boardState[i+12];
-            fourth = boardState[i+18];
-            if((i) % 7 != ((i+6) % 7) - 1 || currentVal != second) continue;
-            if((i) % 7 != ((i+12) % 7) - 2 || currentVal != third) continue;
-            if((i) % 7 != ((i+18) % 7) - 3 || currentVal != fourth) continue;
-
-            winFound = true;
-            return winFound;
-        }
-
-        for(int i = 5; i < 7; i++){
-            int currentVal = boardState[i];
-            if(currentVal == EMPTY) continue;
-            int second, third, fourth;
-            second = boardState[i+6];
-            third = boardState[i+12];
-            fourth = boardState[i+18];
-            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
-            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
-            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
-
-            winFound = true;
-            return winFound;
-        }
-        return winFound;
-    }
-
+    //Debug functions
     //---------------------------------------------------------
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
         int currentCol = (currentElement + direction) % 7;
@@ -434,5 +457,23 @@ public class MartiniEngine {
             e.printStackTrace();
         }
 
+    }
+
+    public class WinPair{
+        private int winnerNumber;
+        private boolean hasWin;
+
+        public WinPair(){
+            winnerNumber = -1;
+            hasWin = false;
+        }
+
+        public void setWinnerNumber(int winnerNumber){this.winnerNumber = winnerNumber;}
+
+        public void setHasWin(boolean hasWin){this.hasWin = hasWin;}
+
+        public int getWinner(){return winnerNumber;}
+
+        public boolean hasWin(){return hasWin;}
     }
 }

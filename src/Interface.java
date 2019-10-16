@@ -23,7 +23,7 @@ public class Interface {
 
                 case "d":
                     martini.debug();
-                    if(martini.checkWin(martini.getGameTree().getState()))
+                    if(martini.checkWin(martini.getGameTree().getState()).hasWin())
                         System.out.println("Win found");
                     else
                         System.out.println("NO WIN FOUND");
@@ -44,14 +44,14 @@ public class Interface {
                         martini.isFirst(true);
                     }
                     else {
-                        martini.updateBoard(input[2]);
+                        martini.updateBoard(input[2], 2);
                     }
 
                     break;
 
                 case "go":
                     martini.findBestMove();
-                    martini.toggleCurrentPlayer();
+                    //martini.toggleCurrentPlayer();
                     break;
 
                 case "perft":
@@ -67,6 +67,14 @@ public class Interface {
                 case "quit":
                     System.out.println(martini.quit());
                     finished = true;
+                    break;
+
+                case "bestmove":
+                    martini.updateBoard(input[1]);
+                    martini.printBoard();
+                    if(martini.checkWin(martini.getCurrentBoard()).hasWin())
+                        System.out.println(martini.checkWin(martini.getCurrentBoard()).getWinner() + " WON THE GAME");
+                    martini.toggleCurrentPlayer();
                     break;
             }
         }
