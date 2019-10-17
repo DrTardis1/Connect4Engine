@@ -47,15 +47,20 @@ public class MartiniEngine {
     public void findBestMove(){
 
         initGameTree(currentBoardNode, 2);
-        printChildren();
-        int bestVal = Integer.MIN_VALUE;
+        //printChildren();
+        int bestVal = 0;
         int index = 0;
+
         for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
             if(currentBoardNode.getChildren().get(i).getValue() == Integer.MIN_VALUE) {
                 index = i;
-                bestVal = Integer.MIN_VALUE;
                 break;
             }
+            else if(currentBoardNode.getChildren().get(i).getValue() == Integer.MAX_VALUE){
+                index = i;
+                break;
+            }
+
             else if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
                 bestVal = currentBoardNode.getChildren().get(i).getValue();
                 index = i;
