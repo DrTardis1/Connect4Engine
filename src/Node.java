@@ -7,12 +7,18 @@ public class Node {
     private int[] state;
     private int value;
     private int colNum;
+    private int player;
+    private static int nodeNum = 0;
+    public int name;
 
     public Node(){
         parent = null;
         children = new LinkedList<>();
         state = new int[42];
         value = 0;
+        player = 0;
+        name = nodeNum;
+        nodeNum++;
     }
 
     public Node(Node parent){
@@ -20,6 +26,9 @@ public class Node {
         children = new LinkedList<>();
         state = parent.getState().clone();
         value = 0;
+        player = 0;
+        name = nodeNum;
+        nodeNum++;
     }
 
     public Node(int[] state){
@@ -36,6 +45,10 @@ public class Node {
     public void setColNum(int colNum){this.colNum = colNum;}
 
     public int getColNum(){return colNum;}
+
+    public void setPlayer(int player){this.player = player;}
+
+    public int getPlayer(){return player;}
 
     public void addChild(Node child){
         children.add(child);

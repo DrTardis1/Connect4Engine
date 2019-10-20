@@ -299,5 +299,83 @@ public void bestMove(){
         }
     }
 
+public void evaluation(Node root){
+        WinPair result = checkWin(root.getState());
 
+        //Makes this node extremely desirable
+        if(result.hasWin() && result.getWinner() == MINE){
+            root.setValue(Integer.MAX_VALUE);
+        }
+
+        //Makes this node extremely undesirable
+        else if(result.hasWin() && result.getWinner() == OPPONENT){
+            root.setValue(Integer.MIN_VALUE);
+        }
+
+        else{
+            int sum = 0;
+            for(int i = 0; i < root.getState().length; i++){
+
+                if(root.getState()[i] == MINE) sum += boardValues[i];
+                else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
+            }
+            root.setValue(sum);
+        }
+    }
+
+     public int maxi(Node root, int depth){
+        //if(depth == 0) return eval(root);
+        int max = Integer.MIN_VALUE;
+        int score = 0;
+        for(int i = 0; i < root.getChildren().size(); i++){
+            score = mini(root.getChildren().get(i),depth-1);
+            if(score > max) max = score;
+        }
+        return max;
+    }
+    public int mini(Node root, int depth){
+        //if(depth == 0) return eval(root);
+        int min = Integer.MAX_VALUE;
+        int score = 0;
+        for(int i = 0; i < root.getChildren().size(); i++){
+            score = maxi(root.getChildren().get(i), depth-1);
+            if(score < min) min = score;
+        }
+        return min;
+    }
+
+    public void genGameTree(Node root, int depth){
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty() && q.size() < 9){
+            Node temp = q.poll();
+            int currentPlayer;
+            if(temp != null){
+                currentPlayer = temp.getPlayer() == MINE ? OPPONENT : MINE;
+                initChildren(temp, currentPlayer);
+                q.addAll(temp.getChildren());
+            }
+        }
+    }
+    public int genGameTreeOld(Node root, int depth){
+        if(depth == 0){
+            //eval(root);
+            return 1;
+        }
+
+        if(depth == 1) initChildren(root, MINE);
+        else if(depth % 2 == 1) initChildren(root, MINE);
+        else initChildren(root, OPPONENT);
+
+        for(int i = 0; i < root.getChildren().size(); i++){
+            genGameTree(root.getChildren().get(i), depth - 1);
+        }
+        return depth;
+    }
+    public void initGameTree(Node root, int depth){
+        root.deleteChildren();
+        root.setPlayer(OPPONENT);
+        genGameTree(root, depth);
+    }
 */

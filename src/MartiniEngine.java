@@ -1,5 +1,5 @@
-import javax.crypto.spec.OAEPParameterSpec;
-import java.util.Random;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class MartiniEngine {
 
@@ -23,6 +23,7 @@ public class MartiniEngine {
 
     //Essential Functions
     //---------------------------------------------------------
+
     //Response to name
     public String getName(){return name;}
 
@@ -46,11 +47,23 @@ public class MartiniEngine {
     //Response to go ftime x stime y
     public void findBestMove(){
 
-        initGameTree(currentBoardNode, 2);
-        //printChildren();
-        int bestVal = 0;
+        //initGameTree(currentBoardNode, 1);
+        int bestVal = Integer.MIN_VALUE;
         int index = 0;
+        int score = 0;
+        LinkedList<Node> children = initChildren(currentBoardNode, MINE);
+        for(int i = 0; i < children.size(); i++) {
+            score = -negaMax(children.get(i), 1, OPPONENT);
 
+            if(score > bestVal){
+                bestVal = score;
+                index = i;
+            }
+        }
+        //printChildren();
+
+
+        /*
         for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
             if(currentBoardNode.getChildren().get(i).getValue() == Integer.MIN_VALUE) {
                 index = i;
@@ -67,8 +80,9 @@ public class MartiniEngine {
             }
 
         }
-        System.out.println("bestmove " + currentBoardNode.getChildren().get(index).getColNum() +  " " + currentBoardNode.getChildren().get(index).getValue());
-        updateBoard(Integer.toString(currentBoardNode.getChildren().get(index).getColNum()), 1);
+         */
+        System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
+        updateBoard(Integer.toString(children.get(index).getColNum()), 1);
         //toggleCurrentPlayer();
     }
 
@@ -77,7 +91,9 @@ public class MartiniEngine {
         int nodes = 1;
         if(depth == 0) return 1;
 
-        initChildren(root);
+        if(depth % 2 == 1) initChildren(root, MINE);
+        else initChildren(root, OPPONENT);
+
         for(int i = 0; i < root.getChildren().size(); i++){
             nodes += perft(depth - 1, root.getChildren().get(i));
         }
@@ -279,6 +295,22 @@ public class MartiniEngine {
     }
     //---------------------------------------------------------
 
+    public int negaMax(Node root, int depth, int player){
+
+        if(depth == 0) return evaluation(root, player);
+
+        LinkedList<Node> children = initChildren(root, player);
+
+        if(children.size() == 0) return evaluation(root, player);
+        int score;
+        int max = Integer.MIN_VALUE;
+        for(int i = 0; i < children.size(); i++){
+            score = -negaMax(children.get(i), depth - 1, 3 - player);
+            if(score > max) max = score;
+        }
+        return max;
+    }
+
     //Given a column number and a board state, this function returns the lowest free space of that column. If the
     //column is full, it returns -1
     public int findAvailableSpace(int colNum, int[] board){
@@ -306,82 +338,53 @@ public class MartiniEngine {
         return currentSpace;
     }
 
-    public int maxi(Node root, int depth){
-        //if(depth == 0) return eval(root);
-        int max = Integer.MIN_VALUE;
-        int score = 0;
-        for(int i = 0; i < root.getChildren().size(); i++){
-            score = mini(root.getChildren().get(i),depth-1);
-            if(score > max) max = score;
-        }
-        return max;
-    }
-    public int mini(Node root, int depth){
-        //if(depth == 0) return eval(root);
-        int min = Integer.MAX_VALUE;
-        int score = 0;
-        for(int i = 0; i < root.getChildren().size(); i++){
-            score = maxi(root.getChildren().get(i), depth-1);
-            if(score < min) min = score;
-        }
-        return min;
-    }
-
     //Generates children of a given node. These children contain valid game states.
-    public void initChildren(Node root){
+    public LinkedList<Node> initChildren(Node root, int player){
+        LinkedList<Node> children = new LinkedList<>();
         for(int i = 0; i < 7; i ++){
             int lowestAddress = findAvailableSpace(i, root.getState());
 
             if(lowestAddress < 0) continue;
 
             Node temp = new Node(root);
-            temp.getState()[lowestAddress] = MINE;
+            temp.setPlayer(player);
+            temp.getState()[lowestAddress] = player;
             temp.setColNum(lowestAddress % 7);
-            evaluation(temp);
-            root.addChild(temp);
+            //evaluation(temp);
+            children.add(temp);
         }
+        return children;
     }
 
-    public int genGameTree(Node root, int depth){
-        if(depth == 0){
-            //eval(root);
-            return 1;
-        }
-
-        initChildren(root);
-        for(int i = 0; i < root.getChildren().size(); i++){
-            genGameTree(root.getChildren().get(i), depth - 1);
-        }
-        return depth;
-    }
-
-    public void initGameTree(Node root, int depth){
-        root.deleteChildren();
-        genGameTree(root, depth);
-    }
-
-    public void evaluation(Node root){
+    public int evaluation(Node root, int maximisingPlayer){
         WinPair result = checkWin(root.getState());
 
+        int sum = 0;
+
+        /*
         //Makes this node extremely desirable
-        if(result.hasWin() && result.getWinner() == MINE){
-            root.setValue(Integer.MAX_VALUE);
+        if(result.hasWin() && result.getWinner() == maximisingPlayer){
+            return -9999;
         }
 
         //Makes this node extremely undesirable
-        else if(result.hasWin() && result.getWinner() == OPPONENT){
-            root.setValue(Integer.MIN_VALUE);
+        else if(result.hasWin() && result.getWinner() != maximisingPlayer){
+            return 9999;
         }
 
-        else{
-            int sum = 0;
-            for(int i = 0; i < root.getState().length; i++){
+         */
 
-                if(root.getState()[i] == MINE) sum += boardValues[i];
-                else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
-            }
-            root.setValue(sum);
+        if(result.hasWin()){
+            sum = 1000000;
         }
+
+        for(int i = 0; i < root.getState().length; i++) {
+
+            if (root.getState()[i] == MINE) sum += boardValues[i];
+            else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
+        }
+
+        return sum * ((-2*(maximisingPlayer - 1)) + 1);
     }
 
 
@@ -480,8 +483,27 @@ public class MartiniEngine {
         }
 
     }
-    public void printChildren(){
+    public void printTree(Node root){
+
+        if(root == null) return;
+
         StringBuilder sb = new StringBuilder();
+        sb.append("Name: ");
+        sb.append(root.name);
+        sb.append(" Value: ");
+        sb.append(root.getValue());
+        if(root.getParent() != null) {
+            sb.append(" Parent: ");
+            sb.append(root.getParent().name);
+        }
+        sb.append("\n");
+        System.out.println(sb.toString());
+
+        for(int i = 0; i < root.getChildren().size(); i++)
+            printTree(root.getChildren().get(i));
+
+
+        /*
         for(int i = 0; i < currentBoardNode.getChildren().size(); i++){
             sb.append("Name: ");
             sb.append(i);
@@ -492,7 +514,41 @@ public class MartiniEngine {
             sb.append("\n");
         }
         System.out.println(sb.toString());
+
+         */
     }
+    public void printTreeBreadth(Node root){
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+            Node current = q.poll();
+            if(current != null){
+                System.out.println("Name: " + current.name + " Value: " + current.getValue() + " PLAYER: " + current.getPlayer());
+                for(int i = 0; i < current.getChildren().size(); i++){
+                    q.add(current.getChildren().get(i));
+                }
+            }
+        }
+
+    }
+    public void printKids(Node root){
+        StringBuilder sb = new StringBuilder();
+        sb.append("PARENT: ");
+        sb.append(root.name);
+        sb.append("\n");
+        for(int i = 0; i < root.getChildren().size(); i++){
+            sb.append("Child Num ");
+            sb.append(root.getChildren().get(i).name);
+            sb.append(" VALUE: ");
+            sb.append(root.getChildren().get(i).getValue());
+            sb.append(" PLAYER: ");
+            sb.append(root.getChildren().get(i).getPlayer());
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
+    }
+
 
     public class WinPair{
         private int winnerNumber;

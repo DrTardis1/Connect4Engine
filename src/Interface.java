@@ -78,8 +78,12 @@ public class Interface {
                     //martini.toggleCurrentPlayer();
                     break;
 
-                case "pkid":
-                    martini.printChildren();
+                case "pt":
+                    martini.printTreeBreadth(martini.getGameTree());
+                    break;
+
+                case "pk":
+                    martini.printKids(martini.getGameTree());
                     break;
             }
         }
