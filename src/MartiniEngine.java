@@ -53,34 +53,12 @@ public class MartiniEngine {
         int score = 0;
         LinkedList<Node> children = initChildren(currentBoardNode, MINE);
         for(int i = 0; i < children.size(); i++) {
-            score = -negaMax(children.get(i), 1, OPPONENT);
-
+            score = -negaMax(children.get(i), 5, OPPONENT);
             if(score > bestVal){
                 bestVal = score;
                 index = i;
             }
         }
-        //printChildren();
-
-
-        /*
-        for(int i  = 0; i < currentBoardNode.getChildren().size(); i ++){
-            if(currentBoardNode.getChildren().get(i).getValue() == Integer.MIN_VALUE) {
-                index = i;
-                break;
-            }
-            else if(currentBoardNode.getChildren().get(i).getValue() == Integer.MAX_VALUE){
-                index = i;
-                break;
-            }
-
-            else if(currentBoardNode.getChildren().get(i).getValue() > bestVal) {
-                bestVal = currentBoardNode.getChildren().get(i).getValue();
-                index = i;
-            }
-
-        }
-         */
         System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
         updateBoard(Integer.toString(children.get(index).getColNum()), 1);
         //toggleCurrentPlayer();
@@ -90,14 +68,10 @@ public class MartiniEngine {
     public int perft(int depth, Node root){
         int nodes = 1;
         if(depth == 0) return 1;
-
-        if(depth % 2 == 1) initChildren(root, MINE);
-        else initChildren(root, OPPONENT);
-
-        for(int i = 0; i < root.getChildren().size(); i++){
-            nodes += perft(depth - 1, root.getChildren().get(i));
+        LinkedList<Node> children = initChildren(root, MINE);
+        for(int i = 0; i < children.size(); i++){
+            nodes += perft(depth-1, children.get(i));
         }
-        root.deleteChildren();
         return nodes;
     }
 
@@ -380,8 +354,10 @@ public class MartiniEngine {
 
         for(int i = 0; i < root.getState().length; i++) {
 
-            if (root.getState()[i] == MINE) sum += boardValues[i];
-            else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
+            //if (root.getState()[i] == MINE) sum += boardValues[i];
+            //else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
+            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
+            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
         }
 
         return sum * ((-2*(maximisingPlayer - 1)) + 1);

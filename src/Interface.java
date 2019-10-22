@@ -46,12 +46,13 @@ public class Interface {
                     else {
                         martini.updateBoard(input[2], 2);
                     }
-
+                    martini.printBoard();
                     break;
 
                 case "go":
                     martini.findBestMove();
                     //martini.toggleCurrentPlayer();
+                    martini.printBoard();
                     break;
 
                 case "perft":
