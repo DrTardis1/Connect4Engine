@@ -5,24 +5,18 @@ public class MartiniEngine {
 
     private String name = "Martini-C3260061";
     private Node currentBoardNode = new Node();
-    private boolean isFirst = false;
-
-    private int[] directions = {-7, 7, -1, 1, -6, 8, 6, -8};
-    //private int[] currentBoard = new int[42];
     private int[] boardValues = {1,  20, 50, 70,  50, 20, 1,
                                  20, 30, 60, 80,  60, 30, 20,
                                  40, 50, 80, 100, 80, 50, 40,
                                  40, 50, 80, 100, 80, 50, 40,
                                  20, 30, 60, 80,  60, 30, 20,
                                  1,  20, 50, 70,  50, 20, 1};
-    //Player information
     private int EMPTY = 0;
     private int OPPONENT = 2;
     private int MINE = 1;
-    //private int currentPlayer = OPPONENT;
 
     //Essential Functions
-    //---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
 
     //Response to name
     public String getName(){return name;}
@@ -47,21 +41,27 @@ public class MartiniEngine {
     //Response to go ftime x stime y
     public void findBestMove(){
 
-        //initGameTree(currentBoardNode, 1);
         int bestVal = Integer.MIN_VALUE;
         int index = 0;
-        int score = 0;
+        int score;
         LinkedList<Node> children = initChildren(currentBoardNode, MINE);
+
         for(int i = 0; i < children.size(); i++) {
-            score = -negaMax(children.get(i), 5, OPPONENT);
-            if(score > bestVal){
+
+            //As we at iterating over the children generated for my moves, negaMax must
+            //first run and favour the opponent
+            score = -negaMax(children.get(i), 3, OPPONENT);
+            if(score < -1000000){
+                bestVal = score;
+                index = i;
+            }
+            else if(score > bestVal ){
                 bestVal = score;
                 index = i;
             }
         }
         System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
         updateBoard(Integer.toString(children.get(index).getColNum()), 1);
-        //toggleCurrentPlayer();
     }
 
     //Response to perft x
@@ -77,34 +77,17 @@ public class MartiniEngine {
 
     //Response to quit
     public String quit(){return "quitting";}
-    //---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
 
     //Getters & Setters
-    //---------------------------------------------------------
-    /*public void toggleCurrentPlayer(){
-        this.currentPlayer = (this.currentPlayer == OPPONENT) ? MINE : OPPONENT;
-    }*/
-
-    /*public void isFirst(boolean isFirst){
-        this.isFirst = isFirst;
-        currentPlayer = this.isFirst ? MINE : OPPONENT;
-    }
-
-     */
-
-    public boolean isFull(int colNum){
-        return currentBoardNode.getState()[colNum] != EMPTY;
-    }
-
+    //------------------------------------------------------------------------------------------------------------------
     public int[] getCurrentBoard(){return currentBoardNode.getState();}
 
     public Node getGameTree(){return currentBoardNode;}
-
-    public int getTreeDepth(){return currentBoardNode.getDepth(currentBoardNode);}
-    //---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
 
     //Win Checking Functions
-    //---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     public WinPair checkWin(int[] boardState){
         /*
         if(checkHorizontal(boardState).hasWin()) System.out.println("HOR WIN FOUND");
@@ -267,15 +250,16 @@ public class MartiniEngine {
         }
         return result;
     }
-    //---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
 
     public int negaMax(Node root, int depth, int player){
 
         if(depth == 0) return evaluation(root, player);
 
         LinkedList<Node> children = initChildren(root, player);
-
         if(children.size() == 0) return evaluation(root, player);
+
+
         int score;
         int max = Integer.MIN_VALUE;
         for(int i = 0; i < children.size(); i++){
@@ -335,37 +319,11 @@ public class MartiniEngine {
 
         int sum = 0;
 
-        /*
-        //Makes this node extremely desirable
-        if(result.hasWin() && result.getWinner() == maximisingPlayer){
-            return -9999;
-        }
-
-        //Makes this node extremely undesirable
-        else if(result.hasWin() && result.getWinner() != maximisingPlayer){
-            return 9999;
-        }
-
-         */
-
-        if(result.hasWin()){
-            sum = 1000000;
-        }
-
-        for(int i = 0; i < root.getState().length; i++) {
-
-            //if (root.getState()[i] == MINE) sum += boardValues[i];
-            //else if (root.getState()[i] == OPPONENT) sum -= boardValues[i];
-            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
-            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
-        }
-
         return sum * ((-2*(maximisingPlayer - 1)) + 1);
     }
 
-
     //Debug functions
-    //---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
         int currentCol = (currentElement + direction) % 7;
         if(initialCol >= currentCol && toggle) {
@@ -525,7 +483,7 @@ public class MartiniEngine {
         System.out.println(sb.toString());
     }
 
-
+    //------------------------------------------------------------------------------------------------------------------
     public class WinPair{
         private int winnerNumber;
         private boolean hasWin;

@@ -378,4 +378,52 @@ public void evaluation(Node root){
         root.setPlayer(OPPONENT);
         genGameTree(root, depth);
     }
+
+    public void toggleCurrentPlayer(){
+        this.currentPlayer = (this.currentPlayer == OPPONENT) ? MINE : OPPONENT;
+    }
+
+    public void isFirst(boolean isFirst){
+        this.isFirst = isFirst;
+        currentPlayer = this.isFirst ? MINE : OPPONENT;
+    }
+
+    public boolean isFull(int colNum){
+        return currentBoardNode.getState()[colNum] != EMPTY;
+    }
+
+    public int getTreeDepth(){return currentBoardNode.getDepth(currentBoardNode);}
+
+    public int evaluation(Node root, int maximisingPlayer){
+        WinPair result = checkWin(root.getState());
+
+        int sum = 0;
+
+        /*
+        //Makes this node extremely desirable
+        if(result.hasWin() && result.getWinner() == maximisingPlayer){
+            return -9999;
+        }
+
+        //Makes this node extremely undesirable
+        else if(result.hasWin() && result.getWinner() != maximisingPlayer){
+            return 9999;
+        }
+
+        /System.out.print("MAXING PLAYER: " + maximisingPlayer + " CURRENT WINNER: " + result.getWinner() + " COL NUM: " + root.getColNum());
+        if(result.hasWin() && result.getWinner() == maximisingPlayer){
+                sum = 1000000;
+                }
+
+                else if(result.hasWin() && result.getWinner() != maximisingPlayer){
+                sum = -1000000;
+                }
+
+                for(int i = 0; i < root.getState().length; i++) {
+        if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
+        else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
+        }
+        //System.out.println(" SUM: " + sum * ((-2*(maximisingPlayer - 1)) + 1));
+        return sum * ((-2*(maximisingPlayer - 1)) + 1);
+        }
 */

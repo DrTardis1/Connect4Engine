@@ -12,7 +12,6 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         Scanner coordinator = new Scanner(System.in);
         String[] input;
-
         boolean finished = false;
 
         while(!finished){
@@ -20,15 +19,6 @@ public class Interface {
             input = coordinator.nextLine().split(" ");
 
             switch(input[0].toLowerCase()){
-
-                case "d":
-                    martini.debug();
-                    if(martini.checkWin(martini.getGameTree().getState()).hasWin())
-                        System.out.println("Win found");
-                    else
-                        System.out.println("NO WIN FOUND");
-                    martini.printBoard();
-                    break;
 
                 case "name":
                     System.out.println(martini.getName());
@@ -39,20 +29,11 @@ public class Interface {
                     break;
 
                 case "position":
-                    //Martini is first to move
-                    if(input.length == 2) {
-
-                    }
-                    else {
-                        martini.updateBoard(input[2], 2);
-                    }
-                    martini.printBoard();
+                    if(input.length == 3) martini.updateBoard(input[2], 2);
                     break;
 
                 case "go":
                     martini.findBestMove();
-                    //martini.toggleCurrentPlayer();
-                    martini.printBoard();
                     break;
 
                 case "perft":
@@ -61,14 +42,19 @@ public class Interface {
                     System.out.println("perft " + input[1] + " " + martini.perft(Integer.parseInt(input[1]), temp));
                     break;
 
-                case "print":
-                    martini.printBoard();
-                    break;
-
-
                 case "quit":
                     System.out.println(martini.quit());
                     finished = true;
+                    break;
+
+                //------------------------------------------------------------------------------------
+
+                case "e":
+                    System.out.println("CURRENT BOARD VALUE: " + martini.evaluation(martini.getGameTree(), 1));
+                    break;
+
+                case "check":
+                    System.out.println("THERE IS WIN: " + martini.checkWin(martini.getCurrentBoard()).hasWin());
                     break;
 
                 case "bestmove":
@@ -76,7 +62,10 @@ public class Interface {
                     martini.printBoard();
                     if(martini.checkWin(martini.getCurrentBoard()).hasWin())
                         System.out.println(martini.checkWin(martini.getCurrentBoard()).getWinner() + " WON THE GAME");
-                    //martini.toggleCurrentPlayer();
+                    break;
+
+                case "easter":
+                    martini.getIntro();
                     break;
 
                 case "pt":
@@ -85,6 +74,14 @@ public class Interface {
 
                 case "pk":
                     martini.printKids(martini.getGameTree());
+                    break;
+
+                case "d":
+                    martini.debug();
+                    break;
+
+                case "print":
+                    martini.printBoard();
                     break;
             }
         }

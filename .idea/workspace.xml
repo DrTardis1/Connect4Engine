@@ -2,12 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Bryce.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Bryce.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid1028.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid18884.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid22556.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid22660.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid3352.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid7592.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hs_err_pid9040.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Board.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Tree.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DEBUG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DEBUG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Tree.java" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,11 +65,14 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Console Font" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Java" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\GitHub\Connect4Engine\src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -160,6 +176,9 @@
       <workItem from="1571558029678" duration="12493000" />
       <workItem from="1571573487769" duration="4057000" />
       <workItem from="1571738999698" duration="1356000" />
+      <workItem from="1571742235693" duration="1015000" />
+      <workItem from="1571787399041" duration="7321000" />
+      <workItem from="1571829194091" duration="6923000" />
     </task>
     <servers />
   </component>
@@ -200,9 +219,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>362</line>
-          <option name="timeStamp" value="10" />
+          <url>file://$PROJECT_DIR$/src/Interface.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
