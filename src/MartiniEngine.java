@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 public class MartiniEngine {
 
@@ -314,13 +315,36 @@ public class MartiniEngine {
         return children;
     }
 
-    public int evaluation(Node root, int maximisingPlayer){
+    public int evaluation(Node root, int maximisingPlayer) {
         WinPair result = checkWin(root.getState());
 
         int sum = 0;
+        /*
+        //Makes this node extremely desirable
+        if(result.hasWin() && result.getWinner() == maximisingPlayer){
+            return -9999;
+        }
 
+        //Makes this node extremely undesirable
+        else if(result.hasWin() && result.getWinner() != maximisingPlayer){
+            return 9999;
+        }
+*/
+        if (result.hasWin() && result.getWinner() == maximisingPlayer) {
+            sum = 1000000;
+        }
+        else if (result.hasWin() && result.getWinner() != maximisingPlayer) {
+            sum = -1000000;
+        }
+
+        for(int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
+            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
+        }
+        //System.out.println(" SUM: " + sum * ((-2*(maximisingPlayer - 1)) + 1));
         return sum * ((-2*(maximisingPlayer - 1)) + 1);
     }
+
 
     //Debug functions
     //------------------------------------------------------------------------------------------------------------------
