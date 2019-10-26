@@ -10,9 +10,15 @@ public class Interface {
     public static void main(String args[]) {
 
         MartiniEngine martini = new MartiniEngine();
+        PrecomputedIndexes.init();
+
+        PrecomputedIndexes.printThree();
         Scanner coordinator = new Scanner(System.in);
         String[] input;
         boolean finished = false;
+
+        martini.debug();
+        martini.printBoard();
 
         while(!finished){
 
@@ -78,6 +84,14 @@ public class Interface {
 
                 case "d":
                     martini.debug();
+                    break;
+
+                case "two":
+                    System.out.println("NUM OF 2s:" + martini.numOfTwos(martini.getGameTree(), 1));
+                    break;
+
+                case "three":
+                    System.out.println("NUM OF 3s:" + martini.numOfThrees(martini.getGameTree(),  1));
                     break;
 
                 case "print":

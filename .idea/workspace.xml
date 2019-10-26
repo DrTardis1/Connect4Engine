@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/PrecomputedIndexes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DEBUG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DEBUG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -168,6 +170,7 @@
       <workItem from="1571873565262" duration="3268000" />
       <workItem from="1571910008942" duration="1279000" />
       <workItem from="1571956978129" duration="3071000" />
+      <workItem from="1572073354218" duration="9305000" />
     </task>
     <servers />
   </component>
@@ -208,9 +211,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Interface.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="12" />
+          <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
+          <line>354</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
+          <line>370</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

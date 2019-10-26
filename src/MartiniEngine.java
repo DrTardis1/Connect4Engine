@@ -1,6 +1,5 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
 public class MartiniEngine {
 
@@ -341,9 +340,44 @@ public class MartiniEngine {
             if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
             else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
         }
-        //System.out.println(" SUM: " + sum * ((-2*(maximisingPlayer - 1)) + 1));
         return sum * ((-2*(maximisingPlayer - 1)) + 1);
     }
+
+    public int numOfTwos(Node root, int currentPlayer){
+        int sum = 0;
+        for(int i = 0; i < PrecomputedIndexes.twoInARow.length; i++){
+
+            //Checks to see if the ith space has the currentPlayer's piece in it
+            if(root.getState()[i] == currentPlayer) {
+
+                for (int j = 0; j < PrecomputedIndexes.twoInARow[i].size(); j++) {
+                    if(root.getState()[PrecomputedIndexes.twoInARow[i].get(j)] == currentPlayer){
+                        sum++;
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+    public int numOfThrees(Node root, int currentPlayer){
+        int sum = 0;
+        for(int i = 0; i < PrecomputedIndexes.threeInARow.length; i++){
+
+            //Checks to see if the ith space has the currentPlayer's piece in it
+            if(root.getState()[i] == currentPlayer) {
+
+                for (int j = 0; j < PrecomputedIndexes.threeInARow[i].size() - 1; j = j + 2) {
+                    if(root.getState()[PrecomputedIndexes.threeInARow[i].get(j)] == currentPlayer && root.getState()[PrecomputedIndexes.threeInARow[i].get(j+1)] == currentPlayer){
+                        sum++;
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+
 
 
     //Debug functions
@@ -384,9 +418,19 @@ public class MartiniEngine {
     }
     public void debug(){
 
-        currentBoardNode.getState()[35] = MINE;
-        currentBoardNode.getState()[36] = MINE;
-        currentBoardNode.getState()[37] = MINE;
+        currentBoardNode.getState()[0] = MINE;
+        currentBoardNode.getState()[1] = MINE;
+        currentBoardNode.getState()[2] = MINE;
+        currentBoardNode.getState()[7] = MINE;
+        currentBoardNode.getState()[14] = MINE;
+        currentBoardNode.getState()[20] = MINE;
+        currentBoardNode.getState()[27] = MINE;
+        currentBoardNode.getState()[41] = MINE;
+        currentBoardNode.getState()[40] = MINE;
+        currentBoardNode.getState()[39] = MINE;
+        currentBoardNode.getState()[29] = MINE;
+        currentBoardNode.getState()[22] = MINE;
+
         //currentBoardNode.getState()[35] = MINE;
         /*
         for(int i = 0; i < currentBoardNode.getState().length; i++)
