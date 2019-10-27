@@ -12,13 +12,9 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         PrecomputedIndexes.init();
 
-        PrecomputedIndexes.printThree();
         Scanner coordinator = new Scanner(System.in);
         String[] input;
         boolean finished = false;
-
-        martini.debug();
-        martini.printBoard();
 
         while(!finished){
 

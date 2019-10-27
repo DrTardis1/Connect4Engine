@@ -54,6 +54,7 @@ public class MartiniEngine {
             if(score < -1000000){
                 bestVal = score;
                 index = i;
+                break;
             }
             else if(score > bestVal ){
                 bestVal = score;
@@ -329,6 +330,13 @@ public class MartiniEngine {
             return 9999;
         }
 */
+
+        //An instance of two connected pieces is worth 50 points
+        sum += (numOfTwos(root, maximisingPlayer) * 50);
+
+        //And instance of two connected pieces is worth 200 points
+        sum += (numOfThrees(root, maximisingPlayer) * 200);
+
         if (result.hasWin() && result.getWinner() == maximisingPlayer) {
             sum = 1000000;
         }
