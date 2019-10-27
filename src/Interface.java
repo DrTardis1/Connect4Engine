@@ -35,9 +35,6 @@ public class Interface {
 
                     if(input.length == 3)
                         martini.updateBoard(input[2], 2);
-
-                    martini.findBestMove();
-                    martini.printBoard();
                     break;
 
                 case "go":

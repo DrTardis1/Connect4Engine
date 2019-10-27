@@ -51,7 +51,7 @@ public class MartiniEngine {
         if(FIRSTPLAYER == MINE) {
             bestVal = Integer.MIN_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = mini(children.get(i), 5);
+                score = mini(children.get(i), 4);
                 if (score > bestVal) {
                     bestVal = score;
                     index = i;
@@ -61,7 +61,7 @@ public class MartiniEngine {
         else {
             bestVal = Integer.MAX_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = maxi(children.get(i), 5);
+                score = maxi(children.get(i), 4);
                 if (score < bestVal) {
                     bestVal = score;
                     index = i;
