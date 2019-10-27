@@ -5,15 +5,16 @@ public class MartiniEngine {
 
     private String name = "Martini-C3260061";
     private Node currentBoardNode = new Node();
-    private int[] boardValues = {1,  20, 50, 70,  50, 20, 1,
-                                 20, 30, 60, 80,  60, 30, 20,
-                                 40, 50, 80, 100, 80, 50, 40,
-                                 40, 50, 80, 100, 80, 50, 40,
-                                 20, 30, 60, 80,  60, 30, 20,
-                                 1,  20, 50, 70,  50, 20, 1};
+    private int[] boardValues = {1,  5, 10, 50,  10, 5, 1,
+                                 10, 15, 20, 55,  20, 15, 20,
+                                 25, 30, 40, 80, 40, 30, 25,
+                                 25, 30, 40, 80, 40, 30, 25,
+                                 10, 15, 20, 55,  20, 15, 20,
+                                 1,  5, 10, 50,  10, 5, 1};
     private int EMPTY = 0;
     private int OPPONENT = 2;
     private int MINE = 1;
+    private int FIRSTPLAYER = 2;
 
     //Essential Functions
     //------------------------------------------------------------------------------------------------------------------
@@ -40,27 +41,35 @@ public class MartiniEngine {
 
     //Response to go ftime x stime y
     public void findBestMove(){
-
-        int bestVal = Integer.MIN_VALUE;
+        int bestVal = 0;
         int index = 0;
         int score;
         LinkedList<Node> children = initChildren(currentBoardNode, MINE);
 
-        for(int i = 0; i < children.size(); i++) {
-
-            //As we at iterating over the children generated for my moves, negaMax must
-            //first run and favour the opponent
-            score = -negaMax(children.get(i), 3, OPPONENT);
-            if(score < -1000000){
-                bestVal = score;
-                index = i;
-                break;
-            }
-            else if(score > bestVal ){
-                bestVal = score;
-                index = i;
+        //As we at iterating over the children generated for my moves, negaMax must
+        //first run and favour the opponent
+        if(FIRSTPLAYER == MINE) {
+            bestVal = Integer.MIN_VALUE;
+            for (int i = 0; i < children.size(); i++) {
+                score = mini(children.get(i), 5);
+                if (score > bestVal) {
+                    bestVal = score;
+                    index = i;
+                }
             }
         }
+        else {
+            bestVal = Integer.MAX_VALUE;
+            for (int i = 0; i < children.size(); i++) {
+                score = maxi(children.get(i), 5);
+                if (score < bestVal) {
+                    bestVal = score;
+                    index = i;
+                }
+            }
+        }
+            //score = -negaMax(children.get(i), 3, OPPONENT);
+
         System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
         updateBoard(Integer.toString(children.get(index).getColNum()), 1);
     }
@@ -85,18 +94,13 @@ public class MartiniEngine {
     public int[] getCurrentBoard(){return currentBoardNode.getState();}
 
     public Node getGameTree(){return currentBoardNode;}
+
+    public void setFirstPlayer(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
     //------------------------------------------------------------------------------------------------------------------
 
     //Win Checking Functions
     //------------------------------------------------------------------------------------------------------------------
     public WinPair checkWin(int[] boardState){
-        /*
-        if(checkHorizontal(boardState).hasWin()) System.out.println("HOR WIN FOUND");
-        if(checkVertical(boardState).hasWin()) System.out.println("VERT WIN FOUND");
-        if(checkDiagOne(boardState).hasWin()) System.out.println("DIAG1 WIN FOUND");
-        if(checkDiagTwo(boardState).hasWin()) System.out.println("DIAG2 WIN FOUND");
-
-         */
         WinPair vertWP = checkVertical(boardState);
         WinPair horWP = checkHorizontal(boardState);
         WinPair d1WP = checkDiagOne(boardState);
@@ -186,6 +190,21 @@ public class MartiniEngine {
             result.setWinnerNumber(currentVal);
         }
 
+        for(int i = 10; i < 16; i += 5){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
         for(int i = 0; i < 2; i++){
             int currentVal = boardState[i];
             if(currentVal == EMPTY) continue;
@@ -196,6 +215,36 @@ public class MartiniEngine {
             if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
             if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
             if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 8; i < 10; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if((i) % 7 != ((i+8) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+16) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+24) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 16; i < 18; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+8];
+            third = boardState[i+16];
+            fourth = boardState[i+24];
+            if(currentVal != second) continue;
+            if(currentVal != third) continue;
+            if(currentVal != fourth) continue;
 
             result.setHasWin(true);
             result.setWinnerNumber(currentVal);
@@ -220,7 +269,22 @@ public class MartiniEngine {
             result.setWinnerNumber(currentVal);
         }
 
-        for(int i = 4; i < 14; i += 10){
+        for(int i = 4; i < 14; i += 9){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) - 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) - 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) - 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 10; i < 20; i += 9){
             int currentVal = boardState[i];
             if(currentVal == EMPTY) continue;
             int second, third, fourth;
@@ -249,17 +313,107 @@ public class MartiniEngine {
             result.setHasWin(true);
             result.setWinnerNumber(currentVal);
         }
+
+        for(int i = 11; i < 13; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if((i) % 7 != ((i+6) % 7) + 1 || currentVal != second) continue;
+            if((i) % 7 != ((i+12) % 7) + 2 || currentVal != third) continue;
+            if((i) % 7 != ((i+18) % 7) + 3 || currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
+
+        for(int i = 17; i < 19; i++){
+            int currentVal = boardState[i];
+            if(currentVal == EMPTY) continue;
+            int second, third, fourth;
+            second = boardState[i+6];
+            third = boardState[i+12];
+            fourth = boardState[i+18];
+            if(currentVal != second) continue;
+            if(currentVal != third) continue;
+            if(currentVal != fourth) continue;
+
+            result.setHasWin(true);
+            result.setWinnerNumber(currentVal);
+        }
         return result;
     }
     //------------------------------------------------------------------------------------------------------------------
 
-    public int negaMax(Node root, int depth, int player){
+    public int maxi(Node root, int depth){
+        int score;
 
+        if(depth == 0) return evaluation(root, depth+1);
+        if(checkWin(root.getState()).hasWin()) return evaluation(root, depth+1);
+
+        int max = Integer.MIN_VALUE;
+        LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
+
+        for(int i = 0; i < children.size(); i++){
+            score = mini (children.get(i), depth - 1);
+            if(score > max) max = score;
+        }
+        return max;
+    }
+    public int mini(Node root, int depth){
+        int score;
+
+        if(depth == 0) return evaluation(root, depth+1);
+        if(checkWin(root.getState()).hasWin()) return evaluation(root, depth+1);
+
+        int min = Integer.MAX_VALUE;
+        LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
+
+        for(int i = 0; i < children.size(); i++){
+            score = maxi(children.get(i), depth - 1);
+            if(score < min) min = score;
+        }
+        return min;
+    }
+
+    public int evaluation(Node root, int depth){
+        WinPair result = checkWin(root.getState());
+
+        int sum = 0;
+
+        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
+        sum += (numOfTwos(root, FIRSTPLAYER) * 50);
+        sum += (numOfThrees(root, FIRSTPLAYER) * 200);
+
+        //Decrease board values if other player will connect 2 or 3 in a row
+        //This acts as maximising player attempting to block the other player
+        sum -= (numOfTwos(root, 3-FIRSTPLAYER) * 40);
+        sum -= (numOfThrees(root, 3-FIRSTPLAYER) * 190);
+
+        if(result.hasWin()){
+            if(result.getWinner() == FIRSTPLAYER){
+                sum += 1000000 * depth;
+            }
+            else{
+                sum -= 1000000 * depth;
+            }
+        }
+
+        for(int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == FIRSTPLAYER) sum += boardValues[i];
+            else if (root.getState()[i] == 3-FIRSTPLAYER) sum -= boardValues[i];
+        }
+
+        return sum;
+    }
+    /*
+    public int negaMax(Node root, int depth, int player){
         if(depth == 0) return evaluation(root, player);
 
         LinkedList<Node> children = initChildren(root, player);
         if(children.size() == 0) return evaluation(root, player);
-
 
         int score;
         int max = Integer.MIN_VALUE;
@@ -269,7 +423,37 @@ public class MartiniEngine {
         }
         return max;
     }
+    public int evaluation(Node root, int maximisingPlayer) {
+        WinPair result = checkWin(root.getState());
 
+        int sum = 0;
+
+        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
+        sum += (numOfTwos(root, maximisingPlayer) * 50);
+        sum += (numOfThrees(root, maximisingPlayer) * 200);
+
+        //Decrease board values if other player will connect 2 or 3 in a row
+        //This acts as maximising player attempting to block the other player
+        sum -= (numOfTwos(root, 3-maximisingPlayer) * 40);
+        sum -= (numOfThrees(root, 3-maximisingPlayer) * 190);
+
+        if(result.hasWin()){
+            if(result.getWinner() == maximisingPlayer){
+                sum += 1000000;
+            }
+            else{
+                sum -= 1000000;
+            }
+        }
+
+        for(int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
+            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
+        }
+
+        return sum * ((-2*(maximisingPlayer - 1)) + 1);
+    }
+*/
     //Given a column number and a board state, this function returns the lowest free space of that column. If the
     //column is full, it returns -1
     public int findAvailableSpace(int colNum, int[] board){
@@ -315,42 +499,6 @@ public class MartiniEngine {
         return children;
     }
 
-    public int evaluation(Node root, int maximisingPlayer) {
-        WinPair result = checkWin(root.getState());
-
-        int sum = 0;
-        /*
-        //Makes this node extremely desirable
-        if(result.hasWin() && result.getWinner() == maximisingPlayer){
-            return -9999;
-        }
-
-        //Makes this node extremely undesirable
-        else if(result.hasWin() && result.getWinner() != maximisingPlayer){
-            return 9999;
-        }
-*/
-
-        //An instance of two connected pieces is worth 50 points
-        sum += (numOfTwos(root, maximisingPlayer) * 50);
-
-        //And instance of two connected pieces is worth 200 points
-        sum += (numOfThrees(root, maximisingPlayer) * 200);
-
-        if (result.hasWin() && result.getWinner() == maximisingPlayer) {
-            sum = 1000000;
-        }
-        else if (result.hasWin() && result.getWinner() != maximisingPlayer) {
-            sum = -1000000;
-        }
-
-        for(int i = 0; i < root.getState().length; i++) {
-            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
-            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
-        }
-        return sum * ((-2*(maximisingPlayer - 1)) + 1);
-    }
-
     public int numOfTwos(Node root, int currentPlayer){
         int sum = 0;
         for(int i = 0; i < PrecomputedIndexes.twoInARow.length; i++){
@@ -384,9 +532,6 @@ public class MartiniEngine {
         }
         return sum;
     }
-
-
-
 
     //Debug functions
     //------------------------------------------------------------------------------------------------------------------
@@ -429,15 +574,6 @@ public class MartiniEngine {
         currentBoardNode.getState()[0] = MINE;
         currentBoardNode.getState()[1] = MINE;
         currentBoardNode.getState()[2] = MINE;
-        currentBoardNode.getState()[7] = MINE;
-        currentBoardNode.getState()[14] = MINE;
-        currentBoardNode.getState()[20] = MINE;
-        currentBoardNode.getState()[27] = MINE;
-        currentBoardNode.getState()[41] = MINE;
-        currentBoardNode.getState()[40] = MINE;
-        currentBoardNode.getState()[39] = MINE;
-        currentBoardNode.getState()[29] = MINE;
-        currentBoardNode.getState()[22] = MINE;
 
         //currentBoardNode.getState()[35] = MINE;
         /*
@@ -560,7 +696,7 @@ public class MartiniEngine {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    public class WinPair{
+    private class WinPair{
         private int winnerNumber;
         private boolean hasWin;
 

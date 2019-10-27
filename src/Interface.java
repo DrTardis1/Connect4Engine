@@ -31,7 +31,13 @@ public class Interface {
                     break;
 
                 case "position":
-                    if(input.length == 3) martini.updateBoard(input[2], 2);
+                    if(input.length == 2) martini.setFirstPlayer(1);
+
+                    if(input.length == 3)
+                        martini.updateBoard(input[2], 2);
+
+                    martini.findBestMove();
+                    martini.printBoard();
                     break;
 
                 case "go":
@@ -52,18 +58,7 @@ public class Interface {
                 //------------------------------------------------------------------------------------
 
                 case "e":
-                    System.out.println("CURRENT BOARD VALUE: " + martini.evaluation(martini.getGameTree(), 1));
-                    break;
-
-                case "check":
-                    System.out.println("THERE IS WIN: " + martini.checkWin(martini.getCurrentBoard()).hasWin());
-                    break;
-
-                case "bestmove":
-                    martini.updateBoard(input[1], 1);
-                    martini.printBoard();
-                    if(martini.checkWin(martini.getCurrentBoard()).hasWin())
-                        System.out.println(martini.checkWin(martini.getCurrentBoard()).getWinner() + " WON THE GAME");
+                    //System.out.println("CURRENT BOARD VALUE: " + martini.evaluation(martini.getGameTree(), 1));
                     break;
 
                 case "easter":

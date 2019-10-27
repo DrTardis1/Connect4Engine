@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Bryce.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Bryce.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
@@ -41,7 +42,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/production/Connect4Engine" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -79,7 +80,7 @@
   </component>
   <component name="RunManager" selected="Application.Debug">
     <configuration name="Coordinator" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Interface" />
       <module name="Connect4Engine" />
@@ -89,7 +90,7 @@
       </method>
     </configuration>
     <configuration name="Debug" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Interface" />
       <module name="Connect4Engine" />
@@ -99,8 +100,8 @@
     </configuration>
     <configuration name="Coordinator" type="JarApplication">
       <option name="JAR_PATH" value="$PROJECT_DIR$/connect_4_coordinator.jar" />
-      <option name="PROGRAM_PARAMETERS" value="e0 \Users\Bryce\Documents\GitHub\Connect4Engine\out\production\Connect4Engine\" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="PROGRAM_PARAMETERS" value="e0 D:\Documents\GitHub\Connect4Engine\out\production\Connect4Engine" />
+      <option name="WORKING_DIRECTORY" value="D:\Documents\GitHub\Connect4Engine\" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2" />
     </configuration>
@@ -174,6 +175,8 @@
       <workItem from="1571956978129" duration="3071000" />
       <workItem from="1572073354218" duration="9305000" />
       <workItem from="1572145725550" duration="2083000" />
+      <workItem from="1572162734168" duration="16549000" />
+      <workItem from="1572180492977" duration="667000" />
     </task>
     <servers />
   </component>
@@ -215,13 +218,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>342</line>
-          <option name="timeStamp" value="17" />
+          <line>381</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>360</line>
-          <option name="timeStamp" value="19" />
+          <line>408</line>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
