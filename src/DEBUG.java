@@ -394,5 +394,48 @@ public void evaluation(Node root){
 
     public int getTreeDepth(){return currentBoardNode.getDepth(currentBoardNode);}
 
+    public int negaMax(Node root, int depth, int player){
+        if(depth == 0) return evaluation(root, player);
 
+        LinkedList<Node> children = initChildren(root, player);
+        if(children.size() == 0) return evaluation(root, player);
+
+        int score;
+        int max = Integer.MIN_VALUE;
+        for(int i = 0; i < children.size(); i++){
+            score = -negaMax(children.get(i), depth - 1, 3 - player);
+            if(score > max) max = score;
+        }
+        return max;
+    }
+    public int evaluation(Node root, int maximisingPlayer) {
+        WinPair result = checkWin(root.getState());
+
+        int sum = 0;
+
+        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
+        sum += (numOfTwos(root, maximisingPlayer) * 50);
+        sum += (numOfThrees(root, maximisingPlayer) * 200);
+
+        //Decrease board values if other player will connect 2 or 3 in a row
+        //This acts as maximising player attempting to block the other player
+        sum -= (numOfTwos(root, 3-maximisingPlayer) * 40);
+        sum -= (numOfThrees(root, 3-maximisingPlayer) * 190);
+
+        if(result.hasWin()){
+            if(result.getWinner() == maximisingPlayer){
+                sum += 1000000;
+            }
+            else{
+                sum -= 1000000;
+            }
+        }
+
+        for(int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
+            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
+        }
+
+        return sum * ((-2*(maximisingPlayer - 1)) + 1);
+    }
 */

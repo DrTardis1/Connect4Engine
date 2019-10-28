@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DEBUG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DEBUG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
@@ -73,7 +78,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Coordinator">
+  <component name="RunManager" selected="Application.MacCoordinator">
     <configuration name="Coordinator" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -85,12 +90,21 @@
       </method>
     </configuration>
     <configuration name="Debug" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="11" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Interface" />
       <module name="Connect4Engine" />
       <method v="2">
         <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MacCoordinator" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Interface" />
+      <module name="Connect4Engine" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="MakeProject" enabled="true" />
+        <option name="RunConfigurationTask" enabled="true" run_configuration_name="MacCoordinator" run_configuration_type="JarApplication" />
       </method>
     </configuration>
     <configuration name="Coordinator" type="JarApplication">
@@ -100,10 +114,19 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2" />
     </configuration>
+    <configuration name="MacCoordinator" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/connect_4_coordinator.jar" />
+      <option name="PROGRAM_PARAMETERS" value="e0 $PROJECT_DIR$/out/production/Connect4Engine/META-INF/" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.Debug" />
       <item itemvalue="Application.Coordinator" />
+      <item itemvalue="Application.MacCoordinator" />
       <item itemvalue="JAR Application.Coordinator" />
+      <item itemvalue="JAR Application.MacCoordinator" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -173,6 +196,7 @@
       <workItem from="1572162734168" duration="16549000" />
       <workItem from="1572180492977" duration="667000" />
       <workItem from="1572181217097" duration="130000" />
+      <workItem from="1572228325756" duration="1787000" />
     </task>
     <servers />
   </component>
@@ -214,12 +238,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>381</line>
+          <line>494</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>408</line>
+          <line>513</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>

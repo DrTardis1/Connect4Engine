@@ -15,6 +15,7 @@ public class MartiniEngine {
     private int OPPONENT = 2;
     private int MINE = 1;
     private int FIRSTPLAYER = 2;
+    private int TIMEREMAINING;
 
     //Essential Functions
     //------------------------------------------------------------------------------------------------------------------
@@ -51,7 +52,7 @@ public class MartiniEngine {
         if(FIRSTPLAYER == MINE) {
             bestVal = Integer.MIN_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = mini(children.get(i), 4);
+                score = mini(children.get(i), calcDepth());
                 if (score > bestVal) {
                     bestVal = score;
                     index = i;
@@ -61,7 +62,7 @@ public class MartiniEngine {
         else {
             bestVal = Integer.MAX_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = maxi(children.get(i), 4);
+                score = maxi(children.get(i), calcDepth());
                 if (score < bestVal) {
                     bestVal = score;
                     index = i;
@@ -87,8 +88,9 @@ public class MartiniEngine {
 
     //Response to quit
     public String quit(){return "quitting";}
-    //------------------------------------------------------------------------------------------------------------------
 
+    //Getters
+    //------------------------------------------------------------------------------------------------------------------
     //Getters & Setters
     //------------------------------------------------------------------------------------------------------------------
     public int[] getCurrentBoard(){return currentBoardNode.getState();}
@@ -96,8 +98,13 @@ public class MartiniEngine {
     public Node getGameTree(){return currentBoardNode;}
 
     public void setFirstPlayer(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
-    //------------------------------------------------------------------------------------------------------------------
 
+    public boolean isFirst(){return FIRSTPLAYER == MINE;}
+
+    public void updateTimeRemaining(int TIMEREMAINING){this.TIMEREMAINING = TIMEREMAINING;}
+
+    //Win Checking functions
+    //------------------------------------------------------------------------------------------------------------------
     //Win Checking Functions
     //------------------------------------------------------------------------------------------------------------------
     public WinPair checkWin(int[] boardState){
@@ -345,8 +352,9 @@ public class MartiniEngine {
         }
         return result;
     }
-    //------------------------------------------------------------------------------------------------------------------
 
+    //Minimax and Evaluation function implementations
+    //------------------------------------------------------------------------------------------------------------------
     public int maxi(Node root, int depth){
         int score;
 
@@ -408,52 +416,9 @@ public class MartiniEngine {
 
         return sum;
     }
-    /*
-    public int negaMax(Node root, int depth, int player){
-        if(depth == 0) return evaluation(root, player);
 
-        LinkedList<Node> children = initChildren(root, player);
-        if(children.size() == 0) return evaluation(root, player);
-
-        int score;
-        int max = Integer.MIN_VALUE;
-        for(int i = 0; i < children.size(); i++){
-            score = -negaMax(children.get(i), depth - 1, 3 - player);
-            if(score > max) max = score;
-        }
-        return max;
-    }
-    public int evaluation(Node root, int maximisingPlayer) {
-        WinPair result = checkWin(root.getState());
-
-        int sum = 0;
-
-        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
-        sum += (numOfTwos(root, maximisingPlayer) * 50);
-        sum += (numOfThrees(root, maximisingPlayer) * 200);
-
-        //Decrease board values if other player will connect 2 or 3 in a row
-        //This acts as maximising player attempting to block the other player
-        sum -= (numOfTwos(root, 3-maximisingPlayer) * 40);
-        sum -= (numOfThrees(root, 3-maximisingPlayer) * 190);
-
-        if(result.hasWin()){
-            if(result.getWinner() == maximisingPlayer){
-                sum += 1000000;
-            }
-            else{
-                sum -= 1000000;
-            }
-        }
-
-        for(int i = 0; i < root.getState().length; i++) {
-            if (root.getState()[i] == maximisingPlayer) sum += boardValues[i];
-            else if (root.getState()[i] != maximisingPlayer && root.getState()[i] != EMPTY) sum -= boardValues[i];
-        }
-
-        return sum * ((-2*(maximisingPlayer - 1)) + 1);
-    }
-*/
+    //Misc functions
+    //------------------------------------------------------------------------------------------------------------------
     //Given a column number and a board state, this function returns the lowest free space of that column. If the
     //column is full, it returns -1
     public int findAvailableSpace(int colNum, int[] board){
@@ -533,19 +498,14 @@ public class MartiniEngine {
         return sum;
     }
 
+    public int calcDepth(){
+        if(TIMEREMAINING > 60000) return 7;
+        else if(TIMEREMAINING > 10000 && TIMEREMAINING < 59999) return 5;
+        else return 2;
+    }
+
     //Debug functions
     //------------------------------------------------------------------------------------------------------------------
-    public int recursTraverse(int currentElement, int currentValue, int initialCol, boolean toggle, int direction) {
-        int currentCol = (currentElement + direction) % 7;
-        if(initialCol >= currentCol && toggle) {
-            if (currentElement + direction >= 0 && currentElement + direction <= 41 && currentBoardNode.getState()[currentElement] == currentValue)
-                return 1 + recursTraverse(currentElement + direction, currentValue, initialCol, toggle, direction);
-            else
-                return 0;
-        }
-        else
-            return 0;
-    }
     public void printBoard(){
         StringBuilder sb = new StringBuilder();
 
@@ -581,15 +541,6 @@ public class MartiniEngine {
             currentBoardNode.getState()[i] = (Math.random() <= 0.5) ? 1 : 2;
 
          */
-    }
-    public void clearBoard(){
-        currentBoardNode.setState(new int[42]);
-    }
-    public boolean boardIsEmpty(){
-        for(int i = 0; i < currentBoardNode.getState().length; i++)
-            if(currentBoardNode.getState()[i] != EMPTY) return false;
-
-        return true;
     }
     public void getIntro(){
         //Fancy logo
@@ -628,40 +579,6 @@ public class MartiniEngine {
             e.printStackTrace();
         }
 
-    }
-    public void printTree(Node root){
-
-        if(root == null) return;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ");
-        sb.append(root.name);
-        sb.append(" Value: ");
-        sb.append(root.getValue());
-        if(root.getParent() != null) {
-            sb.append(" Parent: ");
-            sb.append(root.getParent().name);
-        }
-        sb.append("\n");
-        System.out.println(sb.toString());
-
-        for(int i = 0; i < root.getChildren().size(); i++)
-            printTree(root.getChildren().get(i));
-
-
-        /*
-        for(int i = 0; i < currentBoardNode.getChildren().size(); i++){
-            sb.append("Name: ");
-            sb.append(i);
-            sb.append("\tValue: ");
-            sb.append(currentBoardNode.getChildren().get(i).getValue());
-            sb.append("\tColNum: ");
-            sb.append(currentBoardNode.getChildren().get(i).getColNum());
-            sb.append("\n");
-        }
-        System.out.println(sb.toString());
-
-         */
     }
     public void printTreeBreadth(Node root){
         Queue<Node> q = new LinkedList<>();
