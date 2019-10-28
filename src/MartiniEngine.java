@@ -48,10 +48,10 @@ public class MartiniEngine {
 
         //As we at iterating over the children generated for my moves, negaMax must
         //first run and favour the opponent
-        if(FIRSTPLAYER == MINE) {
+        if(isFirst()) {
             bestVal = Integer.MIN_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = mini(children.get(i), calcDepth(timeRemaining), Integer.MAX_VALUE, Integer.MIN_VALUE);
+                score = mini(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
                 if (score > bestVal) {
                     bestVal = score;
                     index = i;
@@ -68,8 +68,38 @@ public class MartiniEngine {
                 }
             }
         }
-            //score = -negaMax(children.get(i), 3, OPPONENT);
+        System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
+        updateBoard(Integer.toString(children.get(index).getColNum()), 1);
+    }
 
+    public void fbm2(int timeRemaining){
+        int bestVal = 0;
+        int index = 0;
+        int score;
+        LinkedList<Node> children = initChildren(currentBoardNode, MINE);
+
+        //As we at iterating over the children generated for my moves, negaMax must
+        //first run and favour the opponent
+        if(isFirst()) {
+            bestVal = Integer.MIN_VALUE;
+            for (int i = 0; i < children.size(); i++) {
+                score = minimax(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, false, OPPONENT);
+                if (score > bestVal) {
+                    bestVal = score;
+                    index = i;
+                }
+            }
+        }
+        else {
+            bestVal = Integer.MAX_VALUE;
+            for (int i = 0; i < children.size(); i++) {
+                score = minimax(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, true, MINE);
+                if (score < bestVal) {
+                    bestVal = score;
+                    index = i;
+                }
+            }
+        }
         System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
         updateBoard(Integer.toString(children.get(index).getColNum()), 1);
     }
@@ -88,20 +118,16 @@ public class MartiniEngine {
     //Response to quit
     public String quit(){return "quitting";}
 
-    //Getters
-    //------------------------------------------------------------------------------------------------------------------
     //Getters & Setters
     //------------------------------------------------------------------------------------------------------------------
     public int[] getCurrentBoard(){return currentBoardNode.getState();}
 
     public Node getGameTree(){return currentBoardNode;}
 
-    public void setFirstPlayer(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
+    public void setFirst(int isFirst){this.FIRSTPLAYER = FIRSTPLAYER;}
 
     public boolean isFirst(){return FIRSTPLAYER == MINE;}
 
-    //Win Checking functions
-    //------------------------------------------------------------------------------------------------------------------
     //Win Checking Functions
     //------------------------------------------------------------------------------------------------------------------
     public WinPair checkWin(int[] boardState){
@@ -353,34 +379,87 @@ public class MartiniEngine {
     //Minimax and Evaluation function implementations
     //------------------------------------------------------------------------------------------------------------------
     public int maxi(Node root, int depth, int alpha, int beta){
-        int score;
 
         if(depth == 0) return evaluation(root, depth+1);
         if(checkWin(root.getState()).hasWin()) return evaluation(root, depth+1);
 
-        int max = Integer.MIN_VALUE;
         LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
 
+        int score;
         for(int i = 0; i < children.size(); i++){
             score = mini (children.get(i), depth - 1, alpha, beta);
-            if(score > max) max = score;
+            if(score >= beta) return beta;
+            if(score > alpha) alpha = score;
         }
-        return max;
+        return alpha;
     }
     public int mini(Node root, int depth, int alpha, int beta){
-        int score;
 
-        if(depth == 0) return evaluation(root, depth+1);
-        if(checkWin(root.getState()).hasWin()) return evaluation(root, depth+1);
 
-        int min = Integer.MAX_VALUE;
+        if(depth == 0) return -evaluation(root, depth+1);
+        if(checkWin(root.getState()).hasWin()) return -evaluation(root, depth+1);
+
         LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
 
+        int score;
         for(int i = 0; i < children.size(); i++){
             score = maxi(children.get(i), depth - 1, alpha, beta);
-            if(score < min) min = score;
+            if(score <= alpha) return alpha;
+            if(score < beta) beta = score;
         }
-        return min;
+        return beta;
+    }
+
+    public int minimax(Node root, int depth, int alpha, int beta, boolean maxingPlayer, int currentPlayer){
+        if(depth == 0) return evaluation(root, depth+1);
+
+        if(maxingPlayer){
+            LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
+            for(int i = 0; i < children.size(); i++) {
+                alpha = Math.max(alpha, minimax(children.get(i), depth-1, alpha, beta, false, 3-currentPlayer));
+                if(alpha >= beta) break;
+            }
+            return alpha;
+        }
+        else{
+            LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
+            for(int i = 0; i < children.size(); i++){
+                beta = Math.min(beta, minimax(children.get(i), depth-1, alpha, beta, true, 3-currentPlayer));
+                if(alpha >= beta) break;
+            }
+            return beta;
+        }
+    }
+
+    public int eval2(Node root, int depth, int currentPlayer){
+        WinPair result = checkWin(root.getState());
+
+        int sum = 0;
+
+        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
+        sum += (numOfTwos(root, currentPlayer) * 50);
+        sum += (numOfThrees(root, currentPlayer) * 200);
+
+        //Decrease board values if other player will connect 2 or 3 in a row
+        //This acts as maximising player attempting to block the other player
+        sum -= (numOfTwos(root, 3-currentPlayer) * 40);
+        sum -= (numOfThrees(root, 3-currentPlayer) * 190);
+
+        if(result.hasWin()){
+            if(result.getWinner() == currentPlayer){
+                sum += 1000000 * depth;
+            }
+            else{
+                sum -= 1000000 * depth;
+            }
+        }
+
+        for(int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == currentPlayer) sum += boardValues[i];
+            else if (root.getState()[i] == 3-currentPlayer) sum -= boardValues[i];
+        }
+
+        return sum;
     }
 
     public int evaluation(Node root, int depth){
@@ -496,7 +575,7 @@ public class MartiniEngine {
     }
 
     public int calcDepth(int timeRemaining){
-        if(timeRemaining > 60000) return 7;
+        if(timeRemaining > 60000) return 9;
         else if(timeRemaining > 10000 && timeRemaining < 59999) return 5;
         else return 2;
     }
