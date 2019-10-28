@@ -15,7 +15,6 @@ public class MartiniEngine {
     private int OPPONENT = 2;
     private int MINE = 1;
     private int FIRSTPLAYER = 2;
-    private int TIMEREMAINING;
 
     //Essential Functions
     //------------------------------------------------------------------------------------------------------------------
@@ -41,7 +40,7 @@ public class MartiniEngine {
     }
 
     //Response to go ftime x stime y
-    public void findBestMove(){
+    public void findBestMove(int timeRemaining){
         int bestVal = 0;
         int index = 0;
         int score;
@@ -52,7 +51,7 @@ public class MartiniEngine {
         if(FIRSTPLAYER == MINE) {
             bestVal = Integer.MIN_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = mini(children.get(i), calcDepth());
+                score = mini(children.get(i), calcDepth(timeRemaining), Integer.MAX_VALUE, Integer.MIN_VALUE);
                 if (score > bestVal) {
                     bestVal = score;
                     index = i;
@@ -62,7 +61,7 @@ public class MartiniEngine {
         else {
             bestVal = Integer.MAX_VALUE;
             for (int i = 0; i < children.size(); i++) {
-                score = maxi(children.get(i), calcDepth());
+                score = maxi(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
                 if (score < bestVal) {
                     bestVal = score;
                     index = i;
@@ -100,8 +99,6 @@ public class MartiniEngine {
     public void setFirstPlayer(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
 
     public boolean isFirst(){return FIRSTPLAYER == MINE;}
-
-    public void updateTimeRemaining(int TIMEREMAINING){this.TIMEREMAINING = TIMEREMAINING;}
 
     //Win Checking functions
     //------------------------------------------------------------------------------------------------------------------
@@ -355,7 +352,7 @@ public class MartiniEngine {
 
     //Minimax and Evaluation function implementations
     //------------------------------------------------------------------------------------------------------------------
-    public int maxi(Node root, int depth){
+    public int maxi(Node root, int depth, int alpha, int beta){
         int score;
 
         if(depth == 0) return evaluation(root, depth+1);
@@ -365,12 +362,12 @@ public class MartiniEngine {
         LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
 
         for(int i = 0; i < children.size(); i++){
-            score = mini (children.get(i), depth - 1);
+            score = mini (children.get(i), depth - 1, alpha, beta);
             if(score > max) max = score;
         }
         return max;
     }
-    public int mini(Node root, int depth){
+    public int mini(Node root, int depth, int alpha, int beta){
         int score;
 
         if(depth == 0) return evaluation(root, depth+1);
@@ -380,7 +377,7 @@ public class MartiniEngine {
         LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
 
         for(int i = 0; i < children.size(); i++){
-            score = maxi(children.get(i), depth - 1);
+            score = maxi(children.get(i), depth - 1, alpha, beta);
             if(score < min) min = score;
         }
         return min;
@@ -498,9 +495,9 @@ public class MartiniEngine {
         return sum;
     }
 
-    public int calcDepth(){
-        if(TIMEREMAINING > 60000) return 7;
-        else if(TIMEREMAINING > 10000 && TIMEREMAINING < 59999) return 5;
+    public int calcDepth(int timeRemaining){
+        if(timeRemaining > 60000) return 7;
+        else if(timeRemaining > 10000 && timeRemaining < 59999) return 5;
         else return 2;
     }
 

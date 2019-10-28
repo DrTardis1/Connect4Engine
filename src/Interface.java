@@ -39,10 +39,9 @@ public class Interface {
 
                 case "go":
                     if(martini.isFirst())
-                        martini.updateTimeRemaining(Integer.parseInt(input[2]));
+                        martini.findBestMove(Integer.parseInt(input[2]));
                     else
-                        martini.updateTimeRemaining(Integer.parseInt(input[4]));
-                    martini.findBestMove();
+                        martini.findBestMove(Integer.parseInt(input[4]));
                     break;
 
                 case "perft":
