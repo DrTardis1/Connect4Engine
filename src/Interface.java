@@ -31,17 +31,19 @@ public class Interface {
                     break;
 
                 case "position":
-                    if(input.length == 2) martini.setFirstPlayer(1);
+                    if(input.length == 2) martini.setFirst(1);
 
                     if(input.length == 3)
                         martini.updateBoard(input[2], 2);
                     break;
 
                 case "go":
-                    if(martini.isFirst())
-                        martini.findBestMove(Integer.parseInt(input[2]));
-                    else
-                        martini.findBestMove(Integer.parseInt(input[4]));
+                    //if(martini.isFirst())
+                        //martini.findBestMove(Integer.parseInt(input[2]));
+                    //else
+                        //martini.findBestMove(Integer.parseInt(input[4]));
+                    //martini.findBestMove(5);
+                    martini.fbm2(10000000);
                     break;
 
                 case "perft":
