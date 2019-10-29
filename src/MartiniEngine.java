@@ -18,7 +18,6 @@ public class MartiniEngine {
 
     //Essential Functions
     //------------------------------------------------------------------------------------------------------------------
-
     //Response to name
     public String getName(){return name;}
 
@@ -88,8 +87,6 @@ public class MartiniEngine {
     //Response to quit
     public String quit(){return "quitting";}
 
-    //Getters
-    //------------------------------------------------------------------------------------------------------------------
     //Getters & Setters
     //------------------------------------------------------------------------------------------------------------------
     public int[] getCurrentBoard(){return currentBoardNode.getState();}
@@ -100,8 +97,7 @@ public class MartiniEngine {
 
     public boolean isFirst(){return FIRSTPLAYER == MINE;}
 
-    //Win Checking functions
-    //------------------------------------------------------------------------------------------------------------------
+
     //Win Checking Functions
     //------------------------------------------------------------------------------------------------------------------
     public WinPair checkWin(int[] boardState){
@@ -118,6 +114,7 @@ public class MartiniEngine {
     }
     public WinPair checkHorizontal(int[] boardState){
         WinPair result = new WinPair();
+
         outerloop:
         for(int i = 0; i < 36; i = i + 7){
             for(int j = 0; j < 4; j++){
@@ -382,7 +379,6 @@ public class MartiniEngine {
         }
         return min;
     }
-
     public int evaluation(Node root, int depth){
         WinPair result = checkWin(root.getState());
 
@@ -461,6 +457,7 @@ public class MartiniEngine {
         return children;
     }
 
+    //Counts the number of 2 consecutive 'currentPlayer' pieces within the current board
     public int numOfTwos(Node root, int currentPlayer){
         int sum = 0;
         for(int i = 0; i < PrecomputedIndexes.twoInARow.length; i++){
@@ -478,6 +475,7 @@ public class MartiniEngine {
         return sum;
     }
 
+    //Counts the number of 3 consecutive 'currentPlayer' pieces within the current baord
     public int numOfThrees(Node root, int currentPlayer){
         int sum = 0;
         for(int i = 0; i < PrecomputedIndexes.threeInARow.length; i++){
@@ -495,9 +493,12 @@ public class MartiniEngine {
         return sum;
     }
 
+    //Returns a depth to generate moves to based on the timeRemaining of the player
     public int calcDepth(int timeRemaining){
-        if(timeRemaining > 60000) return 7;
-        else if(timeRemaining > 10000 && timeRemaining < 59999) return 5;
+        if(timeRemaining > 60000) return 9;
+        else if(timeRemaining > 10000 && timeRemaining < 59999) return 7;
+        else if(timeRemaining > 1000 && timeRemaining < 9999) return 5;
+        else if(timeRemaining > 300 && timeRemaining < 999) return 3;
         else return 2;
     }
 
