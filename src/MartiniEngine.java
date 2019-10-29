@@ -82,6 +82,8 @@ public class MartiniEngine {
         //first run and favour the opponent
         if(isFirst()) {
             bestVal = Integer.MIN_VALUE;
+            System.out.println("bestmove " + minimax(currentBoardNode, calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, false, MINE));
+            /*
             for (int i = 0; i < children.size(); i++) {
                 score = minimax(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, false, OPPONENT);
                 if (score > bestVal) {
@@ -89,8 +91,13 @@ public class MartiniEngine {
                     index = i;
                 }
             }
+
+             */
         }
         else {
+            bestVal = Integer.MIN_VALUE;
+            System.out.println("bestmove " + minimax(currentBoardNode, calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, true, MINE));
+            /*
             bestVal = Integer.MAX_VALUE;
             for (int i = 0; i < children.size(); i++) {
                 score = minimax(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, true, MINE);
@@ -99,8 +106,10 @@ public class MartiniEngine {
                     index = i;
                 }
             }
+
+             */
         }
-        System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
+        //System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
         updateBoard(Integer.toString(children.get(index).getColNum()), 1);
     }
 
@@ -414,20 +423,24 @@ public class MartiniEngine {
         if(depth == 0) return eval2(root, depth+1, currentPlayer);
 
         if(maxingPlayer){
+            int best = Integer.MIN_VALUE;
             LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
             for(int i = 0; i < children.size(); i++) {
-                alpha = Math.max(alpha, minimax(children.get(i), depth-1, alpha, beta, false, 3-currentPlayer));
-                if(alpha >= beta) break;
+                best = Math.max(best, minimax(children.get(i), depth-1, alpha, beta, false, 3-currentPlayer));
+                alpha = Math.max(alpha, best);
+                if(beta <= alpha) break;
             }
-            return alpha;
+            return best;
         }
-        else{
+        else {
+            int best = Integer.MAX_VALUE;
             LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
             for(int i = 0; i < children.size(); i++){
-                beta = Math.min(beta, minimax(children.get(i), depth-1, alpha, beta, true, 3-currentPlayer));
-                if(alpha >= beta) break;
+                best = Math.min(best, minimax(children.get(i), depth-1, alpha, beta, true, 3-currentPlayer));
+                beta = Math.min(beta, best);
+                if(beta <= alpha) break;
             }
-            return beta;
+            return best;
         }
     }
 

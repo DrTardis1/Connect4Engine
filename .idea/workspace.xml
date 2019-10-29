@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -70,7 +76,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Coordinator">
+  <component name="RunManager" selected="Application.Debug">
     <configuration name="Coordinator" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -108,7 +114,7 @@
     </configuration>
     <configuration name="MacCoordinator" type="JarApplication">
       <option name="JAR_PATH" value="$PROJECT_DIR$/connect_4_coordinator.jar" />
-      <option name="PROGRAM_PARAMETERS" value="e0 $PROJECT_DIR$/out/production/Connect4Engine/META-INF/" />
+      <option name="PROGRAM_PARAMETERS" value="e0 $PROJECT_DIR$/out/production/Connect4Engine/" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2" />
@@ -192,6 +198,7 @@
       <workItem from="1572265268506" duration="126000" />
       <workItem from="1572265549036" duration="260000" />
       <workItem from="1572320783746" duration="1913000" />
+      <workItem from="1572328534180" duration="2194000" />
     </task>
     <servers />
   </component>
