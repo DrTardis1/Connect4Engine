@@ -411,7 +411,7 @@ public class MartiniEngine {
     }
 
     public int minimax(Node root, int depth, int alpha, int beta, boolean maxingPlayer, int currentPlayer){
-        if(depth == 0) return evaluation(root, depth+1);
+        if(depth == 0) return eval2(root, depth+1, currentPlayer);
 
         if(maxingPlayer){
             LinkedList<Node> children = initChildren(root, 3-root.getPlayer());

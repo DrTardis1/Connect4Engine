@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -195,6 +191,7 @@
       <workItem from="1572228325756" duration="1787000" />
       <workItem from="1572265268506" duration="126000" />
       <workItem from="1572265549036" duration="260000" />
+      <workItem from="1572320783746" duration="1913000" />
     </task>
     <servers />
   </component>
@@ -230,16 +227,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
-          <line>385</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
