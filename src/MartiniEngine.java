@@ -495,8 +495,7 @@ public class MartiniEngine {
 
     //Returns a depth to generate moves to based on the timeRemaining of the player
     public int calcDepth(int timeRemaining){
-        if(timeRemaining > 60000) return 9;
-        else if(timeRemaining > 10000 && timeRemaining < 59999) return 7;
+        if(timeRemaining > 15000) return 7;
         else if(timeRemaining > 1000 && timeRemaining < 9999) return 5;
         else if(timeRemaining > 300 && timeRemaining < 999) return 3;
         else return 2;
