@@ -4,6 +4,7 @@
  */
 
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Interface {
 
@@ -12,17 +13,23 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         PrecomputedIndexes.init();
 
+        //Setup for reading coordinator input
         Scanner coordinator = new Scanner(System.in);
         String[] input;
         boolean finished = false;
 
+        martini.debug();
+
         while(!finished){
 
             input = coordinator.nextLine().split(" ");
-
             switch(input[0].toLowerCase()){
 
                 case "name":
+                    //Determines if Martini is first or not
+                    if(Integer.parseInt(input[2]) == 0) martini.setFirstPlayer(1);
+                    else martini.setFirstPlayer(2);
+
                     System.out.println(martini.getName());
                     break;
 
@@ -31,13 +38,13 @@ public class Interface {
                     break;
 
                 case "position":
-                    if(input.length == 2) martini.setFirstPlayer(1);
-
                     if(input.length == 3)
                         martini.updateBoard(input[2], 2);
                     break;
 
                 case "go":
+
+                    //Determines which time (ftime or stime) is for Martini
                     if(martini.isFirst())
                         martini.findBestMove(Integer.parseInt(input[2]));
                     else
@@ -55,38 +62,16 @@ public class Interface {
                     finished = true;
                     break;
 
-                //------------------------------------------------------------------------------------
-
-                case "e":
-                    //System.out.println("CURRENT BOARD VALUE: " + martini.evaluation(martini.getGameTree(), 1));
-                    break;
-
                 case "easter":
                     martini.getIntro();
                     break;
 
-                case "pt":
-                    martini.printTreeBreadth(martini.getGameTree());
-                    break;
-
-                case "pk":
-                    martini.printKids(martini.getGameTree());
-                    break;
-
-                case "d":
-                    martini.debug();
-                    break;
-
-                case "two":
-                    System.out.println("NUM OF 2s:" + martini.numOfTwos(martini.getGameTree(), 1));
-                    break;
-
-                case "three":
-                    System.out.println("NUM OF 3s:" + martini.numOfThrees(martini.getGameTree(),  1));
-                    break;
-
                 case "print":
                     martini.printBoard();
+                    break;
+
+                case "joke":
+                    System.out.println(martini.initJokes()[ThreadLocalRandom.current().nextInt(0, 6)]);
                     break;
             }
         }

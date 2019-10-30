@@ -1,11 +1,17 @@
 import java.util.LinkedList;
 
+
+//Class that contains addresses of possible two or three in a row combinations within a given board state.
+//Used to calculate how many 2 or 3 in a row combinations there are in a board.
 public class PrecomputedIndexes {
 
     public static LinkedList<Integer>[] twoInARow;
     public static LinkedList<Integer>[] threeInARow;
 
+
     public static void init(){initTwoInARow(); initThreeInARow();}
+
+    //Initialises twoInARow, which is a linked list containing arrays of indexes that can contain 2 consecutive pieces
     public static void initTwoInARow(){
         twoInARow = new LinkedList[41];
 
@@ -38,6 +44,7 @@ public class PrecomputedIndexes {
             }
         }
     }
+    //Initialises threeInARow, which is a linked list containing arrays of indexes that can contain 3 consecutive pieces
     public static void initThreeInARow(){
         threeInARow = new LinkedList[40];
 
