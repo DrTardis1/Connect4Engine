@@ -7,8 +7,6 @@
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine$WinPair.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/MartiniEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Interface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
@@ -198,10 +196,16 @@
       <workItem from="1572228325756" duration="1787000" />
       <workItem from="1572265268506" duration="126000" />
       <workItem from="1572265549036" duration="260000" />
+<<<<<<< Updated upstream
       <workItem from="1572320783746" duration="1913000" />
       <workItem from="1572328534180" duration="2194000" />
       <workItem from="1572342291190" duration="10159000" />
       <workItem from="1572389369618" duration="4800000" />
+=======
+      <workItem from="1572401476916" duration="2062000" />
+      <workItem from="1572410836083" duration="4409000" />
+      <workItem from="1572416356150" duration="7504000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
@@ -242,6 +246,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+<<<<<<< Updated upstream
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
           <line>364</line>
           <option name="timeStamp" value="9" />
@@ -250,6 +255,11 @@
           <url>file://$PROJECT_DIR$/src/MartiniEngine.java</url>
           <line>55</line>
           <option name="timeStamp" value="10" />
+=======
+          <url>file://$PROJECT_DIR$/src/Interface.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="5" />
+>>>>>>> Stashed changes
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

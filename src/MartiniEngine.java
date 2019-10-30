@@ -1,6 +1,10 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
+//TODO
+//-Implement Alpha beta pruning
+//-Adjust calcDepth() func for more effective depth variation
+
 public class MartiniEngine {
 
     private String name = "Martini-C3260061";
@@ -41,6 +45,7 @@ public class MartiniEngine {
 
     //Response to go ftime x stime y
     public void findBestMove(int timeRemaining){
+<<<<<<< Updated upstream
         int index = 0;
         int bestValue;
 
@@ -56,11 +61,24 @@ public class MartiniEngine {
                 int currentValue = minimax(children.get(i), calcDepth(timeRemaining), false);
                 if(currentValue > bestValue){
                     bestValue = currentValue;
+=======
+        int bestMoveValue = 0;
+        int index = 0;
+        LinkedList<Node> children = initChildren(currentBoardNode, MINE);
+
+        if(isMaximising()){
+            bestMoveValue = Integer.MIN_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                int moveScore = alphaBetaMini(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
+                if(moveScore > bestMoveValue){
+                    bestMoveValue = moveScore;
+>>>>>>> Stashed changes
                     index = i;
                 }
 
             }
         }
+<<<<<<< Updated upstream
 
         //Otherwise, it must maximise the children as Martini is the minimising player
         else{
@@ -71,13 +89,26 @@ public class MartiniEngine {
                 int currentValue = minimax(children.get(i), calcDepth(timeRemaining), true);
                 if(currentValue < bestValue){
                     bestValue = currentValue;
+=======
+        else{
+            bestMoveValue = Integer.MAX_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                int moveScore = alphaBetaMaxi(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
+                if(moveScore < bestMoveValue){
+                    bestMoveValue = moveScore;
+>>>>>>> Stashed changes
                     index = i;
                 }
             }
         }
 
+<<<<<<< Updated upstream
         System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestValue);
         updateBoard(Integer.toString(children.get(index).getColNum()), MINE);
+=======
+        System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestMoveValue);
+        updateBoard(Integer.toString(children.get(index).getColNum()), 1);
+>>>>>>> Stashed changes
     }
 
     //Response to perft x
@@ -99,10 +130,16 @@ public class MartiniEngine {
     public int[] getCurrentBoard(){return currentBoardNode.getState();}
 
     public Node getGameTree(){return currentBoardNode;}
+<<<<<<< Updated upstream
 
     public void setFirst(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
 
     public boolean isFirst(){return FIRSTPLAYER == MINE;}
+=======
+    public void setFirstPlayer(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
+    public boolean isMaximising(){return FIRSTPLAYER == MINE;}
+    public int getFirstPlayer(){return FIRSTPLAYER;}
+>>>>>>> Stashed changes
 
     //Win Checking Functions
     //------------------------------------------------------------------------------------------------------------------
@@ -354,6 +391,12 @@ public class MartiniEngine {
 
     //Minimax and Evaluation function implementations
     //------------------------------------------------------------------------------------------------------------------
+<<<<<<< Updated upstream
+=======
+    /*
+    public int maxi(Node root, int depth, int alpha, int beta){
+        int score;
+>>>>>>> Stashed changes
 
     public int minimax(Node root, int depth, boolean maximisingPlayer){
         if(depth == 0) return eval(root, depth+1);
@@ -389,7 +432,13 @@ public class MartiniEngine {
             return lowestScore;
         }
     }
+<<<<<<< Updated upstream
     public int eval(Node root, int depth) {
+=======
+
+     */
+    public int evaluation(Node root, int depth){
+>>>>>>> Stashed changes
         WinPair result = checkWin(root.getState());
         int score = 0;
 
@@ -411,6 +460,7 @@ public class MartiniEngine {
             else if (root.getState()[i] == (3 - FIRSTPLAYER)) score -= boardValues[i];
         }
 
+<<<<<<< Updated upstream
         //As the evaluation must be relative to the FIRSTPLAYER, if currentPlayer
         //is the FIRSTPLAYER, the sum is positive. Otherwise, it's negative
         //int multiplier = currentPlayer == FIRSTPLAYER ? 1 : -1;
@@ -421,6 +471,69 @@ public class MartiniEngine {
         return score * multiplier;
          */
         return score;
+=======
+        return sum;
+        /*
+        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
+        sum += (numOfTwos(root, FIRSTPLAYER) * 50);
+        sum += (numOfThrees(root, FIRSTPLAYER) * 200);
+
+        //Decrease board values if other player will connect 2 or 3 in a row
+        //This acts as maximising player attempting to block the other player
+        sum -= (numOfTwos(root, 3-FIRSTPLAYER) * 40);
+        sum -= (numOfThrees(root, 3-FIRSTPLAYER) * 190);
+
+        if(result.hasWin()){
+            if(result.getWinner() == FIRSTPLAYER){
+                sum += 1000000 * depth;
+            }
+            else{
+                sum -= 1000000 * depth;
+            }
+        }
+
+        for(int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == FIRSTPLAYER) sum += boardValues[i];
+            else if (root.getState()[i] == 3-FIRSTPLAYER) sum -= boardValues[i];
+        }
+        return sum;  */
+    }
+
+    public int alphaBetaMaxi(Node root, int depth, int alpha, int beta) {
+
+        //Evaluates if depth is reached
+        if (depth == 0) return evaluation(root, depth + 1);
+
+        //Initialises children to opposite player's turn
+        LinkedList<Node> children = initChildren(root, 3 - root.getPlayer());
+
+        //If root.getPlayer() is the FIRSTPLAYER
+            int maxEval = Integer.MIN_VALUE;
+            for (int i = 0; i < children.size(); i++) {
+                int eval = alphaBetaMini(children.get(i), depth - 1, alpha, beta);
+                maxEval = Math.max(maxEval, eval);
+                alpha = Math.max(alpha, eval);
+                if (beta <= alpha) break;
+            }
+            return maxEval;
+    }
+    public int alphaBetaMini(Node root, int depth, int alpha, int beta){
+        //Evaluates if depth is reached
+        if (depth == 0) return evaluation(root, depth + 1);
+
+        //Initialises children to opposite player's turn
+        LinkedList<Node> children = initChildren(root, 3 - root.getPlayer());
+
+        int minEval = Integer.MAX_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                int eval = alphaBetaMaxi(children.get(i), depth-1, alpha, beta);
+                minEval = Math.min(minEval, eval);
+                beta = Math.min(beta, eval);
+                if(beta <= alpha) break;
+            }
+            return minEval;
+
+>>>>>>> Stashed changes
     }
 
 
@@ -489,6 +602,10 @@ public class MartiniEngine {
         return sum;
     }
 
+<<<<<<< Updated upstream
+=======
+    //Counts the number of 3 consecutive 'currentPlayer' pieces within the current board
+>>>>>>> Stashed changes
     public int numOfThrees(Node root, int currentPlayer){
         int sum = 0;
         for(int i = 0; i < PrecomputedIndexes.threeInARow.length; i++){
@@ -508,11 +625,21 @@ public class MartiniEngine {
 
     public int calcDepth(int timeRemaining){
         /*
+<<<<<<< Updated upstream
         if(timeRemaining > 60000) return 9;
         else if(timeRemaining > 10000 && timeRemaining < 59999) return 5;
         else return 2;
          */
         return 5;
+=======
+        if(timeRemaining > 15000) return 7;
+        else if(timeRemaining > 1000 && timeRemaining < 9999) return 5;
+        else if(timeRemaining > 300 && timeRemaining < 999) return 3;
+        else return 2;
+         */
+
+        return 11;
+>>>>>>> Stashed changes
     }
 
     //Debug functions
@@ -541,6 +668,7 @@ public class MartiniEngine {
         System.out.println(sb.toString());
     }
     public void debug(){
+<<<<<<< Updated upstream
 
         currentBoardNode.getState()[0] = MINE;
         currentBoardNode.getState()[1] = MINE;
@@ -552,6 +680,9 @@ public class MartiniEngine {
             currentBoardNode.getState()[i] = (Math.random() <= 0.5) ? 1 : 2;
 
          */
+=======
+        FIRSTPLAYER = OPPONENT;
+>>>>>>> Stashed changes
     }
     public void getIntro(){
         //Fancy logo
@@ -641,4 +772,60 @@ public class MartiniEngine {
 
         public boolean hasWin(){return hasWin;}
     }
+<<<<<<< Updated upstream
+=======
+
+    //Sneaky lil easter egg ;)
+    //Call it. You know you want to...
+    public void getIntro(){
+        //Fancy logo
+        //ASCII art sourced from https://www.asciiart.eu/food-and-drinks/drinks
+        String martini = "()   ()      ()    /\n" +
+                "  ()      ()  ()  /\n" +
+                "   ______________/___\n" +
+                "   \\            /   /\n" +
+                "    \\^^^^^^^^^^/^^^/\n" +
+                "     \\     ___/   /\n" +
+                "      \\   (   )  /\n" +
+                "       \\  (___) /\n" +
+                "        \\ /    /\n" +
+                "         \\    /\n" +
+                "          \\  /\n" +
+                "           \\/\n" +
+                "           ||\n" +
+                "           ||\n" +
+                "     MARTINI ENGINE\n" +
+                "         V 1.0\n" +
+                "           ||\n" +
+                "           ||\n" +
+                "           /\\\n" +
+                "          /;;\\\n" +
+                "     --------------\n";
+
+        char[] chars = martini.toCharArray();
+        long t = 30;
+        try {
+            for(int i = 0; i < chars.length; i++){
+                System.out.print(chars[i]);
+                Thread.sleep(t);
+            }
+
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
+    }
+    //Maybe another easter egg. You dont know!
+    public String[] initJokes(){
+        String[] jokes = new String[6];
+        jokes[0] = "Why do birds fly to warmer climates in the winter?\nIts much easier than walking!";
+        jokes[1] = "What creature is smarter than a talking parrot?\nA spelling bee!";
+        jokes[2] = "Why was the picture sent to jail?\nIt was framed!";
+        jokes[3] = "My girlfriend is the square root of -100; Absolutely perfect but purely imaginary";
+        jokes[4] = "Did you know that 60 out of 50 people have trouble with fractions?";
+        jokes[5] = "What do you call a half-twisted, one-sided nudie bar?\nA Strip club!";
+        return jokes;
+    }
+
+>>>>>>> Stashed changes
 }

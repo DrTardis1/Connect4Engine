@@ -16,6 +16,11 @@ public class Interface {
         String[] input;
         boolean finished = false;
 
+<<<<<<< Updated upstream
+=======
+        //martini.debug();
+
+>>>>>>> Stashed changes
         while(!finished){
 
             input = coordinator.nextLine().split(" ");
@@ -38,12 +43,23 @@ public class Interface {
                     break;
 
                 case "go":
+<<<<<<< Updated upstream
                     //if(martini.isFirst())
                         //martini.findBestMove(Integer.parseInt(input[2]));
                     //else
                         //martini.findBestMove(Integer.parseInt(input[4]));
                     //martini.findBestMove(5);
                     martini.findBestMove(10000000);
+=======
+    /*
+                    //Determines which time (ftime or stime) is for Martini
+                    if(martini.isMaximising())
+                        martini.findBestMove(Integer.parseInt(input[2]));
+                    else
+                        martini.findBestMove(Integer.parseInt(input[4]));
+
+     */             martini.findBestMove(10000);
+>>>>>>> Stashed changes
                     break;
 
                 case "perft":
