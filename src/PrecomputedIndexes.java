@@ -4,6 +4,10 @@ public class PrecomputedIndexes {
 
     public static LinkedList<Integer>[] twoInARow;
     public static LinkedList<Integer>[] threeInARow;
+<<<<<<< Updated upstream
+=======
+    public static LinkedList<Integer>[] adjacentAddresses;
+>>>>>>> Stashed changes
 
     public static void init(){initTwoInARow(); initThreeInARow();}
     public static void initTwoInARow(){
@@ -85,6 +89,7 @@ public class PrecomputedIndexes {
 
         }
     }
+
 
     public static void printTwo(){
         for(int i = 0; i < twoInARow.length; i++){

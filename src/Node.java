@@ -8,6 +8,7 @@ public class Node {
     private int value;
     private int colNum;
     private int player;
+    private int lastPiece;
     private static int nodeNum = 0;
     public int name;
 
@@ -17,6 +18,7 @@ public class Node {
         state = new int[42];
         value = 0;
         player = 0;
+        lastPiece = -1;
         name = nodeNum;
         nodeNum++;
     }
@@ -27,6 +29,7 @@ public class Node {
         state = parent.getState().clone();
         value = 0;
         player = 0;
+        lastPiece = -1;
         name = nodeNum;
         nodeNum++;
     }
@@ -63,6 +66,13 @@ public class Node {
     public Node getFirstChild(){
         return children.getFirst();
     }
+<<<<<<< Updated upstream
+=======
+    public int[] getState(){return state;}
+    public void setState(int[] state){this.state = state;}
+    public void setLastPiece(int lastPiece){this.lastPiece = lastPiece;}
+    public int getLastPiece(){return lastPiece;}
+>>>>>>> Stashed changes
 
     public int[] getState(){return state;}
 

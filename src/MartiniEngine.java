@@ -52,6 +52,7 @@ public class MartiniEngine {
         //Generates children for Martini, because this function will only ever be called when Martini must make a move
         LinkedList<Node> children = initChildren(currentBoardNode, MINE);
 
+<<<<<<< Updated upstream
         //If Martini is first, then it must minimise children
         if(isFirst()){
             bestValue = Integer.MIN_VALUE;
@@ -73,11 +74,23 @@ public class MartiniEngine {
                 if(moveScore > bestMoveValue){
                     bestMoveValue = moveScore;
 >>>>>>> Stashed changes
+=======
+        //As we at iterating over the children generated for my moves, negaMax must
+        //first run and favour the opponent
+
+        if(isFirst()){
+            bestVal = Integer.MIN_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                int currentValue = minimax(children.get(i), calcDepth(timeRemaining), false);
+                if(currentValue > bestVal){
+                    bestVal = currentValue;
+>>>>>>> Stashed changes
                     index = i;
                 }
 
             }
         }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
         //Otherwise, it must maximise the children as Martini is the minimising player
@@ -96,6 +109,14 @@ public class MartiniEngine {
                 int moveScore = alphaBetaMaxi(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
                 if(moveScore < bestMoveValue){
                     bestMoveValue = moveScore;
+>>>>>>> Stashed changes
+=======
+        else{
+            bestVal = Integer.MAX_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                int currentValue = minimax(children.get(i), calcDepth(timeRemaining), true);
+                if(currentValue < bestVal){
+                    bestVal = currentValue;
 >>>>>>> Stashed changes
                     index = i;
                 }
@@ -403,8 +424,22 @@ public class MartiniEngine {
 
         LinkedList<Node> children;
 
+<<<<<<< Updated upstream
         //Choosing a move for firstPlayer
         if(maximisingPlayer){
+=======
+        for(int i = 0; i < children.size(); i++){
+            score = mini (children.get(i), depth - 1, alpha, beta);
+            max = Math.max(max, score);
+            alpha = Math.max(alpha, score);
+            if(score > max) max = score;
+            if(beta <= alpha) break;
+        }
+        return max;
+    }
+    public int mini(Node root, int depth, int alpha, int beta){
+        int score;
+>>>>>>> Stashed changes
 
             //Inits children, which will be the 2nd player's possible moves
             children = initChildren(root, 3 - FIRSTPLAYER);
@@ -418,6 +453,7 @@ public class MartiniEngine {
             return highestScore;
         }
 
+<<<<<<< Updated upstream
         //Choosing a move for second player
         else{
 
@@ -430,13 +466,47 @@ public class MartiniEngine {
                 if(currentScore < lowestScore) lowestScore = currentScore;
             }
             return lowestScore;
+=======
+        for(int i = 0; i < children.size(); i++){
+            score = maxi(children.get(i), depth - 1, alpha, beta);
+            min = Math.min(min, score);
+            beta = Math.min(beta, score);
+            if(score < min) min = score;
+            if(beta <= alpha) break;
+>>>>>>> Stashed changes
         }
     }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     public int eval(Node root, int depth) {
 =======
 
      */
+=======
+
+    public int minimax(Node root, int depth, boolean maximisingPlayer){
+        if(depth == 0) return evaluation(root, depth+1);
+
+        LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
+
+        if(children.size() == 0) return evaluation(root, depth+1);
+
+        if(maximisingPlayer){
+            int value = Integer.MIN_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                value = Math.max(value, minimax(children.get(i), depth-1, false));
+            }
+            return value;
+        }
+        else{
+            int value = Integer.MAX_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                value = Math.min(value, minimax(children.get(i), depth-1, true));
+            }
+            return value;
+        }
+    }
+>>>>>>> Stashed changes
     public int evaluation(Node root, int depth){
 >>>>>>> Stashed changes
         WinPair result = checkWin(root.getState());
@@ -578,6 +648,7 @@ public class MartiniEngine {
             Node temp = new Node(root);
             temp.setPlayer(player);
             temp.getState()[lowestAddress] = player;
+            temp.setLastPiece(lowestAddress);
             temp.setColNum(lowestAddress % 7);
             //evaluation(temp);
             children.add(temp);
@@ -626,19 +697,26 @@ public class MartiniEngine {
     public int calcDepth(int timeRemaining){
         /*
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if(timeRemaining > 60000) return 9;
         else if(timeRemaining > 10000 && timeRemaining < 59999) return 5;
         else return 2;
          */
         return 5;
 =======
+=======
+>>>>>>> Stashed changes
         if(timeRemaining > 15000) return 7;
         else if(timeRemaining > 1000 && timeRemaining < 9999) return 5;
         else if(timeRemaining > 300 && timeRemaining < 999) return 3;
         else return 2;
          */
+<<<<<<< Updated upstream
 
         return 11;
+>>>>>>> Stashed changes
+=======
+        return 0;
 >>>>>>> Stashed changes
     }
 
