@@ -41,76 +41,43 @@ public class MartiniEngine {
 
     //Response to go ftime x stime y
     public void findBestMove(int timeRemaining){
-        int bestVal = 0;
         int index = 0;
-        int score;
+        int bestValue;
+
+        //Generates children for Martini, because this function will only ever be called when Martini must make a move
         LinkedList<Node> children = initChildren(currentBoardNode, MINE);
 
-        //As we at iterating over the children generated for my moves, negaMax must
-        //first run and favour the opponent
-        if(isFirst()) {
-            bestVal = Integer.MIN_VALUE;
-            for (int i = 0; i < children.size(); i++) {
-                score = mini(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
-                if (score > bestVal) {
-                    bestVal = score;
+        //If Martini is first, then it must minimise children
+        if(isFirst()){
+            bestValue = Integer.MIN_VALUE;
+            for(int i = 0; i < children.size(); i++){
+
+                //NOT maximisingPlayer as the children are the 2nd players moves
+                int currentValue = minimax(children.get(i), calcDepth(timeRemaining), false);
+                if(currentValue > bestValue){
+                    bestValue = currentValue;
+                    index = i;
+                }
+
+            }
+        }
+
+        //Otherwise, it must maximise the children as Martini is the minimising player
+        else{
+            bestValue = Integer.MAX_VALUE;
+            for(int i = 0; i < children.size(); i ++){
+
+                //IS maximisingPlayer as the children are Martini's moves
+                int currentValue = minimax(children.get(i), calcDepth(timeRemaining), true);
+                if(currentValue < bestValue){
+                    bestValue = currentValue;
                     index = i;
                 }
             }
         }
-        else {
-            bestVal = Integer.MAX_VALUE;
-            for (int i = 0; i < children.size(); i++) {
-                score = maxi(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE);
-                if (score < bestVal) {
-                    bestVal = score;
-                    index = i;
-                }
-            }
-        }
-        System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
-        updateBoard(Integer.toString(children.get(index).getColNum()), 1);
-    }
 
-    public void fbm2(int timeRemaining){
-        int bestVal = 0;
-        int index = 0;
-        int score;
-        LinkedList<Node> children = initChildren(currentBoardNode, MINE);
-
-        //As we at iterating over the children generated for my moves, negaMax must
-        //first run and favour the opponent
-        if(isFirst()) {
-            bestVal = Integer.MIN_VALUE;
-            System.out.println("bestmove " + minimax(currentBoardNode, calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, false, MINE));
-            /*
-            for (int i = 0; i < children.size(); i++) {
-                score = minimax(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, false, OPPONENT);
-                if (score > bestVal) {
-                    bestVal = score;
-                    index = i;
-                }
-            }
-
-             */
-        }
-        else {
-            bestVal = Integer.MIN_VALUE;
-            System.out.println("bestmove " + minimax(currentBoardNode, calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, true, MINE));
-            /*
-            bestVal = Integer.MAX_VALUE;
-            for (int i = 0; i < children.size(); i++) {
-                score = minimax(children.get(i), calcDepth(timeRemaining), Integer.MIN_VALUE, Integer.MAX_VALUE, true, MINE);
-                if (score < bestVal) {
-                    bestVal = score;
-                    index = i;
-                }
-            }
-
-             */
-        }
-        //System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestVal);
-        updateBoard(Integer.toString(children.get(index).getColNum()), 1);
+        System.out.println("bestmove " + children.get(index).getColNum() +  " " + bestValue);
+        updateBoard(Integer.toString(children.get(index).getColNum()), MINE);
     }
 
     //Response to perft x
@@ -133,7 +100,7 @@ public class MartiniEngine {
 
     public Node getGameTree(){return currentBoardNode;}
 
-    public void setFirst(int isFirst){this.FIRSTPLAYER = FIRSTPLAYER;}
+    public void setFirst(int FIRSTPLAYER){this.FIRSTPLAYER = FIRSTPLAYER;}
 
     public boolean isFirst(){return FIRSTPLAYER == MINE;}
 
@@ -387,124 +354,76 @@ public class MartiniEngine {
 
     //Minimax and Evaluation function implementations
     //------------------------------------------------------------------------------------------------------------------
-    public int maxi(Node root, int depth, int alpha, int beta){
 
-        if(depth == 0) return evaluation(root, depth+1);
-        if(checkWin(root.getState()).hasWin()) return evaluation(root, depth+1);
+    public int minimax(Node root, int depth, boolean maximisingPlayer){
+        if(depth == 0) return eval(root, depth+1);
 
-        LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
+        LinkedList<Node> children;
 
-        int score;
-        for(int i = 0; i < children.size(); i++){
-            score = mini (children.get(i), depth - 1, alpha, beta);
-            if(score >= beta) return beta;
-            if(score > alpha) alpha = score;
-        }
-        return alpha;
-    }
-    public int mini(Node root, int depth, int alpha, int beta){
+        //Choosing a move for firstPlayer
+        if(maximisingPlayer){
 
+            //Inits children, which will be the 2nd player's possible moves
+            children = initChildren(root, 3 - FIRSTPLAYER);
+            int currentScore;
+            int highestScore = Integer.MIN_VALUE;
 
-        if(depth == 0) return -evaluation(root, depth+1);
-        if(checkWin(root.getState()).hasWin()) return -evaluation(root, depth+1);
-
-        LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
-
-        int score;
-        for(int i = 0; i < children.size(); i++){
-            score = maxi(children.get(i), depth - 1, alpha, beta);
-            if(score <= alpha) return alpha;
-            if(score < beta) beta = score;
-        }
-        return beta;
-    }
-
-    public int minimax(Node root, int depth, int alpha, int beta, boolean maxingPlayer, int currentPlayer){
-        if(depth == 0) return eval2(root, depth+1, currentPlayer);
-
-        if(maxingPlayer){
-            int best = Integer.MIN_VALUE;
-            LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
-            for(int i = 0; i < children.size(); i++) {
-                best = Math.max(best, minimax(children.get(i), depth-1, alpha, beta, false, 3-currentPlayer));
-                alpha = Math.max(alpha, best);
-                if(beta <= alpha) break;
-            }
-            return best;
-        }
-        else {
-            int best = Integer.MAX_VALUE;
-            LinkedList<Node> children = initChildren(root, 3-root.getPlayer());
             for(int i = 0; i < children.size(); i++){
-                best = Math.min(best, minimax(children.get(i), depth-1, alpha, beta, true, 3-currentPlayer));
-                beta = Math.min(beta, best);
-                if(beta <= alpha) break;
+                currentScore = minimax(children.get(i), depth-1, false);
+                if(currentScore > highestScore) highestScore = currentScore;
             }
-            return best;
+            return highestScore;
+        }
+
+        //Choosing a move for second player
+        else{
+
+            //Inits children, which will be the 1st player's possible moves
+            children = initChildren(root, FIRSTPLAYER);
+            int currentScore;
+            int lowestScore = Integer.MAX_VALUE;
+            for(int i = 0; i < children.size(); i++){
+                currentScore = minimax(children.get(i), depth - 1, true);
+                if(currentScore < lowestScore) lowestScore = currentScore;
+            }
+            return lowestScore;
         }
     }
-
-    public int eval2(Node root, int depth, int currentPlayer){
+    public int eval(Node root, int depth) {
         WinPair result = checkWin(root.getState());
+        int score = 0;
 
-        int sum = 0;
 
-        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
-        sum += (numOfTwos(root, currentPlayer) * 50);
-        sum += (numOfThrees(root, currentPlayer) * 200);
+        score += (numOfTwos(root, FIRSTPLAYER) * 50);
+        score += (numOfThrees(root, FIRSTPLAYER) * 200);
 
-        //Decrease board values if other player will connect 2 or 3 in a row
-        //This acts as maximising player attempting to block the other player
-        sum -= (numOfTwos(root, 3-currentPlayer) * 40);
-        sum -= (numOfThrees(root, 3-currentPlayer) * 190);
+        score -= (numOfTwos(root, 3 - FIRSTPLAYER) * 40);
+        score -= (numOfThrees(root, 3 - FIRSTPLAYER) * 190);
 
-        if(result.hasWin()){
-            if(result.getWinner() == currentPlayer){
-                sum += 1000000 * depth;
-            }
-            else{
-                sum -= 1000000 * depth;
-            }
+
+        if (result.hasWin()) {
+            if (result.getWinner() == FIRSTPLAYER) score += 1000000 * depth;
+            else score -= 1000000 * depth;
         }
 
-        for(int i = 0; i < root.getState().length; i++) {
-            if (root.getState()[i] == currentPlayer) sum += boardValues[i];
-            else if (root.getState()[i] == 3-currentPlayer) sum -= boardValues[i];
+        for (int i = 0; i < root.getState().length; i++) {
+            if (root.getState()[i] == FIRSTPLAYER) score += boardValues[i];
+            else if (root.getState()[i] == (3 - FIRSTPLAYER)) score -= boardValues[i];
         }
 
-        return sum;
+        //As the evaluation must be relative to the FIRSTPLAYER, if currentPlayer
+        //is the FIRSTPLAYER, the sum is positive. Otherwise, it's negative
+        //int multiplier = currentPlayer == FIRSTPLAYER ? 1 : -1;
+        /*
+        int multiplier;
+        if (maximisingPlayer) multiplier = 1;
+        else multiplier = -1;
+        return score * multiplier;
+         */
+        return score;
     }
 
-    public int evaluation(Node root, int depth){
-        WinPair result = checkWin(root.getState());
 
-        int sum = 0;
-
-        //Increase board values if maximisingPlayer can connect 2 or 3 in a row
-        sum += (numOfTwos(root, FIRSTPLAYER) * 50);
-        sum += (numOfThrees(root, FIRSTPLAYER) * 200);
-
-        //Decrease board values if other player will connect 2 or 3 in a row
-        //This acts as maximising player attempting to block the other player
-        sum -= (numOfTwos(root, 3-FIRSTPLAYER) * 40);
-        sum -= (numOfThrees(root, 3-FIRSTPLAYER) * 190);
-
-        if(result.hasWin()){
-            if(result.getWinner() == FIRSTPLAYER){
-                sum += 1000000 * depth;
-            }
-            else{
-                sum -= 1000000 * depth;
-            }
-        }
-
-        for(int i = 0; i < root.getState().length; i++) {
-            if (root.getState()[i] == FIRSTPLAYER) sum += boardValues[i];
-            else if (root.getState()[i] == 3-FIRSTPLAYER) sum -= boardValues[i];
-        }
-
-        return sum;
-    }
 
     //Misc functions
     //------------------------------------------------------------------------------------------------------------------
@@ -588,9 +507,12 @@ public class MartiniEngine {
     }
 
     public int calcDepth(int timeRemaining){
+        /*
         if(timeRemaining > 60000) return 9;
         else if(timeRemaining > 10000 && timeRemaining < 59999) return 5;
         else return 2;
+         */
+        return 5;
     }
 
     //Debug functions

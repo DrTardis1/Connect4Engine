@@ -43,7 +43,7 @@ public class Interface {
                     //else
                         //martini.findBestMove(Integer.parseInt(input[4]));
                     //martini.findBestMove(5);
-                    martini.fbm2(10000000);
+                    martini.findBestMove(10000000);
                     break;
 
                 case "perft":
