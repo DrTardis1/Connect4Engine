@@ -66,17 +66,12 @@ public class Node {
     public Node getFirstChild(){
         return children.getFirst();
     }
-<<<<<<< Updated upstream
-=======
+
     public int[] getState(){return state;}
     public void setState(int[] state){this.state = state;}
     public void setLastPiece(int lastPiece){this.lastPiece = lastPiece;}
     public int getLastPiece(){return lastPiece;}
->>>>>>> Stashed changes
 
-    public int[] getState(){return state;}
-
-    public void setState(int[] state){this.state = state;}
 
     public void deleteChildren(){children = new LinkedList<>();}
 

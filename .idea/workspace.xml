@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -12,6 +13,11 @@
 =======
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Node.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/PrecomputedIndexes.class" afterDir="false" />
+>>>>>>> Stashed changes
+=======
+    <list default="true" id="48d67f4a-66ab-4379-a35b-9ab75c6f911d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Connect4Engine/Interface.class" afterDir="false" />
 >>>>>>> Stashed changes
       <change beforePath="$PROJECT_DIR$/src/MartiniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MartiniEngine.java" afterDir="false" />
     </list>
@@ -136,7 +142,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5dd07bb2-6283-42f2-92e3-1fcce2e6f188" name="Default Changelist" comment="" />
+      <changelist id="48d67f4a-66ab-4379-a35b-9ab75c6f911d" name="Default Changelist" comment="" />
       <created>1569158592008</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -214,7 +220,11 @@
 >>>>>>> Stashed changes
 =======
       <workItem from="1572410836083" duration="878000" />
+<<<<<<< Updated upstream
       <workItem from="1572426293156" duration="6209000" />
+>>>>>>> Stashed changes
+=======
+      <workItem from="1572475690284" duration="1592000" />
 >>>>>>> Stashed changes
     </task>
     <servers />
