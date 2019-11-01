@@ -100,36 +100,11 @@ public class PrecomputedIndexes {
         for(int i = 0; i < fourInARow.length; i++){
 
             fourInARow[i] = new LinkedList<>();
-            if(i%7 <= 3){
 
-                //Elements to the right
-                fourInARow[i].add(i+1);
-                fourInARow[i].add(i+2);
-                fourInARow[i].add(i+3);
-
-                if(i <= 20){
-                    fourInARow[i].add(i+7);
-                    fourInARow[i].add(i+14);
-                    fourInARow[i].add(i+21);
-
-                    fourInARow[i].add(i+8);
-                    fourInARow[i].add(i+16);
-                    fourInARow[i].add(i+24);
-                }
-                if(i % 7 == 3){
-                    fourInARow[i].add(i+6);
-                    fourInARow[i].add(i+12);
-                    fourInARow[i].add(i+18);
-
-                }
-            }
-            else if (i % 7 > 3){
-                if(i <= 20) {
-                    fourInARow[i].add(i + 7);
-                    fourInARow[i].add(i + 7);
-                    fourInARow[i].add(i + 7);
-                    fourInARow[i].add(i + 7);
-                }
+            if(i >= 35 && i <=38) {
+                fourInARow[i].add(i + 1);
+                fourInARow[i].add(i + 2);
+                fourInARow[i].add(i + 3);
             }
         }
     }

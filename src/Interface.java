@@ -13,8 +13,6 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         PrecomputedIndexes.init();
 
-        martini.debug();
-
         //Setup for reading coordinator input
         Scanner coordinator = new Scanner(System.in);
         String[] input;
@@ -61,6 +59,8 @@ public class Interface {
                     finished = true;
                     break;
 
+                //Optional/Debugging Functions below
+                //--------------------------------------------------------------------------------------
                 case "easter":
                     martini.getIntro();
                     break;

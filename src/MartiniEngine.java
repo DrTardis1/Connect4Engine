@@ -5,8 +5,8 @@ public class MartiniEngine {
 
     private String name = "Martini-C3260061";
     private int[] currentBoard = new int[42];
-
     private int[] columns = {3, 2, 4, 1, 5, 0, 6};
+
     //Values of the board. Higher numbers mean that space is more desirable
     private int[] boardValues = {1,  5, 10, 50,  10, 5, 1,
                                  10, 15, 20, 55,  20, 15, 20,
@@ -43,10 +43,8 @@ public class MartiniEngine {
 
     //Response to go ftime x stime y
     public void findBestMove(int timeRemaining){
-        int bestVal = 0;
+        int bestVal, score, address;
         int index = 0;
-        int score;
-        int address;
 
         //As we at iterating over the children generated for my moves, negaMax must
         //first run and favour the opponent
@@ -605,7 +603,11 @@ public class MartiniEngine {
 
     //Returns a depth to generate moves to based on the timeRemaining of the player
     public int calcDepth(int timeRemaining){
-        return 11;
+        if(timeRemaining > 60000) return 11;
+        else if(timeRemaining > 3000 && timeRemaining <= 60000) return 9;
+        else if(timeRemaining > 1500 && timeRemaining <= 3000) return 5;
+        else if(timeRemaining > 500 && timeRemaining <= 1500) return 3;
+        else return 1;
     }
 
     //Basically just a fancy way of updating the 'address'th element of currentBoard.
