@@ -119,6 +119,19 @@ public class MartiniEngine {
     //These functions iterate over all elements of the game board and check to see if there is an instance of
     //four consecutive pieces from the same player.
 
+    public WinPair checkWin3(){
+        int currentPlayer;
+        int sum = 0;
+        for(int i = 0; i < PrecomputedIndexes.fourInARow.length; i++){
+            if(currentBoard[i] == EMPTY) continue;
+            else currentPlayer = currentBoard[i];
+            for(int j = 0; j < PrecomputedIndexes.fourInARow[i].size(); j++){
+                if(currentBoard[PrecomputedIndexes.fourInARow[i].get(j)] == currentPlayer) sum++;
+            }
+        }
+
+        return new WinPair();
+    }
     public WinPair checkWin2(int address){
         WinPair result = new WinPair();
         int[] direction = {1, 8, 7, 6, -1};

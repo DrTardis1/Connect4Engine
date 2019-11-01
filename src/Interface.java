@@ -13,6 +13,7 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         PrecomputedIndexes.init();
 
+        PrecomputedIndexes.printFour();
         //Setup for reading coordinator input
         Scanner coordinator = new Scanner(System.in);
         String[] input;
