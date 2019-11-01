@@ -6,6 +6,7 @@ public class MartiniEngine {
     private String name = "Martini-C3260061";
     private int[] currentBoard = new int[42];
 
+    private int[] columns = {3, 2, 4, 1, 5, 0, 6};
     //Values of the board. Higher numbers mean that space is more desirable
     private int[] boardValues = {1,  5, 10, 50,  10, 5, 1,
                                  10, 15, 20, 55,  20, 15, 20,
@@ -46,7 +47,6 @@ public class MartiniEngine {
         int index = 0;
         int score;
         int address;
-        //LinkedList<Node> children = initChildren(currentBoardNode, MINE);
 
         //As we at iterating over the children generated for my moves, negaMax must
         //first run and favour the opponent
@@ -105,11 +105,61 @@ public class MartiniEngine {
     public boolean isFirst(){return FIRSTPLAYER == MINE;}
     public boolean isFull(int colNum){return currentBoard[colNum] != EMPTY;}
     public boolean isAvailable(int colNum){return currentBoard[colNum] == EMPTY;}
+    public boolean boardIsFull(int[] state){
+        boolean isFull = true;
+        for(int i = 0; i < 7; i ++){
+            if(state[i] == EMPTY){
+                isFull = false;
+                break;
+            }
+        }
+        return isFull;
+    }
 
     //Win Checking Functions
     //------------------------------------------------------------------------------------------------------------------
     //These functions iterate over all elements of the game board and check to see if there is an instance of
     //four consecutive pieces from the same player.
+
+    public WinPair checkWin2(int address){
+        WinPair result = new WinPair();
+        int[] direction = {1, 8, 7, 6, -1};
+        int colNum = address % 7;
+        int currentValue = currentBoard[address];
+
+        outerloop:
+        for(int i = 0; i < direction.length && !result.hasWin(); i++){
+            switch(direction[i]){
+                case 1:{
+                    int leftMost = address;
+                    //Finds piece furthest to the left
+                    while((leftMost-(address-leftMost)) % 7 == colNum-(address-leftMost) && currentBoard[leftMost-(address-leftMost)] == currentValue){
+                        leftMost --;
+
+                    }
+                    if(currentBoard[leftMost] == currentValue && currentBoard[leftMost+1] == currentValue && currentBoard[leftMost+2] == currentValue && currentBoard[leftMost+3] == currentValue){
+                        result.setWinnerNumber(currentValue);
+                        result.setHasWin(true);
+                        break outerloop;
+                    }
+                }
+                case 8:{
+
+                }
+                case 7:{
+
+                }
+                case 6:{
+
+                }
+                case -1:{
+
+                }
+            }
+        }
+
+        return result;
+    }
     public WinPair checkWin(int[] boardState){
         WinPair vertWP = checkVertical(boardState);
         WinPair horWP = checkHorizontal(boardState);
@@ -375,7 +425,7 @@ public class MartiniEngine {
     public int maxi(int[] root, int depth, int alpha, int beta, int player){
         int score;
 
-        if(depth == 0) return evaluation(root, depth+1);
+        if(depth == 0 || boardIsFull(root)) return evaluation(root, depth+1);
         //if(checkWin(root).hasWin()) return evaluation(root, depth+1);
 
         int max = Integer.MIN_VALUE;
@@ -385,7 +435,7 @@ public class MartiniEngine {
         for(int i = 0; i < 7; i++){
 
             //Finds the lowest space of column i
-            address = findAvailableSpace(i, root);
+            address = findAvailableSpace(columns[i], root);
 
             //Ensures the address is in bounds
             if(address < 0) continue;
@@ -393,12 +443,9 @@ public class MartiniEngine {
             //Makes a move
             root[address] = player;
 
-            //score = mini (root, depth - 1, alpha, beta, 3- player);
-            //if(score > max) max = score;
             score = mini (root, depth - 1, alpha, beta, 3- player);
             max = Math.max(max, score);
             alpha = Math.max(alpha, max);
-
 
             //Undoes the move
             root[address] = EMPTY;
@@ -409,7 +456,7 @@ public class MartiniEngine {
     public int mini(int[] root, int depth, int alpha, int beta, int player){
         int score;
 
-        if(depth == 0) return evaluation(root, depth+1);
+        if(depth == 0 || boardIsFull(root)) return evaluation(root, depth+1);
         //if(checkWin(root).hasWin()) return evaluation(root, depth+1);
 
         int min = Integer.MAX_VALUE;
@@ -419,7 +466,7 @@ public class MartiniEngine {
         for(int i = 0; i < 7; i++){
 
             //Finds the lowest space of column i
-            address = findAvailableSpace(i, root);
+            address = findAvailableSpace(columns[i], root);
 
             //Ensures the address is in bounds
             if(address < 0) continue;
@@ -427,11 +474,10 @@ public class MartiniEngine {
             //Makes a move
             root[address] = player;
 
-            //score = maxi(root, depth - 1, alpha, beta, 3 - player);
             score = maxi(root, depth - 1, alpha, beta, 3-player);
-            //if(score < min) min = score;
             min = Math.min(min, score);
             beta = Math.min(beta, min);
+
             //Undoes the move
             root[address] = EMPTY;
             if(beta <= alpha) break;
@@ -559,7 +605,7 @@ public class MartiniEngine {
 
     //Returns a depth to generate moves to based on the timeRemaining of the player
     public int calcDepth(int timeRemaining){
-        return 9;
+        return 11;
     }
 
     //Basically just a fancy way of updating the 'address'th element of currentBoard.
@@ -596,11 +642,60 @@ public class MartiniEngine {
 
         System.out.println(sb.toString());
     }
-
     public void debug(){
-        FIRSTPLAYER = MINE;
-    }
 
+        FIRSTPLAYER = MINE;
+        currentBoard[35] = MINE;
+        currentBoard[36] = MINE;
+        currentBoard[37] = MINE;
+        currentBoard[38] = MINE;
+        WinPair r = checkWin2(38);
+        if(r.hasWin) System.out.println("A WIN WAS FOUND AT 38");
+        /*
+        currentBoard[0] = 2;
+        currentBoard[1] = 2;
+        currentBoard[2] = 1;
+        currentBoard[3] = 2;
+        currentBoard[4] = 0;
+        currentBoard[5] = 0;
+        currentBoard[6] = 0;
+        currentBoard[7] = 1;
+        currentBoard[8] = 1;
+        currentBoard[9] = 2;
+        currentBoard[10] = 2;
+        currentBoard[11] = 0;
+        currentBoard[12] = 0;
+        currentBoard[13] = 0;
+        currentBoard[14] = 2;
+        currentBoard[15] = 2;
+        currentBoard[16] = 1;
+        currentBoard[17] = 1;
+        currentBoard[18] = 0;
+        currentBoard[19] = 0;
+        currentBoard[20] = 1;
+        currentBoard[21] = 1;
+        currentBoard[22] = 2;
+        currentBoard[23] = 2;
+        currentBoard[24] = 1;
+        currentBoard[25] = 1;
+        currentBoard[26] = 1;
+        currentBoard[27] = 2;
+        currentBoard[28] = 2;
+        currentBoard[29] = 1;
+        currentBoard[30] = 1;
+        currentBoard[31] = 2;
+        currentBoard[32] = 2;
+        currentBoard[33] = 2;
+        currentBoard[34] = 1;
+        currentBoard[35] = 1;
+        currentBoard[36] = 1;
+        currentBoard[37] = 2;
+        currentBoard[38] = 1;
+        currentBoard[39] = 1;
+        currentBoard[40] = 2;
+        currentBoard[41] = 2;
+         */
+    }
 
     //WinPair class
     //When checking for a win on a given board, this object contains true/false if there is/isnt a win, and if there
