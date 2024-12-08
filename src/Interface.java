@@ -13,12 +13,11 @@ public class Interface {
         MartiniEngine martini = new MartiniEngine();
         PrecomputedIndexes.init();
 
+        PrecomputedIndexes.printFour();
         //Setup for reading coordinator input
         Scanner coordinator = new Scanner(System.in);
         String[] input;
         boolean finished = false;
-
-        martini.debug();
 
         while(!finished){
 
@@ -43,7 +42,6 @@ public class Interface {
                     break;
 
                 case "go":
-
                     //Determines which time (ftime or stime) is for Martini
                     if(martini.isFirst())
                         martini.findBestMove(Integer.parseInt(input[2]));
@@ -62,6 +60,8 @@ public class Interface {
                     finished = true;
                     break;
 
+                //Optional/Debugging Functions below
+                //--------------------------------------------------------------------------------------
                 case "easter":
                     martini.getIntro();
                     break;

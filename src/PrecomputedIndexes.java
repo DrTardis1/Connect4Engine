@@ -7,9 +7,10 @@ public class PrecomputedIndexes {
 
     public static LinkedList<Integer>[] twoInARow;
     public static LinkedList<Integer>[] threeInARow;
+    public static LinkedList<Integer>[] fourInARow;
 
 
-    public static void init(){initTwoInARow(); initThreeInARow();}
+    public static void init(){initTwoInARow(); initThreeInARow(); initFourInARow();}
 
     //Initialises twoInARow, which is a linked list containing arrays of indexes that can contain 2 consecutive pieces
     public static void initTwoInARow(){
@@ -93,6 +94,49 @@ public class PrecomputedIndexes {
         }
     }
 
+    public static void initFourInARow(){
+        fourInARow = new LinkedList[39];
+
+        for(int i = 0; i < fourInARow.length; i++){
+
+            fourInARow[i] = new LinkedList<>();
+
+            if(i <= 17 && i % 7 <= 3){
+                fourInARow[i].add(i + 1);
+                fourInARow[i].add(i + 2);
+                fourInARow[i].add(i + 3);
+
+                fourInARow[i].add(i + 8);
+                fourInARow[i].add(i + 16);
+                fourInARow[i].add(i + 24);
+
+                fourInARow[i].add(i + 7);
+                fourInARow[i].add(i + 14);
+                fourInARow[i].add(i + 21);
+
+                if(i % 7 == 3){
+                    fourInARow[i].add(i+6);
+                    fourInARow[i].add(i+12);
+                    fourInARow[i].add(i+18);
+                }
+            }
+            else if(i <= 20 && i % 7 > 3){
+                fourInARow[i].add(i+ 7);
+                fourInARow[i].add(i+ 14);
+                fourInARow[i].add(i+ 21);
+
+                fourInARow[i].add(i+ 6);
+                fourInARow[i].add(i+ 12);
+                fourInARow[i].add(i+ 18);
+            }
+            else if(i >= 21 && i % 7 <= 3){
+                fourInARow[i].add(i+ 1);
+                fourInARow[i].add(i+ 2);
+                fourInARow[i].add(i+ 3);
+            }
+        }
+    }
+
     public static void printTwo(){
         for(int i = 0; i < twoInARow.length; i++){
             System.out.print("INDEX: " + i + " - ");
@@ -111,4 +155,14 @@ public class PrecomputedIndexes {
             System.out.println();
         }
     }
+    public static void printFour(){
+        for(int i = 0; i < fourInARow.length; i++){
+            System.out.print("INDEX: " + i + " - ");
+            for(int j = 0; j < fourInARow[i].size(); j++){
+                System.out.print(fourInARow[i].get(j) + ", ");
+            }
+            System.out.println();
+        }
+    }
+
 }
